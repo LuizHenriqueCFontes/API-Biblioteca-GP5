@@ -1,0 +1,12 @@
+CREATE TABLE users(
+	id_usuarios VARCHAR(36) UNIQUE NOT NULL,
+    username VARCHAR(100) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+	role ENUM('USER', 'ALUNO', 'ADMIN') NOT NULL,
+    enabled BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    PRIMARY KEY(id_usuarios)
+);
