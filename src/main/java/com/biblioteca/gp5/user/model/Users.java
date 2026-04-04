@@ -30,7 +30,7 @@ public class Users implements UserDetails { //Implemento um userDetails, que ser
 	*/
 	
 	@Column(name = "id_usuarios") //Uso o column para dar definicoes da tabela, o name nesse caso
-	private String idUsuarios;
+	private String idUsers;
 	
 	@Column(nullable = false, unique = false) //Informo que nao pode esta vazio, mas nao é unique
 	private String username;
@@ -39,7 +39,7 @@ public class Users implements UserDetails { //Implemento um userDetails, que ser
 	private String email;
 	
 	@Column(nullable = false, unique = false) //Informo que nao pode esta vazio, mas nao é unique
-	private String telefone;
+	private String phone;
 	
 	@Column(nullable = false, unique = false) //Informo que nao pode esta vazio, mas nao é unique
 	private String password;
@@ -58,7 +58,7 @@ public class Users implements UserDetails { //Implemento um userDetails, que ser
 	public Users(String username, String email, String telefone, String password, UserRole role) {
 		this.username = username;
 		this.email = email;
-		this.telefone = telefone;
+		this.phone = telefone;
 		this.password = password;
 		this.role = role;
 	}
@@ -69,9 +69,6 @@ public class Users implements UserDetails { //Implemento um userDetails, que ser
 		this.password = password;
 		
 	}
-	
-	
-	
 	
 	
 	@Override //Esse metodo serve para definir as roles e acessa-las depois
