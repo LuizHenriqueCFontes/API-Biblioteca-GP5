@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -14,6 +16,21 @@ import com.biblioteca.gp5.exception.user.UserNotFoundException;
 
 @RestControllerAdvice //Essa anotação significa uma classe erro global
 public class GlobalException {
+	
+	@ExceptionHandler(UsernameNotFoundException.class)
+	public ResponseEntity<Object> handlerUsernameNotFoundException(UsernameNotFoundException ex){
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "Usuário não encontrado", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	@ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<Object> handlerBadCredentialsException(BadCredentialsException ex){
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "Usuário ou senha incorreto", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
 	
 	@ExceptionHandler(UserNotFoundException.class)
 	public ResponseEntity<Object> handlerUsuarioNaoEncontradoException(UserNotFoundException ex){
