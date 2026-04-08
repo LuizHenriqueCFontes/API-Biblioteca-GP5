@@ -8,5 +8,5 @@ CREATE TABLE users(
     enabled BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     
-    PRIMARY KEY(id_usuarios)
+    PRIMARY KEY(id_users)
 );

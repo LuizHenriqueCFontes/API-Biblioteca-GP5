@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.biblioteca.gp5.exception.dto.ErrorResponse;
+import com.biblioteca.gp5.exception.role.InvalidRoleException;
 import com.biblioteca.gp5.exception.security.TokenCreationException;
 import com.biblioteca.gp5.exception.security.TokenValidationException;
+import com.biblioteca.gp5.exception.user.EmailAlreadyExistsException;
 import com.biblioteca.gp5.exception.user.UserNotFoundException;
 
-@RestControllerAdvice //Essa anotação significa uma classe erro global
+@RestControllerAdvice //Essa anotação significa uma classe de erro global
 public class GlobalException {
 	
 	@ExceptionHandler(UsernameNotFoundException.class)
@@ -40,6 +42,14 @@ public class GlobalException {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 	
+	@ExceptionHandler(EmailAlreadyExistsException.class)
+	public ResponseEntity<Object> handlerEmailAlreadyExistsException(EmailAlreadyExistsException ex){
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "O email já está cadastrado", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	
 	
 	@ExceptionHandler(TokenCreationException.class)
 	public ResponseEntity<Object> handlerTokenCreationException(TokenCreationException ex){
@@ -51,6 +61,14 @@ public class GlobalException {
 	@ExceptionHandler(TokenValidationException.class)
 	public ResponseEntity<Object> handlerTokenValidationException(TokenValidationException ex){
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "Falha ao validar token", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	
+	@ExceptionHandler(InvalidRoleException.class)
+	public ResponseEntity<Object> handlerInvalidRoleException(InvalidRoleException ex){
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "Role inválida", ex.getMessage());
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}

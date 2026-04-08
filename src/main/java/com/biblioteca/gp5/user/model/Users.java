@@ -9,6 +9,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.biblioteca.gp5.exception.role.InvalidRoleException;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,11 +27,8 @@ import lombok.Data;
 public class Users implements UserDetails { //Implemento um userDetails, que sera tipo uma armazenado de users
 	
 	@Id //informa que é um id
-	@GeneratedValue(strategy = GenerationType.UUID) /*Isso define que sera gerado um id automatico, 
-	e vai ser tipo um hash de senha, varios caracteres
-	*/
-	
-	@Column(name = "id_usuarios") //Uso o column para dar definicoes da tabela, o name nesse caso
+	@GeneratedValue(strategy = GenerationType.UUID) /*Isso define que sera gerado um id automatico, e vai ser tipo um hash de senha, varios caracteres*/
+	@Column(name = "id_users") //Uso o column para dar definicoes da tabela, o name nesse caso
 	private String idUsers;
 	
 	@Column(nullable = false, unique = false) //Informo que nao pode esta vazio, mas nao é unique
@@ -81,9 +80,11 @@ public class Users implements UserDetails { //Implemento um userDetails, que ser
 		}else if(this.role == UserRole.ALUNO) {
 			return List.of(new SimpleGrantedAuthority("ROLE_ALUNO"));
 			
-		}else {
+		}else if(this.role == UserRole.ADMIN) {
 			return List.of(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN"));
 		}
+		
+		throw new InvalidRoleException("Role inválida");
 	}
 
 	
