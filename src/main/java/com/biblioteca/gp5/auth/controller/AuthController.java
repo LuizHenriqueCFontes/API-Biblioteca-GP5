@@ -33,6 +33,8 @@ public class AuthController {
 	@PostMapping("/login") 									
 	public ResponseEntity<AuthResponseDTO> login(@RequestBody @Valid LoginDTO data){
 		
+		System.out.println(data.email());
+		
 		//Ira receber o valor do Service
 		AuthResponseDTO response = authService.login(data);
 		

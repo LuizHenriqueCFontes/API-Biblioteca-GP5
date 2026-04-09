@@ -54,10 +54,10 @@ public class Users implements UserDetails { //Implemento um userDetails, que ser
 	public Users() {}
 
 	//Crio um construtor que vai receber quase todos os atributos, para realizar o cadastrado
-	public Users(String username, String email, String telefone, String password, UserRole role) {
+	public Users(String username, String email, String phone, String password, UserRole role) {
 		this.username = username;
 		this.email = email;
-		this.phone = telefone;
+		this.phone = phone;
 		this.password = password;
 		this.role = role;
 	}
@@ -120,8 +120,7 @@ public class Users implements UserDetails { //Implemento um userDetails, que ser
 
 	@Override
 	public boolean isEnabled() {
-		return true;
-		
+		return this.enabled;		
 	}
 
 }

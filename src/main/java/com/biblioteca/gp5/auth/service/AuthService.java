@@ -61,7 +61,7 @@ public class AuthService {
 		UserRole role;
 		
 		// Define a role do usuário com base no domínio do e-mail
-		if(data.email().endsWith("@edu.br")) {
+		if(data.email().endsWith("@edu.df.senac.br")) {
 			role = UserRole.ALUNO;
 			
 		}else {
@@ -70,6 +70,8 @@ public class AuthService {
 		
 		// Cria a entidade Users com os dados fornecidos e a role definida
 		Users user = new Users(data.username(), data.email(), data.phone(), senhaCriptografada, role);
+		
+		user.setEnabled(true);
 		
 		// Salva o usuário no banco de dados
 		userRepository.save(user);

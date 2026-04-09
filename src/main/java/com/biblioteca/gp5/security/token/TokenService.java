@@ -27,7 +27,9 @@ public class TokenService {
 	
 	public String generateToken(Users user) {
 		try {
-			List<UserRole> role = List.of(user.getRole());
+			
+			//Utilizo o metodo .name para transforma de ENUM para uma String
+			String role = user.getRole().name();
 			
 			String token = JWT.create()
 								.withIssuer("api-biblioteca-gp5")

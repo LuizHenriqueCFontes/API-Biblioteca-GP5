@@ -23,11 +23,8 @@ public class AuthorizationService implements UserDetailsService {
 	 como o userDetailsService em si nao busca o usuario, dentro do metodo dele eu tenho o userRepository buscando o usuario, pelo metodo dele*/
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return userRepository.findById(username)
+		return userRepository.findByEmail(username)
 							.orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
-							
-							
-		
 	}
 
 }
