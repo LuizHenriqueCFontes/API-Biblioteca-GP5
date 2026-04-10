@@ -1,12 +1,18 @@
 package com.biblioteca.gp5.user.service;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.biblioteca.gp5.exception.user.UserNotFoundException;
 import com.biblioteca.gp5.user.dto.request.UpdateRoleDTO;
 import com.biblioteca.gp5.user.dto.request.UpdateUserDTO;
+import com.biblioteca.gp5.user.dto.response.ListResponseDTO;
 import com.biblioteca.gp5.user.dto.response.UpdateUserResponseDTO;
+import com.biblioteca.gp5.user.mapper.UserMapper;
 import com.biblioteca.gp5.user.model.Users;
 import com.biblioteca.gp5.user.repository.UserRepository;
 
@@ -15,10 +21,12 @@ public class UserService {
 	
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final UserMapper userMapper;
 	
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.userMapper = userMapper;
 	}
 	
 	public UpdateUserResponseDTO updateUser(String id, UpdateUserDTO data) {
@@ -48,7 +56,23 @@ public class UserService {
 		return response;
 	}
 	
-	public List<List>
+	public Page<ListResponseDTO> listUsers(String username, Pageable pageable){
+		Page<Users> user;
+		
+		if(username == null || username.isBlank()) {
+			user = userRepository.findAll(pageable);
+			
+		}else {
+			user = userRepository.findByUsernameContainingIgnoreCase(username, pageable);
+		}
+		
+		// Converte a Page<Users> em Page<ListResponseDTO> utilizando o método map.
+		// O mapper é aplicado em cada elemento da página, mantendo a paginação original.
+		// Equivalente a uma lambda: user -> userMapper.toListResponseDTO(user)
+		Page<ListResponseDTO> users = user.map(userMapper::toListResponseDTO);
+		
+		return users;
+	}
 	
 	public void updateRole(String id, UpdateRoleDTO data) {
 		Users user = userRepository.findById(id)
