@@ -14,6 +14,7 @@ import com.biblioteca.gp5.exception.role.InvalidRoleException;
 import com.biblioteca.gp5.exception.security.TokenCreationException;
 import com.biblioteca.gp5.exception.security.TokenValidationException;
 import com.biblioteca.gp5.exception.user.EmailAlreadyExistsException;
+import com.biblioteca.gp5.exception.user.InvalidPasswordException;
 import com.biblioteca.gp5.exception.user.UserNotFoundException;
 
 @RestControllerAdvice //Essa anotação significa uma classe de erro global
@@ -49,6 +50,16 @@ public class GlobalException {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 	
+	@ExceptionHandler(InvalidPasswordException.class)
+	public ResponseEntity<Object> handlerInvalidPasswordException(InvalidPasswordException ex){
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "Senha inválida", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	@ExceptionHandler(InvalidRoleException.class)
+	public
+	
 	
 	
 	@ExceptionHandler(TokenCreationException.class)
@@ -65,13 +76,6 @@ public class GlobalException {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 	
-	
-	@ExceptionHandler(InvalidRoleException.class)
-	public ResponseEntity<Object> handlerInvalidRoleException(InvalidRoleException ex){
-		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "Role inválida", ex.getMessage());
-		
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-	}
 }
 
 

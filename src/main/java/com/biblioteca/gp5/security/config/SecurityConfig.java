@@ -30,7 +30,11 @@ public class SecurityConfig {
 		http.csrf(csrf -> csrf.disable())
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-												.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()									
+												.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+												
+												.requestMatchers(HttpMethod.PATCH, "/users/me").hasAnyRole("USER", "ALUNO", "ADMIN")
+												.requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
+												.requestMatchers(HttpMethod.PATCH, "/users/*/role").hasRole("ADMIN")
 												.anyRequest().authenticated())
 			
 			// Adiciona filtro JWT antes do filtro padrão do Spring Security
