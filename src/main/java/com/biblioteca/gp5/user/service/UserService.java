@@ -6,8 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.biblioteca.gp5.exception.user.InvalidPasswordException;
+import com.biblioteca.gp5.exception.user.InvalidRoleException;
 import com.biblioteca.gp5.exception.user.UserNotFoundException;
+import com.biblioteca.gp5.user.dto.request.UpdatePasswordDTO;
 import com.biblioteca.gp5.user.dto.request.UpdateRoleDTO;
 import com.biblioteca.gp5.user.dto.request.UpdateUserDTO;
 import com.biblioteca.gp5.user.dto.response.ListResponseDTO;
@@ -15,6 +19,7 @@ import com.biblioteca.gp5.user.dto.response.UpdateUserResponseDTO;
 import com.biblioteca.gp5.user.mapper.UserMapper;
 import com.biblioteca.gp5.user.model.Users;
 import com.biblioteca.gp5.user.repository.UserRepository;
+import com.biblioteca.gp5.user.validator.PasswordValidator;
 
 @Service
 public class UserService {
@@ -22,28 +27,31 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final UserMapper userMapper;
+	private final PasswordValidator passwordValidator; 
 	
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
+	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper, PasswordValidator passwordValidator) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.userMapper = userMapper;
+		this.passwordValidator = passwordValidator;
 	}
 	
+	@Transactional
 	public UpdateUserResponseDTO updateUser(String id, UpdateUserDTO data) {
 		// Tento carregar pelo id, caso apresente erro, lanço uma exception
 		Users user = userRepository.findById(id)
 									.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 		
 		//Irei verificar os campos que foram alterados, devido ser um metodo patch
-		if(data.username() != null && data.username().isBlank()) {
+		if(data.username() != null && !data.username().isBlank()) {
 			user.setUsername(data.username());
 		}
 		
-		if(data.email() != null && data.email().isBlank()) {
+		if(data.email() != null && !data.email().isBlank()) {
 			user.setEmail(data.email());
 		}
 		
-		if(data.phone() != null && data.phone().isBlank()) {
+		if(data.phone() != null && !data.phone().isBlank()) {
 			user.setPhone(data.phone());
 		}
 		
@@ -74,18 +82,48 @@ public class UserService {
 		return users;
 	}
 	
+	@Transactional
 	public void updateRole(String id, UpdateRoleDTO data) {
 		Users user = userRepository.findById(id)
 									.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 		
-		//Irei verificar se a role veio vazia e se a role enviada for diferente da
-		if(data.role() != null && user.getRole() != data.role()) {
-			user.setRole(data.role());
+		if(data.role() == user.getRole()) {
+			throw new InvalidRoleException("Usuário ja possui essa role");
 		}
+		
+		if(data.role() == null) {
+			throw new InvalidRoleException("Role inválida");
+		}
+		
+		
+		user.setRole(data.role());
 		
 		//Salvo o usuario com a nova role
 		userRepository.save(user);
 		
+	}
+	
+	@Transactional
+	public void updatePassword(String id, UpdatePasswordDTO data) {
+		Users user = userRepository.findById(id)
+									.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
+		
+		passwordValidator.validate(data);
+		
+		if(!passwordEncoder.matches(data.oldPassword(), user.getPassword())) {
+			throw new InvalidPasswordException("Senha inválida");	
+		}
+		
+		if(passwordEncoder.matches(data.newPassword(), user.getPassword())) {
+			throw new InvalidPasswordException("Senha não pode ser igual a anterior");
+		}
+		
+		String passwordEncoded = passwordEncoder.encode(data.newPassword());
+		
+		// política de segurança: senha sempre armazenada com hash BCrypt
+		user.setPassword(passwordEncoded);
+		
+		userRepository.save(user);
 	}
 	
 	

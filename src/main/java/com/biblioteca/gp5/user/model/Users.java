@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.biblioteca.gp5.exception.role.InvalidRoleException;
+import com.biblioteca.gp5.exception.user.InvalidRoleException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

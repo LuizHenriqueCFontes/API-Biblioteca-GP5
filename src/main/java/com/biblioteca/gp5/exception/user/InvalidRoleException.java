@@ -1,4 +1,4 @@
-package com.biblioteca.gp5.exception.role;
+package com.biblioteca.gp5.exception.user;
 
 public class InvalidRoleException extends RuntimeException {
 	
