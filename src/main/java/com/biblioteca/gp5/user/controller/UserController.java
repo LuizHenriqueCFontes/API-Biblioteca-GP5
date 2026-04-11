@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.biblioteca.gp5.user.dto.request.UpdatePasswordDTO;
 import com.biblioteca.gp5.user.dto.request.UpdateRoleDTO;
 import com.biblioteca.gp5.user.dto.request.UpdateUserDTO;
 import com.biblioteca.gp5.user.dto.response.ListResponseDTO;
@@ -25,36 +26,46 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-	
+
 	private final UserService userService;
-	
+
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
-	
+
 	@PatchMapping("/me")
-	public ResponseEntity<UpdateUserResponseDTO> updateUser(@AuthenticationPrincipal Users user, @RequestBody @Valid UpdateUserDTO data){
+	public ResponseEntity<UpdateUserResponseDTO> updateUser(@AuthenticationPrincipal Users user,
+			@RequestBody @Valid UpdateUserDTO data) {
 		UpdateUserResponseDTO updateUser = userService.updateUser(user.getIdUsers(), data);
-		
+
 		return ResponseEntity.ok(updateUser);
-		
+
 	}
-	
-	
+
 	@GetMapping
-	public ResponseEntity<Page<ListResponseDTO>> listUsers(@RequestParam(required = false) String username, @PageableDefault(page = 0, size = 20) Pageable pageable){
+	public ResponseEntity<Page<ListResponseDTO>> listUsers(@RequestParam(required = false) String username,
+			@PageableDefault(page = 0, size = 20) Pageable pageable) {
 		Page<ListResponseDTO> users = userService.listUsers(username, pageable);
-		
+
 		return ResponseEntity.ok(users);
-		
+
 	}
-	
+
 	@PatchMapping("/{id}/role")
-	public ResponseEntity<Void> updateRole(@PathVariable String id, @RequestBody @Valid UpdateRoleDTO data){
+	public ResponseEntity<Void> updateRole(@PathVariable String id, @RequestBody @Valid UpdateRoleDTO data) {
 		userService.updateRole(id, data);
+
+		return ResponseEntity.noContent().build();
+
+	}
+
+	@PatchMapping("/me/password")
+	public ResponseEntity<Void> updatePassword(@AuthenticationPrincipal Users user,
+			@RequestBody @Valid UpdatePasswordDTO data) {
+		
+		userService.updatePassword(user.getIdUsers(), data);
 		
 		return ResponseEntity.noContent().build();
-		
 	}
 
 }

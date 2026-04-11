@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.biblioteca.gp5.exception.user.InvalidPasswordException;
-
+import com.biblioteca.gp5.exception.user.InvalidRoleException;
 import com.biblioteca.gp5.exception.user.UserNotFoundException;
 import com.biblioteca.gp5.user.dto.request.UpdatePasswordDTO;
 import com.biblioteca.gp5.user.dto.request.UpdateRoleDTO;
@@ -92,8 +92,11 @@ public class UserService {
 		}
 		
 		if(data.role() == null) {
-			throw new 
+			throw new InvalidRoleException("Role inválida");
 		}
+		
+		
+		user.setRole(data.role());
 		
 		//Salvo o usuario com a nova role
 		userRepository.save(user);

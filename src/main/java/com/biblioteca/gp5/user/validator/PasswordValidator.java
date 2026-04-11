@@ -16,5 +16,9 @@ public class PasswordValidator {
 		if(data.newPassword() == null || data.newPassword().isBlank()) {
 			throw new InvalidPasswordException("Senha inválida");
 		}
+		
+		if(data.newPassword().length() < 8) {
+			throw new InvalidPasswordException("A senha deve ter no minímo 8 caracteres");
+		}
 	}
 }
