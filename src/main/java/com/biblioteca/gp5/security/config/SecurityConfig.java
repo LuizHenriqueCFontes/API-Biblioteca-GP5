@@ -29,13 +29,13 @@ public class SecurityConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-						.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+				.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+						.requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
 
-						.requestMatchers(HttpMethod.PATCH, "/users/me").hasAnyRole("USER", "ALUNO", "ADMIN")
-						.requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.PATCH, "/users/*/role").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.PATCH, "/users/me/password").hasAnyRole("USER", "ALUNO", "ADMIN")
+						.requestMatchers(HttpMethod.PATCH, "/api/users/me").hasAnyRole("USER", "ALUNO", "ADMIN")
+						.requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PATCH, "/api/users/*/role").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PATCH, "/api/users/me/password").hasAnyRole("USER", "ALUNO", "ADMIN")
 
 						.anyRequest().authenticated())
 

@@ -15,7 +15,7 @@ import com.biblioteca.gp5.auth.service.AuthService;
 import jakarta.validation.Valid;
 
 @RestController //Defino um restController, quem ira receber a requisição do usuario
-@RequestMapping("/auth") // Defino o endpoint "/auth"
+@RequestMapping("/api/auth") // Defino o endpoint "/auth"
 public class AuthController {
 	
 	//Crio o service, a logica do endpoint auth

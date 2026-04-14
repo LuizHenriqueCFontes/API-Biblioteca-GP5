@@ -24,7 +24,7 @@ import com.biblioteca.gp5.user.service.UserService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
 	private final UserService userService;
