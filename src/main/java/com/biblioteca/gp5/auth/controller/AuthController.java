@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.biblioteca.gp5.auth.dto.request.LoginDTO;
 import com.biblioteca.gp5.auth.dto.request.RegisterDTO;
+import com.biblioteca.gp5.auth.dto.request.RegisterValidateDTO;
 import com.biblioteca.gp5.auth.dto.response.AuthResponseDTO;
 import com.biblioteca.gp5.auth.service.AuthService;
 
@@ -40,6 +41,13 @@ public class AuthController {
 		
 		//Se tudo der certo, ira retornar o status ok
 		return ResponseEntity.ok(response);	
+	}
+	
+	@PostMapping("/register/validate")
+	public ResponseEntity<?> registerValidate(@RequestBody @Valid RegisterValidateDTO data){
+		authService.registerValidate(data);
+		
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 	
 	/*Faço o segundo endpoint de auth, que sera o register, que sera post,

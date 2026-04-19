@@ -1,4 +1,4 @@
-package com.biblioteca.gp5.exception.user;
+package com.biblioteca.gp5.exception.auth;
 
 public class EmailAlreadyExistsException extends RuntimeException {
 	

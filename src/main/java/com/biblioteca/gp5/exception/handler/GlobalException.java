@@ -9,10 +9,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.biblioteca.gp5.exception.auth.EmailAlreadyExistsException;
+import com.biblioteca.gp5.exception.auth.PasswordMatches;
 import com.biblioteca.gp5.exception.dto.ErrorResponse;
 import com.biblioteca.gp5.exception.security.TokenCreationException;
 import com.biblioteca.gp5.exception.security.TokenValidationException;
-import com.biblioteca.gp5.exception.user.EmailAlreadyExistsException;
 import com.biblioteca.gp5.exception.user.InvalidPasswordException;
 import com.biblioteca.gp5.exception.user.InvalidRoleException;
 import com.biblioteca.gp5.exception.user.UserNotFoundException;
@@ -45,14 +46,6 @@ public class GlobalException {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 
-	@ExceptionHandler(EmailAlreadyExistsException.class)
-	public ResponseEntity<Object> handlerEmailAlreadyExistsException(EmailAlreadyExistsException ex) {
-		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(),
-				"O email já está cadastrado", ex.getMessage());
-
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-	}
-
 	@ExceptionHandler(InvalidPasswordException.class)
 	public ResponseEntity<Object> handlerInvalidPasswordException(InvalidPasswordException ex) {
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "Senha inválida",
@@ -68,6 +61,23 @@ public class GlobalException {
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
+	
+	
+	@ExceptionHandler(EmailAlreadyExistsException.class)
+	public ResponseEntity<Object> handlerEmailAlreadyExistsException(EmailAlreadyExistsException ex) {
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(),
+				"O email já está cadastrado", ex.getMessage());
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	@ExceptionHandler(PasswordMatches.class)
+	public ResponseEntity<Object> handlerPasswordMatches(PasswordMatches ex){
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "As senhas não estão iguais", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+
 
 	@ExceptionHandler(TokenCreationException.class)
 	public ResponseEntity<Object> handlerTokenCreationException(TokenCreationException ex) {

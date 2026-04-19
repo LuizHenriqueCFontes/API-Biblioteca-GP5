@@ -36,6 +36,7 @@ public class SecurityConfig {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
+						.requestMatchers(HttpMethod.POST, "/api/auth/register/validate").permitAll()
 					
 						.requestMatchers(HttpMethod.PATCH, "/api/users/me").hasAnyRole("USER", "ALUNO", "ADMIN")
 						.requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
@@ -51,8 +52,7 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-			throws Exception {
+	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 
 	}
