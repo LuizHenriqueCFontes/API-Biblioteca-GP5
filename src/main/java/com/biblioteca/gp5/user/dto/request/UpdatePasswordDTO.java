@@ -10,6 +10,10 @@ public record UpdatePasswordDTO(
 		
 		@NotBlank
 		@Size(min = 8)
-		String newPassword) {
+		String newPassword,
+		
+		@NotBlank
+		@Size(min = 8)
+		String confirmNewPassword) {
 
 }

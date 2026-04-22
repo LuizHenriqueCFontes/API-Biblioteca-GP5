@@ -114,11 +114,11 @@ public class UserService {
 			throw new InvalidPasswordException("Senha inválida");	
 		}
 		
-		if(passwordEncoder.matches(data.newPassword(), user.getPassword())) {
+		if(passwordEncoder.matches(data.confirmNewPassword(), user.getPassword())) {
 			throw new InvalidPasswordException("Senha não pode ser igual a anterior");
 		}
 		
-		String passwordEncoded = passwordEncoder.encode(data.newPassword());
+		String passwordEncoded = passwordEncoder.encode(data.confirmNewPassword());
 		
 		// política de segurança: senha sempre armazenada com hash BCrypt
 		user.setPassword(passwordEncoded);
