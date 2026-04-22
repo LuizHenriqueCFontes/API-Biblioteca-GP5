@@ -1,6 +1,5 @@
 package com.biblioteca.gp5.user.validator;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.biblioteca.gp5.exception.user.InvalidPasswordException;
@@ -19,6 +18,10 @@ public class PasswordValidator {
 		
 		if(data.newPassword().length() < 8) {
 			throw new InvalidPasswordException("A senha deve ter no minímo 8 caracteres");
+		}
+		
+		if(!data.newPassword().equals(data.confirmNewPassword())) {
+			throw new InvalidPasswordException("As senhas informadas não são iguais");
 		}
 	}
 }
