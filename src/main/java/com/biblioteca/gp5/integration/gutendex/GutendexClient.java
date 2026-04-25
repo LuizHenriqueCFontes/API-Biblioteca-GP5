@@ -1,17 +1,32 @@
 package com.biblioteca.gp5.integration.gutendex;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClient;
 
-import lombok.Data;
+import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexSearchResponseDTO;
 
-@Service
-@Configuration
-@ConfigurationProperties(prefix = "gutendex")
-@Data
+@Component
 public class GutendexClient {
 	
-	private String baseUrl = "http://gutendex.com";
-
+	private final RestClient.Builder builder;
+	private final GutendexProperties properties;
+	
+	public GutendexClient(RestClient.Builder builder, GutendexProperties properties) {
+		this.builder = builder;
+		this.properties = properties;
+	}
+	
+	public GutendexSearchResponseDTO searchBooks(String title) {
+		RestClient client = builder.baseUrl(properties.getBaseUrl())
+									.build();
+		
+		return client.get()
+					.uri(uri -> uri
+								.path("/books")
+								.queryParam("search", title)
+								.build())
+					.retrieve()
+					.body(GutendexSearchResponseDTO.class);
+		
+	}
 }
