@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.biblioteca.gp5.user.dto.request.UpdatePasswordDTO;
 import com.biblioteca.gp5.user.dto.request.UpdateRoleDTO;
 import com.biblioteca.gp5.user.dto.request.UpdateUserDTO;
-import com.biblioteca.gp5.user.dto.response.ListResponseDTO;
+import com.biblioteca.gp5.user.dto.response.UserListResponseDTO;
 import com.biblioteca.gp5.user.dto.response.UpdateUserResponseDTO;
 import com.biblioteca.gp5.user.model.Users;
 import com.biblioteca.gp5.user.service.UserService;
@@ -43,9 +43,9 @@ public class UserController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Page<ListResponseDTO>> listUsers(@RequestParam(required = false) String username,
+	public ResponseEntity<Page<UserListResponseDTO>> listUsers(@RequestParam(required = false) String username,
 			@PageableDefault(page = 0, size = 20) Pageable pageable) {
-		Page<ListResponseDTO> users = userService.listUsers(username, pageable);
+		Page<UserListResponseDTO> users = userService.listUsers(username, pageable);
 
 		return ResponseEntity.ok(users);
 
