@@ -1,8 +1,9 @@
-package com.biblioteca.gp5.integration.gutendex;
+package com.biblioteca.gp5.integration.gutendex.client;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import com.biblioteca.gp5.integration.gutendex.config.GutendexProperties;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexSearchResponseDTO;
 
 @Component

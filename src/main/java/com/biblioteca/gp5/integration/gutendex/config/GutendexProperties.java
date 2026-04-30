@@ -1,4 +1,4 @@
-package com.biblioteca.gp5.integration.gutendex;
+package com.biblioteca.gp5.integration.gutendex.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
