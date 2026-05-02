@@ -3,31 +3,31 @@ package com.biblioteca.gp5.integration.gutendex.client;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import com.biblioteca.gp5.integration.gutendex.config.GutendexProperties;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexSearchResponseDTO;
 
 @Component
 public class GutendexClient {
 	
-	private final RestClient.Builder builder;
-	private final GutendexProperties properties;
+	private final RestClient restClient;
 	
-	public GutendexClient(RestClient.Builder builder, GutendexProperties properties) {
-		this.builder = builder;
-		this.properties = properties;
+	public GutendexClient(RestClient restClient) {
+		this.restClient = restClient;
 	}
 	
 	public GutendexSearchResponseDTO searchBooks(String title) {
-		RestClient client = builder.baseUrl(properties.getBaseUrl())
-									.build();
-		
-		return client.get()
-					.uri(uri -> uri
-								.path("/books")
-								.queryParam("search", title)
-								.build())
-					.retrieve()
-					.body(GutendexSearchResponseDTO.class);
-		
+		return restClient.get()
+						.uri(uri -> {
+							
+							uri.path("/books");
+							
+							if(title != null && !title.isBlank()) {
+								uri.queryParam("search", title);
+							}
+							
+							return uri.build();
+						})
+						.retrieve()
+						.body(GutendexSearchResponseDTO.class);
+						
 	}
 }
