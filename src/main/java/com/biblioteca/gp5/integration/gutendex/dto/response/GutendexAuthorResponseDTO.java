@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record GutendexAuthorResponseDTO(
 		
-		String name,
-		
 		@JsonProperty("birth_year")
 		Integer birthYear,
 		
 		@JsonProperty("death_year")
-		Integer deathYear
+		Integer deathYear,
+		
+		String name
 		) {
 
 }

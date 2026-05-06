@@ -8,7 +8,7 @@ import org.springframework.web.client.RestClient;
 public class RestClientConfiguration {
 	
 	@Bean
-	RestClient restClient(GutendexProperties properties) {
+	RestClient restClient(GutendexProperties properties) {		
 		return RestClient.builder()
 						.baseUrl(properties.getBaseUrl())
 						.build();

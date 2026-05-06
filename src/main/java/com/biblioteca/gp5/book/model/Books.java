@@ -32,6 +32,20 @@ public class Books {
 	@Column(name = "cover_url")
 	private String coverUrl;
 	
+	@Column(name = "gutenber_id", unique = true)
+	private String gutenbergId;
+	
+	@Column(name = "file_url")
+	private String fileUrl;
+	
+	@Column(name = "file_type")
+	private String fileType;
+	
+	@Column(nullable = false)
+	private String source;
+	
+	private Integer pages;
+	
 	@Column(name = "total_quantity")
 	private Integer totalQuantity = 0;
 	

@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record GutendexBookResponseDTO(
 		Long id,
 		String title,
-		List<GutendexAuthorResponseDTO> authors,
 		List<String> subjects,
+		List<GutendexAuthorResponseDTO> authors,
 		List<String> summaries,
 		List<GutendexAuthorResponseDTO> translators,
 		List<String> languages,
