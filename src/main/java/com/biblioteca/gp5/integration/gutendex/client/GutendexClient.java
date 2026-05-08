@@ -3,36 +3,43 @@ package com.biblioteca.gp5.integration.gutendex.client;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import com.biblioteca.gp5.integration.gutendex.config.RestClientConfiguration;
+import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexBookResponseDTO;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexSearchResponseDTO;
 
 @Component
 public class GutendexClient {
-
-    private final RestClientConfiguration restClientConfiguration;
 	
 	private final RestClient restClient;
 	
-	public GutendexClient(RestClient restClient, RestClientConfiguration restClientConfiguration) {
+	public GutendexClient(RestClient restClient) {
 		this.restClient = restClient;
-		this.restClientConfiguration = restClientConfiguration;
 	}
 	
 	public GutendexSearchResponseDTO searchBooks(String title) {
-		System.out.println("teste client antes");
 		
 		return restClient.get()
-						.uri(uri -> {
+						.uri(uriBuilder -> {
 							
-							uri.path("/books/");
+							uriBuilder.path("/books/");
 							
 							if(title != null && !title.isBlank()) {
-								uri.queryParam("search", title);
+								uriBuilder.queryParam("search", title);
 							}
 							
-							return uri.build();
+							return uriBuilder.build();
 							
 						})
 						.retrieve()
 						.body(GutendexSearchResponseDTO.class);
 	}
+	
+	public GutendexBookResponseDTO searchBookById(Long id) {
+		
+		return restClient.get()
+						.uri("/books/{id}", id)
+						.retrieve()
+						.body(GutendexBookResponseDTO.class);
+	}
+	
+	
 }
