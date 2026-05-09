@@ -6,12 +6,12 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record GutendexBookResponseDTO(
-		Long id,
+		Integer id,
 		String title,
-		List<String> subjects,
 		List<GutendexAuthorResponseDTO> authors,
 		List<String> summaries,
 		List<GutendexAuthorResponseDTO> translators,
+		List<String> subjects,
 		List<String> languages,
 		boolean copyright,
 		

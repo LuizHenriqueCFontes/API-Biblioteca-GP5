@@ -33,7 +33,7 @@ public class GutendexClient {
 						.body(GutendexSearchResponseDTO.class);
 	}
 	
-	public GutendexBookResponseDTO searchBookById(Long id) {
+	public GutendexBookResponseDTO searchBookById(Integer id) {
 		
 		return restClient.get()
 						.uri("/books/{id}", id)

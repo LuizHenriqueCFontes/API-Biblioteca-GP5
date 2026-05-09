@@ -1,17 +1,45 @@
 package com.biblioteca.gp5.book.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import com.biblioteca.gp5.book.dto.response.BookListResponseDTO;
+import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
+import com.biblioteca.gp5.book.enums.BookCover;
+import com.biblioteca.gp5.book.enums.BookFormat;
+import com.biblioteca.gp5.book.enums.BookSources;
+import com.biblioteca.gp5.book.model.Books;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexAuthorResponseDTO;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexBookResponseDTO;
 
 @Mapper(componentModel = "spring")
 public interface BookMapper {
 	
-	BookListResponseDTO toBookListResponseDTO(GutendexBookResponseDTO book);
+	//Source de onde o valor vem
+	//Target para onde o valor vai
+	//Mapping ensinar como ele deve converter
+	@Mapping(source = "id", target = "gutenbergId")
+	@Mapping(source = "summaries", target = "description")
+	@Mapping(expression = "java(extractCoverUrl(gutendexBook))", target = "coverUrl")
+	@Mapping(expression = "java(extractFileUrl(gutendexBook))", target = "fileUrl")
+	@Mapping(expression = "java(extractSource())", target = "source")
+	Books toEntity(GutendexBookResponseDTO gutendexBook);
 	
-	default String extractAuthorName(GutendexAuthorResponseDTO author) {
-		return author.name();
+	default String extractName(GutendexAuthorResponseDTO gutendexAuthor) {
+		return gutendexAuthor.name();
 	}
+	
+	default String extractCoverUrl(GutendexBookResponseDTO gutendexBook) {
+		return gutendexBook.formats().get(BookCover.IMAGE.getValue());
+	}
+	
+	default String extractFileUrl(GutendexBookResponseDTO gutendexBook) {
+		return gutendexBook.formats().get(BookFormat.EPUB.getValue());
+	}
+	
+	default String extractSource() {
+		return BookSources.GUTENDEX.getValue();
+	}
+	
+	BookResponseDTO toBookResponseDTO(Books book);
+	
 }

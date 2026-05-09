@@ -1,6 +1,7 @@
 package com.biblioteca.gp5.book.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -25,26 +26,21 @@ public class Books {
 	private String title;
 	
 	@Column(nullable = false)
-	private String author;
+	private List<String> authors;
 
-	private String description;
+	private List<String> description;
 	
 	@Column(name = "cover_url")
 	private String coverUrl;
 	
 	@Column(name = "gutenber_id", unique = true)
-	private String gutenbergId;
+	private Integer gutenbergId;
 	
 	@Column(name = "file_url")
 	private String fileUrl;
 	
-	@Column(name = "file_type")
-	private String fileType;
-	
 	@Column(nullable = false)
 	private String source;
-	
-	private Integer pages;
 	
 	@Column(name = "total_quantity")
 	private Integer totalQuantity = 0;
