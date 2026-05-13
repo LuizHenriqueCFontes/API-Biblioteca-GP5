@@ -1,5 +1,7 @@
 package com.biblioteca.gp5.user.controller;
 
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.biblioteca.gp5.user.dto.request.UpdatePasswordDTO;
 import com.biblioteca.gp5.user.dto.request.UpdateRoleDTO;
 import com.biblioteca.gp5.user.dto.request.UpdateUserDTO;
-import com.biblioteca.gp5.user.dto.response.ListResponseDTO;
+import com.biblioteca.gp5.user.dto.response.UserListResponseDTO;
 import com.biblioteca.gp5.user.dto.response.UpdateUserResponseDTO;
 import com.biblioteca.gp5.user.model.Users;
 import com.biblioteca.gp5.user.service.UserService;
@@ -43,16 +45,16 @@ public class UserController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Page<ListResponseDTO>> listUsers(@RequestParam(required = false) String username,
+	public ResponseEntity<Page<UserListResponseDTO>> listUsers(@RequestParam(required = false) String username,
 			@PageableDefault(page = 0, size = 20) Pageable pageable) {
-		Page<ListResponseDTO> users = userService.listUsers(username, pageable);
+		Page<UserListResponseDTO> users = userService.listUsers(username, pageable);
 
 		return ResponseEntity.ok(users);
 
 	}
 
 	@PatchMapping("/{id}/role")
-	public ResponseEntity<Void> updateRole(@PathVariable String id, @RequestBody @Valid UpdateRoleDTO data) {
+	public ResponseEntity<Void> updateRole(@PathVariable UUID id, @RequestBody @Valid UpdateRoleDTO data) {
 		userService.updateRole(id, data);
 
 		return ResponseEntity.noContent().build();

@@ -1,7 +1,7 @@
 package com.biblioteca.gp5.user.repository;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.biblioteca.gp5.user.model.Users;
 
 @Repository
-public interface UserRepository extends JpaRepository<Users, String> {
+public interface UserRepository extends JpaRepository<Users, UUID> {
 	Optional<Users> findByEmail(String email); //Esse metodo sera uma query para buscar o usuario pelo email
 	
 	boolean existsByEmail(String email); //Esse metodo sera uma query para verificar se tem um email cadastrado no sistema

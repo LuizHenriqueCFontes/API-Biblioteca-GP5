@@ -1,6 +1,7 @@
 package com.biblioteca.gp5.user.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,7 @@ import com.biblioteca.gp5.exception.user.UserNotFoundException;
 import com.biblioteca.gp5.user.dto.request.UpdatePasswordDTO;
 import com.biblioteca.gp5.user.dto.request.UpdateRoleDTO;
 import com.biblioteca.gp5.user.dto.request.UpdateUserDTO;
-import com.biblioteca.gp5.user.dto.response.ListResponseDTO;
+import com.biblioteca.gp5.user.dto.response.UserListResponseDTO;
 import com.biblioteca.gp5.user.dto.response.UpdateUserResponseDTO;
 import com.biblioteca.gp5.user.mapper.UserMapper;
 import com.biblioteca.gp5.user.model.Users;
@@ -37,7 +38,7 @@ public class UserService {
 	}
 	
 	@Transactional
-	public UpdateUserResponseDTO updateUser(String id, UpdateUserDTO data) {
+	public UpdateUserResponseDTO updateUser(UUID id, UpdateUserDTO data) {
 		// Tento carregar pelo id, caso apresente erro, lanço uma exception
 		Users user = userRepository.findById(id)
 									.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
@@ -64,7 +65,7 @@ public class UserService {
 		return response;
 	}
 	
-	public Page<ListResponseDTO> listUsers(String username, Pageable pageable){
+	public Page<UserListResponseDTO> listUsers(String username, Pageable pageable){
 		Page<Users> user;
 		
 		if(username == null || username.isBlank()) {
@@ -77,13 +78,13 @@ public class UserService {
 		// Converte a Page<Users> em Page<ListResponseDTO> utilizando o método map.
 		// O mapper é aplicado em cada elemento da página, mantendo a paginação original.
 		// Equivalente a uma lambda: user -> userMapper.toListResponseDTO(user)
-		Page<ListResponseDTO> users = user.map(userMapper::toListResponseDTO);
+		Page<UserListResponseDTO> users = user.map(userMapper::toUserListResponseDTO);
 		
 		return users;
 	}
 	
 	@Transactional
-	public void updateRole(String id, UpdateRoleDTO data) {
+	public void updateRole(UUID id, UpdateRoleDTO data) {
 		Users user = userRepository.findById(id)
 									.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 		
@@ -104,7 +105,7 @@ public class UserService {
 	}
 	
 	@Transactional
-	public void updatePassword(String id, UpdatePasswordDTO data) {
+	public void updatePassword(UUID id, UpdatePasswordDTO data) {
 		Users user = userRepository.findById(id)
 									.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 		

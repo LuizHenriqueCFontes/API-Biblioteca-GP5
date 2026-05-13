@@ -1,5 +1,7 @@
 package com.biblioteca.gp5.user.dto.response;
 
-public record UpdateUserResponseDTO(String id, String username, String email, String phone) {
+import java.util.UUID;
+
+public record UpdateUserResponseDTO(UUID id, String username, String email, String phone) {
 
 }
