@@ -1,5 +1,7 @@
 package com.biblioteca.gp5.user.controller;
 
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -52,7 +54,7 @@ public class UserController {
 	}
 
 	@PatchMapping("/{id}/role")
-	public ResponseEntity<Void> updateRole(@PathVariable String id, @RequestBody @Valid UpdateRoleDTO data) {
+	public ResponseEntity<Void> updateRole(@PathVariable UUID id, @RequestBody @Valid UpdateRoleDTO data) {
 		userService.updateRole(id, data);
 
 		return ResponseEntity.noContent().build();

@@ -40,6 +40,7 @@ public interface BookMapper {
 		return BookSources.GUTENDEX.getValue();
 	}
 	
+	@Mapping(source = "idBook", target = "id")
 	BookResponseDTO toBookResponseDTO(Books book);
 	
 }

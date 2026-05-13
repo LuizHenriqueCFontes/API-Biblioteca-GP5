@@ -1,6 +1,7 @@
 package com.biblioteca.gp5.security.filter;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,10 +43,12 @@ public class AuthFilter extends OncePerRequestFilter {
 
 		String token = authHeader.substring(7);
 		String subject = tokenService.extractSubject(token);
+		
+		UUID UuidSubject = UUID.fromString(subject);
 	
 		if(subject != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			
-			Users user = userRepository.findById(subject)
+			Users user = userRepository.findById(UuidSubject)
 										.orElseThrow(() -> new UserNotFoundException("Usuáro não encontrado"));
 			
 			if(tokenService.validateToken(token)) {

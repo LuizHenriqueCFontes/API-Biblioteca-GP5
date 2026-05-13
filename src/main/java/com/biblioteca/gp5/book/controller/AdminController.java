@@ -1,4 +1,4 @@
-package com.biblioteca.gp5.book.controller.admin;
+package com.biblioteca.gp5.book.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

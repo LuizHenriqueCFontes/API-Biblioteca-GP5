@@ -30,7 +30,7 @@ public class Users implements UserDetails { //Implemento um userDetails, que ser
 	@Id //informa que é um id
 	@GeneratedValue(strategy = GenerationType.UUID) /*Isso define que sera gerado um id automatico, e vai ser tipo um hash de senha, varios caracteres*/
 	@Column(name = "id_users") //Uso o column para dar definicoes da tabela, o name nesse caso
-	private String idUsers;
+	private UUID idUsers;
 	
 	@Column(nullable = false, unique = false) //Informo que nao pode esta vazio, mas nao é unique
 	private String username;

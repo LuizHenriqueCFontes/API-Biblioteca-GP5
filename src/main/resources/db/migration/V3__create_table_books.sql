@@ -1,7 +1,7 @@
 CREATE TABLE books(
-	id_books VARCHAR(36) UNIQUE NOT NULL,
+	id_books BINARY(16) UNIQUE NOT NULL,
     title VARCHAR(200) NOT NULL,
-    author VARCHAR(150) NOT NULL,
+    authors VARCHAR(150) NOT NULL,
     description TEXT,
     cover_url VARCHAR(255),
     gutenberg_id INT UNIQUE,

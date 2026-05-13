@@ -33,7 +33,7 @@ public class TokenService {
 			
 			String token = JWT.create()
 								.withIssuer("api-biblioteca-gp5")
-								.withSubject(user.getIdUsers())
+								.withSubject(user.getIdUsers().toString())
 								.withClaim("role", List.of(role))
 								.withExpiresAt(expirationTime())
 								.sign(algorithm);

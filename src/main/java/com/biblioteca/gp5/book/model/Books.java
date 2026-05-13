@@ -33,7 +33,7 @@ public class Books {
 	@Column(name = "cover_url")
 	private String coverUrl;
 	
-	@Column(name = "gutenber_id", unique = true)
+	@Column(name = "gutenberg_id", unique = true)
 	private Integer gutenbergId;
 	
 	@Column(name = "file_url")

@@ -1,6 +1,7 @@
 package com.biblioteca.gp5.user.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +38,7 @@ public class UserService {
 	}
 	
 	@Transactional
-	public UpdateUserResponseDTO updateUser(String id, UpdateUserDTO data) {
+	public UpdateUserResponseDTO updateUser(UUID id, UpdateUserDTO data) {
 		// Tento carregar pelo id, caso apresente erro, lanço uma exception
 		Users user = userRepository.findById(id)
 									.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
@@ -83,7 +84,7 @@ public class UserService {
 	}
 	
 	@Transactional
-	public void updateRole(String id, UpdateRoleDTO data) {
+	public void updateRole(UUID id, UpdateRoleDTO data) {
 		Users user = userRepository.findById(id)
 									.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 		
@@ -104,7 +105,7 @@ public class UserService {
 	}
 	
 	@Transactional
-	public void updatePassword(String id, UpdatePasswordDTO data) {
+	public void updatePassword(UUID id, UpdatePasswordDTO data) {
 		Users user = userRepository.findById(id)
 									.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 		
