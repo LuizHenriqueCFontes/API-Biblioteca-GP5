@@ -4,7 +4,7 @@ import com.biblioteca.gp5.user.model.UserRole;
 
 import jakarta.validation.constraints.NotNull;
 
-public record UpdateRoleDTO(
+public record UpdateRoleRequestDTO(
 		
 		@NotNull
 		UserRole role) {

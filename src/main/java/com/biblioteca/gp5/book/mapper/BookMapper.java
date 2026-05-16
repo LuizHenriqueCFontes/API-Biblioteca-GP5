@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
+import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
 import com.biblioteca.gp5.book.enums.BookCover;
 import com.biblioteca.gp5.book.enums.BookFormat;
 import com.biblioteca.gp5.book.enums.BookSources;
@@ -42,5 +43,7 @@ public interface BookMapper {
 	
 	@Mapping(source = "idBook", target = "id")
 	BookResponseDTO toBookResponseDTO(Books book);
+	
+	EditBookResponseDTO toEditBookResponseDTO(Books book);
 	
 }

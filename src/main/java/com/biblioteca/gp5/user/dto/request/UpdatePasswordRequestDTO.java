@@ -3,7 +3,7 @@ package com.biblioteca.gp5.user.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record UpdatePasswordDTO(
+public record UpdatePasswordRequestDTO(
 		
 		@NotBlank
 		String oldPassword, 

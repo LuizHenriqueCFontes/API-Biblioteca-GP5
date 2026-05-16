@@ -12,9 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.biblioteca.gp5.exception.user.InvalidPasswordException;
 import com.biblioteca.gp5.exception.user.InvalidRoleException;
 import com.biblioteca.gp5.exception.user.UserNotFoundException;
-import com.biblioteca.gp5.user.dto.request.UpdatePasswordDTO;
-import com.biblioteca.gp5.user.dto.request.UpdateRoleDTO;
-import com.biblioteca.gp5.user.dto.request.UpdateUserDTO;
+import com.biblioteca.gp5.user.dto.request.UpdatePasswordRequestDTO;
+import com.biblioteca.gp5.user.dto.request.UpdateRoleRequestDTO;
+import com.biblioteca.gp5.user.dto.request.UpdateUserRequestDTO;
 import com.biblioteca.gp5.user.dto.response.UserListResponseDTO;
 import com.biblioteca.gp5.user.dto.response.UpdateUserResponseDTO;
 import com.biblioteca.gp5.user.mapper.UserMapper;
@@ -38,22 +38,22 @@ public class UserService {
 	}
 	
 	@Transactional
-	public UpdateUserResponseDTO updateUser(UUID id, UpdateUserDTO data) {
+	public UpdateUserResponseDTO updateUser(UUID id, UpdateUserRequestDTO request) {
 		// Tento carregar pelo id, caso apresente erro, lanço uma exception
 		Users user = userRepository.findById(id)
 									.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 		
 		//Irei verificar os campos que foram alterados, devido ser um metodo patch
-		if(data.username() != null && !data.username().isBlank()) {
-			user.setUsername(data.username());
+		if(request.username() != null && !request.username().isBlank()) {
+			user.setUsername(request.username());
 		}
 		
-		if(data.email() != null && !data.email().isBlank()) {
-			user.setEmail(data.email());
+		if(request.email() != null && !request.email().isBlank()) {
+			user.setEmail(request.email());
 		}
 		
-		if(data.phone() != null && !data.phone().isBlank()) {
-			user.setPhone(data.phone());
+		if(request.phone() != null && !request.phone().isBlank()) {
+			user.setPhone(request.phone());
 		}
 		
 		//Irei salvar o novo usuário no repository
@@ -84,20 +84,20 @@ public class UserService {
 	}
 	
 	@Transactional
-	public void updateRole(UUID id, UpdateRoleDTO data) {
+	public void updateRole(UUID id, UpdateRoleRequestDTO request) {
 		Users user = userRepository.findById(id)
 									.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 		
-		if(data.role() == user.getRole()) {
+		if(request.role() == user.getRole()) {
 			throw new InvalidRoleException("Usuário ja possui essa role");
 		}
 		
-		if(data.role() == null) {
+		if(request.role() == null) {
 			throw new InvalidRoleException("Role inválida");
 		}
 		
 		
-		user.setRole(data.role());
+		user.setRole(request.role());
 		
 		//Salvo o usuario com a nova role
 		userRepository.save(user);
@@ -105,21 +105,21 @@ public class UserService {
 	}
 	
 	@Transactional
-	public void updatePassword(UUID id, UpdatePasswordDTO data) {
+	public void updatePassword(UUID id, UpdatePasswordRequestDTO request) {
 		Users user = userRepository.findById(id)
 									.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 		
-		passwordValidator.validate(data);
+		passwordValidator.validate(request);
 		
-		if(!passwordEncoder.matches(data.oldPassword(), user.getPassword())) {
+		if(!passwordEncoder.matches(request.oldPassword(), user.getPassword())) {
 			throw new InvalidPasswordException("Senha inválida");	
 		}
 		
-		if(passwordEncoder.matches(data.confirmNewPassword(), user.getPassword())) {
+		if(passwordEncoder.matches(request.confirmNewPassword(), user.getPassword())) {
 			throw new InvalidPasswordException("Senha não pode ser igual a anterior");
 		}
 		
-		String passwordEncoded = passwordEncoder.encode(data.confirmNewPassword());
+		String passwordEncoded = passwordEncoder.encode(request.confirmNewPassword());
 		
 		// política de segurança: senha sempre armazenada com hash BCrypt
 		user.setPassword(passwordEncoded);

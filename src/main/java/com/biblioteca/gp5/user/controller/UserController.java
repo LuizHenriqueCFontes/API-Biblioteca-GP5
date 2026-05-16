@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.biblioteca.gp5.user.dto.request.UpdatePasswordDTO;
-import com.biblioteca.gp5.user.dto.request.UpdateRoleDTO;
-import com.biblioteca.gp5.user.dto.request.UpdateUserDTO;
+import com.biblioteca.gp5.user.dto.request.UpdatePasswordRequestDTO;
+import com.biblioteca.gp5.user.dto.request.UpdateRoleRequestDTO;
+import com.biblioteca.gp5.user.dto.request.UpdateUserRequestDTO;
 import com.biblioteca.gp5.user.dto.response.UserListResponseDTO;
 import com.biblioteca.gp5.user.dto.response.UpdateUserResponseDTO;
 import com.biblioteca.gp5.user.model.Users;
@@ -37,7 +37,7 @@ public class UserController {
 
 	@PatchMapping("/me")
 	public ResponseEntity<UpdateUserResponseDTO> updateUser(@AuthenticationPrincipal Users user,
-			@RequestBody @Valid UpdateUserDTO data) {
+			@RequestBody @Valid UpdateUserRequestDTO data) {
 		UpdateUserResponseDTO updateUser = userService.updateUser(user.getIdUsers(), data);
 
 		return ResponseEntity.ok(updateUser);
@@ -54,7 +54,7 @@ public class UserController {
 	}
 
 	@PatchMapping("/{id}/role")
-	public ResponseEntity<Void> updateRole(@PathVariable UUID id, @RequestBody @Valid UpdateRoleDTO data) {
+	public ResponseEntity<Void> updateRole(@PathVariable UUID id, @RequestBody @Valid UpdateRoleRequestDTO data) {
 		userService.updateRole(id, data);
 
 		return ResponseEntity.noContent().build();
@@ -63,7 +63,7 @@ public class UserController {
 
 	@PatchMapping("/me/password")
 	public ResponseEntity<Void> updatePassword(@AuthenticationPrincipal Users user,
-			@RequestBody @Valid UpdatePasswordDTO data) {
+			@RequestBody @Valid UpdatePasswordRequestDTO data) {
 		
 		userService.updatePassword(user.getIdUsers(), data);
 		
