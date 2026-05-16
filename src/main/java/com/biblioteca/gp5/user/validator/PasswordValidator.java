@@ -3,13 +3,13 @@ package com.biblioteca.gp5.user.validator;
 import org.springframework.stereotype.Component;
 
 import com.biblioteca.gp5.exception.user.InvalidPasswordException;
-import com.biblioteca.gp5.user.dto.request.UpdatePasswordDTO;
+import com.biblioteca.gp5.user.dto.request.UpdatePasswordRequestDTO;
 
 @Component
 public class PasswordValidator {
 	
 	//Metodo para verificacao de senha
-	public void validate(UpdatePasswordDTO data) {
+	public void validate(UpdatePasswordRequestDTO data) {
 		
 		//Irei verificar se a senha veio vazia
 		if(data.newPassword() == null || data.newPassword().isBlank()) {

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.biblioteca.gp5.exception.auth.EmailAlreadyExistsException;
 import com.biblioteca.gp5.exception.auth.PasswordMatches;
+import com.biblioteca.gp5.exception.book.BookNotFoundException;
 import com.biblioteca.gp5.exception.dto.ErrorResponse;
 import com.biblioteca.gp5.exception.security.TokenCreationException;
 import com.biblioteca.gp5.exception.security.TokenValidationException;
@@ -92,6 +93,15 @@ public class GlobalException {
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(),
 				"Falha ao validar token", ex.getMessage());
 
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	
+	@ExceptionHandler(BookNotFoundException.class)
+	public ResponseEntity<Object> handlerBookNotFoundException(BookNotFoundException ex){
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "Livro não encontrado", 
+				ex.getMessage());
+		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 
