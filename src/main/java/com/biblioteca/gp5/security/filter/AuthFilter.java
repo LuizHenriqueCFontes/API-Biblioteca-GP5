@@ -10,7 +10,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.biblioteca.gp5.exception.user.UserNotFoundException;
 import com.biblioteca.gp5.security.token.TokenService;
-import com.biblioteca.gp5.user.model.Users;
+import com.biblioteca.gp5.user.model.User;
 import com.biblioteca.gp5.user.repository.UserRepository;
 
 import jakarta.servlet.FilterChain;
@@ -48,7 +48,7 @@ public class AuthFilter extends OncePerRequestFilter {
 	
 		if(subject != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			
-			Users user = userRepository.findById(UuidSubject)
+			User user = userRepository.findById(UuidSubject)
 										.orElseThrow(() -> new UserNotFoundException("Usuáro não encontrado"));
 			
 			if(tokenService.validateToken(token)) {

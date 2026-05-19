@@ -17,7 +17,7 @@ import com.biblioteca.gp5.exception.auth.EmailAlreadyExistsException;
 import com.biblioteca.gp5.exception.auth.PasswordMatches;
 import com.biblioteca.gp5.security.token.TokenService;
 import com.biblioteca.gp5.user.model.UserRole;
-import com.biblioteca.gp5.user.model.Users;
+import com.biblioteca.gp5.user.model.User;
 import com.biblioteca.gp5.user.repository.UserRepository;
 
 @Service
@@ -44,7 +44,7 @@ public class AuthService {
 
 		Authentication auth = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
-		Users user = (Users) auth.getPrincipal();
+		User user = (User) auth.getPrincipal();
 
 		String token = tokenService.generateToken(user);
 
@@ -80,7 +80,7 @@ public class AuthService {
 		}
 
 		// Cria a entidade Users com os dados fornecidos e a role definida
-		Users user = new Users(data.username(), data.email(), data.phone(), senhaCriptografada, role);
+		User user = new User(data.username(), data.email(), data.phone(), senhaCriptografada, role);
 
 		user.setEnabled(true);
 

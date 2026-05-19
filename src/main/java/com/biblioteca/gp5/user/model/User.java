@@ -25,7 +25,7 @@ import lombok.Data;
 @Entity //Informa que a classe eh uma entity
 @Table(name = "users")//Defino como eh o nome da tabela no db
 @Data //Isso significa que vai gerar os get e set automatico de acordo com os atributos, isso vem do lombok
-public class Users implements UserDetails { //Implemento um userDetails, que sera tipo uma armazenado de users
+public class User implements UserDetails { //Implemento um userDetails, que sera tipo uma armazenado de users
 	
 	@Id //informa que é um id
 	@GeneratedValue(strategy = GenerationType.UUID) /*Isso define que sera gerado um id automatico, e vai ser tipo um hash de senha, varios caracteres*/
@@ -52,10 +52,10 @@ public class Users implements UserDetails { //Implemento um userDetails, que ser
 	@Column(name = "created_at") // atributo que vai ser preenchido automaticamente no db, apenas para colocar quando criou a conta
 	private LocalDateTime createdAt;
 	
-	public Users() {}
+	public User() {}
 
 	//Crio um construtor que vai receber quase todos os atributos, para realizar o cadastrado
-	public Users(String username, String email, String phone, String password, UserRole role) {
+	public User(String username, String email, String phone, String password, UserRole role) {
 		this.username = username;
 		this.email = email;
 		this.phone = phone;
@@ -64,7 +64,7 @@ public class Users implements UserDetails { //Implemento um userDetails, que ser
 	}
 	
 	//Crio um construtor que vai receber o email e senha, para realizar o login
-	public Users(String email, String password) {
+	public User(String email, String password) {
 		this.email = email;
 		this.password = password;
 		
