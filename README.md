@@ -3,7 +3,7 @@
 ## 📝 Descrição do Projeto
 Este projeto consiste em uma API RESTful robusta desenvolvida para o gerenciamento de uma biblioteca digital e física. O sistema conta com controle de acessos customizado, segurança avançada de endpoints, persistência relacional de dados e um módulo inteligente de enriquecimento de acervo através do consumo de dados de uma API externa de literatura.
 
-> ⚠️ **Nota:** Este projeto está atualmente **em desenvolvimento**. A API do Back-End está com sua estrutura principal consolidada, e o próximo passo do cronograma é a integração completa com a interface Front-End.
+> ⚠️ **Nota:** Este projeto está atualmente **em desenvolvimento**.
 
 A aplicação foi desenhada seguindo as melhores práticas de desenvolvimento de software, com total separação de responsabilidades, tráfego de dados isolado via DTOs e resiliência por meio de tratamento global de exceções.
 
