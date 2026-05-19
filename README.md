@@ -1,7 +1,7 @@
 # 📚 Sistema de Gerenciamento de Biblioteca (Back-End)
 
 ## 📝 Descrição do Projeto
-Este projeto consiste em uma API RESTful robusta desenvolvida para o gerenciamento de uma biblioteca digital e física. O sistema conta com controle de acessos customizado, segurança avançada de endpoints, persistência relacional de dados e um módulo inteligente de enriquecimento de acervo através do consumo de dados de uma API externa de literatura.
+Este projeto consiste em uma API RESTful desenvolvida para o gerenciamento de uma biblioteca digital e física. O sistema conta com controle de acessos customizado, segurança avançada de endpoints, persistência relacional de dados e um módulo inteligente de enriquecimento de acervo através do consumo de dados de uma API externa de literatura.
 
 > ⚠️ **Nota:** Este projeto está atualmente **em desenvolvimento**.
 
