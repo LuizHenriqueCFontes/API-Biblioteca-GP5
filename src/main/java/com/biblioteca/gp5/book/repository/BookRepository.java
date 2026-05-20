@@ -8,12 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
-import com.biblioteca.gp5.book.model.Books;
+import com.biblioteca.gp5.book.model.Book;
 
 @Repository
-public interface BookRepository extends JpaRepository<Books, UUID> {
-	Page<Books> findByTitleContainingIgnoreCase(String title, Pageable pageable);
+public interface BookRepository extends JpaRepository<Book, UUID> {
+	Page<Book> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 	
-	Page<Books> findAll(Pageable pageable);
+	Page<Book> findAll(Pageable pageable);
 
 }

@@ -14,7 +14,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.biblioteca.gp5.exception.security.TokenCreationException;
 import com.biblioteca.gp5.exception.security.TokenValidationException;
 import com.biblioteca.gp5.user.model.UserRole;
-import com.biblioteca.gp5.user.model.Users;
+import com.biblioteca.gp5.user.model.User;
 
 @Service
 public class TokenService {
@@ -25,7 +25,7 @@ public class TokenService {
 		this.algorithm = algorithm;
 	}
 	
-	public String generateToken(Users user) {
+	public String generateToken(User user) {
 		try {
 			
 			//Utilizo o metodo .name para transforma de ENUM para uma String

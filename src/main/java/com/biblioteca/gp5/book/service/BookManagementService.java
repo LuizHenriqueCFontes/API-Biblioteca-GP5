@@ -8,7 +8,7 @@ import com.biblioteca.gp5.book.dto.request.EditBookRequestDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
 import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
 import com.biblioteca.gp5.book.mapper.BookMapper;
-import com.biblioteca.gp5.book.model.Books;
+import com.biblioteca.gp5.book.model.Book;
 import com.biblioteca.gp5.book.repository.BookRepository;
 import com.biblioteca.gp5.exception.book.BookNotFoundException;
 import com.biblioteca.gp5.integration.gutendex.client.GutendexClient;
@@ -38,7 +38,7 @@ public class BookManagementService {
 	public BookResponseDTO saveBook(Integer id) {
 		GutendexBookResponseDTO gutendexBook = gutendexClient.searchBookById(id);
 				
-		Books book = bookMapper.toEntity(gutendexBook);
+		Book book = bookMapper.toEntity(gutendexBook);
 		
 		bookRepository.save(book);
 		
@@ -49,7 +49,7 @@ public class BookManagementService {
 	
 	@Transactional
 	public EditBookResponseDTO editBook(UUID idBook, EditBookRequestDTO request) {
-		Books book = bookRepository.findById(idBook)
+		Book book = bookRepository.findById(idBook)
 									.orElseThrow(() -> new BookNotFoundException("Livro não encontrado"));
 		
 		if(request.title() != null && !request.title().isBlank()) {
@@ -68,13 +68,6 @@ public class BookManagementService {
 			book.setSource(request.source());
 		}
 		
-		if(request.totalQuantity() != null && request.totalQuantity() >= 0) {
-			book.setTotalQuantity(request.totalQuantity());
-		}
-		
-		if(request.availableQuantity() != null && request.availableQuantity() >= 0) {
-			book.setAvailableQuantity(request.availableQuantity());
-		}
 		
 		if(request.active() != null) {
 			book.setActive(request.active());
@@ -89,7 +82,7 @@ public class BookManagementService {
 	
 	@Transactional
 	public void deleteBook(UUID idBook) {
-		Books book = bookRepository.findById(idBook)
+		Book book = bookRepository.findById(idBook)
 									.orElseThrow(() -> new BookNotFoundException("Livro não encontrado"));
 		
 		book.setActive(false);

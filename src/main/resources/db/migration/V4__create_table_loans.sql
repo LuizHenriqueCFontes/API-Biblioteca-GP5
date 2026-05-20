@@ -2,11 +2,9 @@ CREATE TABLE loans(
 	id_loans BINARY(16) UNIQUE NOT NULL,
     book_id BINARY(16) NOT NULL,
     user_id BINARY(16) NOT NULL,
-    type ENUM('ONLINE', 'PHYSICAL') NOT NULL,
-    status ENUM('ACTIVE', 'RETURNED', 'OVERDUE') NOT NULL,
-    loan_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    expected_return_date TIMESTAMP NOT NULL,
-    actual_return_date TIMESTAMP,
+    status ENUM('ACTIVE', 'EXPIRED') NOT NULL,
+    loan_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    expiration_date DATETIME NOT NULL,
     
     PRIMARY KEY(id_loans),
     

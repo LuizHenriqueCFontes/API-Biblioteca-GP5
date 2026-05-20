@@ -10,7 +10,7 @@ import com.biblioteca.gp5.book.dto.request.EditBookRequestDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
 import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
 import com.biblioteca.gp5.book.mapper.BookMapper;
-import com.biblioteca.gp5.book.model.Books;
+import com.biblioteca.gp5.book.model.Book;
 import com.biblioteca.gp5.book.repository.BookRepository;
 import com.biblioteca.gp5.exception.book.BookNotFoundException;
 
@@ -29,7 +29,7 @@ public class BookService {
 	
 	public Page<BookResponseDTO> listBook(String title, Pageable pageable){
 		
-		Page<Books> books;
+		Page<Book> books;
 		
 		if(title == null || title.isBlank()) {
 			books = bookRepository.findAll(pageable);

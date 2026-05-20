@@ -20,7 +20,7 @@ import com.biblioteca.gp5.user.dto.request.UpdateRoleRequestDTO;
 import com.biblioteca.gp5.user.dto.request.UpdateUserRequestDTO;
 import com.biblioteca.gp5.user.dto.response.UserListResponseDTO;
 import com.biblioteca.gp5.user.dto.response.UpdateUserResponseDTO;
-import com.biblioteca.gp5.user.model.Users;
+import com.biblioteca.gp5.user.model.User;
 import com.biblioteca.gp5.user.service.UserService;
 
 import jakarta.validation.Valid;
@@ -36,7 +36,7 @@ public class UserController {
 	}
 
 	@PatchMapping("/me")
-	public ResponseEntity<UpdateUserResponseDTO> updateUser(@AuthenticationPrincipal Users user,
+	public ResponseEntity<UpdateUserResponseDTO> updateUser(@AuthenticationPrincipal User user,
 			@RequestBody @Valid UpdateUserRequestDTO data) {
 		UpdateUserResponseDTO updateUser = userService.updateUser(user.getIdUsers(), data);
 
@@ -62,7 +62,7 @@ public class UserController {
 	}
 
 	@PatchMapping("/me/password")
-	public ResponseEntity<Void> updatePassword(@AuthenticationPrincipal Users user,
+	public ResponseEntity<Void> updatePassword(@AuthenticationPrincipal User user,
 			@RequestBody @Valid UpdatePasswordRequestDTO data) {
 		
 		userService.updatePassword(user.getIdUsers(), data);

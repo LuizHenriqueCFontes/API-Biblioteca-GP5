@@ -18,7 +18,7 @@ import com.biblioteca.gp5.user.dto.request.UpdateUserRequestDTO;
 import com.biblioteca.gp5.user.dto.response.UserListResponseDTO;
 import com.biblioteca.gp5.user.dto.response.UpdateUserResponseDTO;
 import com.biblioteca.gp5.user.mapper.UserMapper;
-import com.biblioteca.gp5.user.model.Users;
+import com.biblioteca.gp5.user.model.User;
 import com.biblioteca.gp5.user.repository.UserRepository;
 import com.biblioteca.gp5.user.validator.PasswordValidator;
 
@@ -40,7 +40,7 @@ public class UserService {
 	@Transactional
 	public UpdateUserResponseDTO updateUser(UUID id, UpdateUserRequestDTO request) {
 		// Tento carregar pelo id, caso apresente erro, lanço uma exception
-		Users user = userRepository.findById(id)
+		User user = userRepository.findById(id)
 									.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 		
 		//Irei verificar os campos que foram alterados, devido ser um metodo patch
@@ -66,7 +66,7 @@ public class UserService {
 	}
 	
 	public Page<UserListResponseDTO> listUsers(String username, Pageable pageable){
-		Page<Users> user;
+		Page<User> user;
 		
 		if(username == null || username.isBlank()) {
 			user = userRepository.findAll(pageable);
@@ -85,7 +85,7 @@ public class UserService {
 	
 	@Transactional
 	public void updateRole(UUID id, UpdateRoleRequestDTO request) {
-		Users user = userRepository.findById(id)
+		User user = userRepository.findById(id)
 									.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 		
 		if(request.role() == user.getRole()) {
@@ -106,7 +106,7 @@ public class UserService {
 	
 	@Transactional
 	public void updatePassword(UUID id, UpdatePasswordRequestDTO request) {
-		Users user = userRepository.findById(id)
+		User user = userRepository.findById(id)
 									.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 		
 		passwordValidator.validate(request);

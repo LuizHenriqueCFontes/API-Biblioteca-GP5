@@ -7,8 +7,6 @@ CREATE TABLE books(
     gutenberg_id INT UNIQUE,
     file_url VARCHAR(500),
     source VARCHAR(30) NOT NULL,
-    total_quantity INT DEFAULT 0,
-    available_quantity INT DEFAULT 0,
     active BOOLEAN DEFAULT TRUE,
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	

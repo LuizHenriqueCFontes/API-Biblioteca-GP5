@@ -8,7 +8,7 @@ import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
 import com.biblioteca.gp5.book.enums.BookCover;
 import com.biblioteca.gp5.book.enums.BookFormat;
 import com.biblioteca.gp5.book.enums.BookSources;
-import com.biblioteca.gp5.book.model.Books;
+import com.biblioteca.gp5.book.model.Book;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexAuthorResponseDTO;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexBookResponseDTO;
 
@@ -23,7 +23,7 @@ public interface BookMapper {
 	@Mapping(expression = "java(extractCoverUrl(gutendexBook))", target = "coverUrl")
 	@Mapping(expression = "java(extractFileUrl(gutendexBook))", target = "fileUrl")
 	@Mapping(expression = "java(extractSource())", target = "source")
-	Books toEntity(GutendexBookResponseDTO gutendexBook);
+	Book toEntity(GutendexBookResponseDTO gutendexBook);
 	
 	default String extractName(GutendexAuthorResponseDTO gutendexAuthor) {
 		return gutendexAuthor.name();
@@ -42,8 +42,8 @@ public interface BookMapper {
 	}
 	
 	@Mapping(source = "idBook", target = "id")
-	BookResponseDTO toBookResponseDTO(Books book);
+	BookResponseDTO toBookResponseDTO(Book book);
 	
-	EditBookResponseDTO toEditBookResponseDTO(Books book);
+	EditBookResponseDTO toEditBookResponseDTO(Book book);
 	
 }

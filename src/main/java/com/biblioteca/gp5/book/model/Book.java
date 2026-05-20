@@ -15,7 +15,7 @@ import lombok.Data;
 @Entity
 @Table(name = "books")
 @Data
-public class Books {
+public class Book {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -41,12 +41,6 @@ public class Books {
 	
 	@Column(nullable = false)
 	private String source;
-	
-	@Column(name = "total_quantity")
-	private Integer totalQuantity = 0;
-	
-	@Column(name = "available_quantity")
-	private Integer availableQuantity = 0;
 
 	private boolean active = true;
 	

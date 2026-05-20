@@ -3,7 +3,7 @@ package com.biblioteca.gp5.user.mapper;
 
 import org.mapstruct.Mapper;
 import com.biblioteca.gp5.user.dto.response.UserListResponseDTO;
-import com.biblioteca.gp5.user.model.Users;
+import com.biblioteca.gp5.user.model.User;
 
 //Mapper utilizado pelo MapStruct para converter entidades em DTOs automaticamente.
 //O componentModel = "spring" registra o mapper como um bean do Spring,
@@ -11,6 +11,6 @@ import com.biblioteca.gp5.user.model.Users;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 	
-	UserListResponseDTO toUserListResponseDTO(Users users);
+	UserListResponseDTO toUserListResponseDTO(User users);
 
 }
