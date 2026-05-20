@@ -68,13 +68,6 @@ public class BookManagementService {
 			book.setSource(request.source());
 		}
 		
-		if(request.totalQuantity() != null && request.totalQuantity() >= 0) {
-			book.setTotalQuantity(request.totalQuantity());
-		}
-		
-		if(request.availableQuantity() != null && request.availableQuantity() >= 0) {
-			book.setAvailableQuantity(request.availableQuantity());
-		}
 		
 		if(request.active() != null) {
 			book.setActive(request.active());

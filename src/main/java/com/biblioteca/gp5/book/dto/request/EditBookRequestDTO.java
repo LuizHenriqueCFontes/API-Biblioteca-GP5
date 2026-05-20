@@ -14,12 +14,6 @@ public record EditBookRequestDTO(
 		
 		String source,
 		
-		@PositiveOrZero
-		Integer totalQuantity,
-		
-		@PositiveOrZero
-		Integer availableQuantity, 
-		
 		Boolean active) {
 
 }

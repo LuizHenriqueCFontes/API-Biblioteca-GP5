@@ -41,12 +41,6 @@ public class Book {
 	
 	@Column(nullable = false)
 	private String source;
-	
-	@Column(name = "total_quantity")
-	private Integer totalQuantity = 0;
-	
-	@Column(name = "available_quantity")
-	private Integer availableQuantity = 0;
 
 	private boolean active = true;
 	

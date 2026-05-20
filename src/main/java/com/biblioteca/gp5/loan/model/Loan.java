@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import com.biblioteca.gp5.book.model.Book;
 import com.biblioteca.gp5.loan.model.enums.Status;
-import com.biblioteca.gp5.loan.model.enums.TypeBook;
 import com.biblioteca.gp5.user.model.User;
 
 import jakarta.persistence.Column;
@@ -42,10 +41,6 @@ public class Loan {
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 	
-	@Column(name = "type", nullable = false)
-	@Enumerated(EnumType.STRING)
-	private TypeBook typeBook;
-	
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Status status;
@@ -53,10 +48,7 @@ public class Loan {
 	@Column(name = "loan_date")
 	private LocalDateTime loanDate;
 	
-	@Column(name = "expected_return_date", nullable = false)
-	private LocalDateTime expectedReturnDate;
-	
-	@Column(name = "actual_return_date")
-	private LocalDateTime actualReturnDate;
+	@Column(name = "expiration_date", nullable = false)
+	private LocalDateTime expirationDate;
 
 }
