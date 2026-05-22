@@ -50,5 +50,15 @@ public class Loan {
 	
 	@Column(name = "expiration_date", nullable = false)
 	private LocalDateTime expirationDate;
+	
+	
+	public void expiresLoan() {
+		
+		if(this.status != Status.ACTIVE) {
+			return;
+		}
+		
+		this.status = status.EXPIRED;		
+	}
 
 }
