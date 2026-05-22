@@ -62,7 +62,7 @@ public class LoanService {
 		
 		loan.setBook(book);
 		loan.setUser(user);
-		loan.setStatus(Status.ACTIVE);;
+		loan.setStatus(Status.ACTIVE);
 		loan.setLoanDate(loanDate);
 		loan.setExpirationDate(loanPolicy.calculateExpirationDate(loanDate));
 		
