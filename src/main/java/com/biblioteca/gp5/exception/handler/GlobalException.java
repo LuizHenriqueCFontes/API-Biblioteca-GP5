@@ -13,6 +13,7 @@ import com.biblioteca.gp5.exception.auth.EmailAlreadyExistsException;
 import com.biblioteca.gp5.exception.auth.PasswordMatches;
 import com.biblioteca.gp5.exception.book.BookNotFoundException;
 import com.biblioteca.gp5.exception.dto.ErrorResponse;
+import com.biblioteca.gp5.exception.loan.UserHasLoanException;
 import com.biblioteca.gp5.exception.security.TokenCreationException;
 import com.biblioteca.gp5.exception.security.TokenValidationException;
 import com.biblioteca.gp5.exception.user.InvalidPasswordException;
@@ -99,8 +100,16 @@ public class GlobalException {
 	
 	@ExceptionHandler(BookNotFoundException.class)
 	public ResponseEntity<Object> handlerBookNotFoundException(BookNotFoundException ex){
-		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "Livro não encontrado", 
-				ex.getMessage());
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
+				"Livro não encontrado", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	@ExceptionHandler(UserHasLoanException.class)
+	public ResponseEntity<Object> handlerUserHasLoanException(UserHasLoanException ex){
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
+				"Usuário ja possui o emprestimo do livro", ex.getMessage());
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
