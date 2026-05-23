@@ -9,7 +9,7 @@ public class LoanPolicy {
 	
 	private static final int DEFAULT_LOAN_DAYS = 7;
 	
-	public LocalDateTime calculateExpirationDate(LocalDateTime loanDate) {
+	public LocalDateTime calculateExpectedReturnDate(LocalDateTime loanDate) {
 		
 		return loanDate.plusDays(DEFAULT_LOAN_DAYS);
 	}

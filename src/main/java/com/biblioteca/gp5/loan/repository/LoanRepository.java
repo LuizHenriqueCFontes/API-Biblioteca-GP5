@@ -17,6 +17,6 @@ public interface LoanRepository extends JpaRepository<Loan, UUID>{
 	
 	boolean existsByUserAndBookAndStatus(User user, Book book, Status status);
 	
-	List<Loan> findByStatusAndExpirationDateBefore(Status status, LocalDateTime dadte);
+	List<Loan> findByStatusAndExpectedReturnDateBefore(Status status, LocalDateTime dadte);
 
 }

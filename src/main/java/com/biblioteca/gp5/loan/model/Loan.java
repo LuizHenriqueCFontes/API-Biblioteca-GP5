@@ -48,8 +48,11 @@ public class Loan {
 	@Column(name = "loan_date")
 	private LocalDateTime loanDate;
 	
-	@Column(name = "expiration_date", nullable = false)
-	private LocalDateTime expirationDate;
+	@Column(name = "expected_return_date", nullable = false)
+	private LocalDateTime expectedReturnDate;
+	
+	@Column(name = "actual_return_date")
+	private LocalDateTime actualReturnDate;
 	
 	
 	public void expiresLoan() {
