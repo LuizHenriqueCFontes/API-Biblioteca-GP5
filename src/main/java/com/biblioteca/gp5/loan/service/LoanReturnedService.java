@@ -26,7 +26,7 @@ public class LoanReturnedService {
 		List<Loan> expiredLoans = loanRepository.findByStatusAndExpectedReturnDateBefore(Status.ACTIVE, 
 				LocalDateTime.now());
 		
-		expiredLoans.forEach(Loan::expiresLoan);
+		expiredLoans.forEach(Loan::returnedLoanBySystem);
 	}
 	
 }
