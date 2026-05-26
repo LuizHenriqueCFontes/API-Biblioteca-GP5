@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.biblioteca.gp5.book.dto.request.EditBookRequestDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
 import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
+import com.biblioteca.gp5.book.dto.response.ImportSearchResponseDTO;
 import com.biblioteca.gp5.book.service.BookManagementService;
-import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexSearchResponseDTO;
 
 import jakarta.validation.Valid;
 
@@ -33,9 +33,9 @@ public class AdminController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<GutendexSearchResponseDTO> searchBooksGutendex(@RequestParam(required = false) String title){
+	public ResponseEntity<ImportSearchResponseDTO> searchBooksGutendex(@RequestParam(required = false) String title){
 		
-		GutendexSearchResponseDTO response = bookManagementService.gutendexSearchBooks(title);
+		ImportSearchResponseDTO response = bookManagementService.gutendexSearchBooks(title);
 		
 		return ResponseEntity.ok(response);
 	}
