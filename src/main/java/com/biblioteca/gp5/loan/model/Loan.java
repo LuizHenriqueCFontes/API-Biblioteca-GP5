@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.biblioteca.gp5.book.model.Book;
+import com.biblioteca.gp5.loan.model.enums.ReturnedBy;
 import com.biblioteca.gp5.loan.model.enums.Status;
 import com.biblioteca.gp5.user.model.User;
 
@@ -45,20 +46,29 @@ public class Loan {
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	
+	@Column(name = "returned_by")
+	@Enumerated(EnumType.STRING)
+	private ReturnedBy returnedBy;
+	
 	@Column(name = "loan_date")
 	private LocalDateTime loanDate;
 	
-	@Column(name = "expiration_date", nullable = false)
-	private LocalDateTime expirationDate;
+	@Column(name = "expected_return_date", nullable = false)
+	private LocalDateTime expectedReturnDate;
+	
+	@Column(name = "actual_return_date")
+	private LocalDateTime actualReturnDate;
 	
 	
-	public void expiresLoan() {
+	public void returnedLoanBySystem() {
 		
 		if(this.status != Status.ACTIVE) {
 			return;
 		}
 		
-		this.status = status.EXPIRED;		
+		this.status = status.RETURNED;
+		this.returnedBy = returnedBy.SYSTEM;
+		this.actualReturnDate = LocalDateTime.now();
 	}
 
 }

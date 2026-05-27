@@ -12,20 +12,21 @@ import com.biblioteca.gp5.loan.repository.LoanRepository;
 import jakarta.transaction.Transactional;
 
 @Service
-public class LoanExpirationService {
+public class LoanReturnedService {
 	
 	private final LoanRepository loanRepository;
 	
-	public LoanExpirationService(LoanRepository loanRepository) {
+	public LoanReturnedService(LoanRepository loanRepository) {
 		this.loanRepository = loanRepository;
 	}
 	
 	@Transactional
-	public void expireLoans() {
+	public void returnedLoans() {
 		
-		List<Loan> expiredLoans = loanRepository.findByStatusAndExpirationDateBefore(Status.ACTIVE, LocalDateTime.now());
+		List<Loan> expiredLoans = loanRepository.findByStatusAndExpectedReturnDateBefore(Status.ACTIVE, 
+				LocalDateTime.now());
 		
-		expiredLoans.forEach(Loan::expiresLoan);
+		expiredLoans.forEach(Loan::returnedLoanBySystem);
 	}
 	
 }

@@ -64,7 +64,7 @@ public class LoanService {
 		loan.setUser(user);
 		loan.setStatus(Status.ACTIVE);
 		loan.setLoanDate(loanDate);
-		loan.setExpirationDate(loanPolicy.calculateExpirationDate(loanDate));
+		loan.setExpectedReturnDate(loanPolicy.calculateExpectedReturnDate(loanDate));
 		
 		loanRepository.save(loan);
 		

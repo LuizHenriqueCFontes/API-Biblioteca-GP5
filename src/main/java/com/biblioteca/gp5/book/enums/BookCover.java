@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum BookCover {
-	IMAGE( "image/jpeg");
+	IMAGE("image/jpeg");
 	
 	private final String value;
 	
