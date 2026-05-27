@@ -34,8 +34,8 @@ public class BookManagementService {
 		this.gutendexMapper = gutendexMapper;
 	}
 	
-	public ImportSearchResponseDTO gutendexSearchBooks(String title) {
-		GutendexSearchResponseDTO gutendexSearch = gutendexClient.searchBooks(title);
+	public ImportSearchResponseDTO gutendexSearchBooks(String title, Integer page) {
+		GutendexSearchResponseDTO gutendexSearch = gutendexClient.searchBooks(title, page);
 		
 		ImportSearchResponseDTO response = gutendexMapper.toImportSearchResponseDTO(gutendexSearch);
 		

@@ -10,10 +10,6 @@ public record GutendexBookResponseDTO(
 		String title,
 		List<GutendexAuthorResponseDTO> authors,
 		List<String> summaries,
-		List<GutendexAuthorResponseDTO> translators,
-		List<String> subjects,
-		List<String> languages,
-		boolean copyright,
 		
 		@JsonProperty("media_type")
 		String mediaType,

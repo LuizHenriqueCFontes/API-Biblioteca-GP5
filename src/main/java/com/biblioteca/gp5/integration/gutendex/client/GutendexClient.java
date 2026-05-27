@@ -15,7 +15,7 @@ public class GutendexClient {
 		this.restClient = restClient;
 	}
 	
-	public GutendexSearchResponseDTO searchBooks(String title) {
+	public GutendexSearchResponseDTO searchBooks(String title, Integer page) {
 		
 		return restClient.get()
 						.uri(uriBuilder -> {
@@ -24,6 +24,10 @@ public class GutendexClient {
 							
 							if(title != null && !title.isBlank()) {
 								uriBuilder.queryParam("search", title);
+							}
+							
+							if(page != null) {
+								uriBuilder.queryParam("page", page);
 							}
 							
 							return uriBuilder.build();

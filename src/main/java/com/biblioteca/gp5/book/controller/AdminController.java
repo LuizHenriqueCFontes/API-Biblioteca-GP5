@@ -33,9 +33,10 @@ public class AdminController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<ImportSearchResponseDTO> searchBooksGutendex(@RequestParam(required = false) String title){
+	public ResponseEntity<ImportSearchResponseDTO> searchBooksGutendex(@RequestParam(required = false) String title, 
+			@RequestParam(required = false) Integer page){
 		
-		ImportSearchResponseDTO response = bookManagementService.gutendexSearchBooks(title);
+		ImportSearchResponseDTO response = bookManagementService.gutendexSearchBooks(title, page);
 		
 		return ResponseEntity.ok(response);
 	}
