@@ -4,12 +4,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.biblioteca.gp5.book.dto.response.ImportBookResponseDTO;
-import com.biblioteca.gp5.book.dto.response.ImportSearchResponseDTO;
 import com.biblioteca.gp5.book.enums.BookCover;
 import com.biblioteca.gp5.book.enums.BookFormat;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexAuthorResponseDTO;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexBookResponseDTO;
-import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexSearchResponseDTO;
 
 @Mapper(componentModel = "spring")
 public interface GutendexMapper {
@@ -35,7 +33,4 @@ public interface GutendexMapper {
 	default String extractFileUrl(GutendexBookResponseDTO gutendexBook) {
 		return gutendexBook.formats().get(BookFormat.EPUB.getValue());
 	}
-	
-	ImportSearchResponseDTO toImportSearchResponseDTO(GutendexSearchResponseDTO gutendexSearch);
-
 }

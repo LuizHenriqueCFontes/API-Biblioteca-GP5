@@ -1,5 +1,6 @@
 package com.biblioteca.gp5.book.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.biblioteca.gp5.book.dto.request.EditBookRequestDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
 import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
+import com.biblioteca.gp5.book.dto.response.ImportBookResponseDTO;
 import com.biblioteca.gp5.book.dto.response.ImportSearchResponseDTO;
 import com.biblioteca.gp5.book.mapper.BookMapper;
 import com.biblioteca.gp5.book.model.Book;
@@ -35,9 +37,16 @@ public class BookManagementService {
 	}
 	
 	public ImportSearchResponseDTO gutendexSearchBooks(String title, Integer page) {
-		GutendexSearchResponseDTO gutendexSearch = gutendexClient.searchBooks(title, page);
-		
-		ImportSearchResponseDTO response = gutendexMapper.toImportSearchResponseDTO(gutendexSearch);
+		 GutendexSearchResponseDTO gutendexSearch = gutendexClient.searchBooks(title, page);
+		 
+		 List<ImportBookResponseDTO> results = gutendexSearch.results()
+				 											.stream()
+				 											.limit(20)
+				 											.map(gutendexMapper::toImportBookResponseDTO)
+				 											.toList();
+		 
+		ImportSearchResponseDTO response = new ImportSearchResponseDTO(gutendexSearch.count(), gutendexSearch.next(), 
+				gutendexSearch.previous(), results);
 		
 		return response;
 	}
