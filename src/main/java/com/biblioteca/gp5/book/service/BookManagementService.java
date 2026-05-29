@@ -85,10 +85,6 @@ public class BookManagementService {
 		}
 		
 		
-		if(request.active() != null) {
-			book.setActive(request.active());
-		}
-		
 		bookRepository.save(book);
 		
 		EditBookResponseDTO response = bookMapper.toEditBookResponseDTO(book);
