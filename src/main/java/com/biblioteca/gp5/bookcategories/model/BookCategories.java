@@ -1,4 +1,4 @@
-package com.biblioteca.gp5.bookcategory.model;
+package com.biblioteca.gp5.bookcategories.model;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,14 +21,14 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "book_categorioes")
+@Table(name = "book_categories")
 @Data
 public class BookCategories {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "id_book_categories")
-	private UUID idBookCategory;
+	private UUID idBookCategories;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_books")
@@ -36,10 +36,15 @@ public class BookCategories {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_categories")
-	private List<Category> category;
+	private Category category;
 	
 	@CreationTimestamp
 	@Column(name = "created_at", nullable = false)
 	private LocalDateTime createdAt;
+	
+	public BookCategories(Book book, Category category) {
+		this.book = book;
+		this.category = category;
+	}
 
 }
