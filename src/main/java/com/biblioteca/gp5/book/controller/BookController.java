@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.biblioteca.gp5.book.dto.request.BookFilterRequestDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
 import com.biblioteca.gp5.book.service.BookService;
 
@@ -23,10 +24,10 @@ public class BookController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<Page<BookResponseDTO>> listBook(@RequestParam(required = false) String title, 
+	public ResponseEntity<Page<BookResponseDTO>> listBook(@RequestParam(required = false) BookFilterRequestDTO filter, 
 			@PageableDefault(page = 0, size = 20) Pageable pageable){
 		
-		Page<BookResponseDTO> response = bookService.listBook(title, pageable);
+		Page<BookResponseDTO> response = bookService.listBook(filter, pageable);
 		
 		return ResponseEntity.ok(response);
 	}

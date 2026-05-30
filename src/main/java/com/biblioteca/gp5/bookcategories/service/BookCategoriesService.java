@@ -42,7 +42,7 @@ public class BookCategoriesService {
 		this.bookCategoriesMapper = bookCategoryMapper;
 	}
 	
-	@Transactional
+	/*@Transactional
 	public CreateBookCategoriesResponseDTO addCategories(UUID idBook, CreateBookCategoriesRequestDTO request) {
 		Book book = bookRepository.findById(idBook)
 									.orElseThrow(() -> new BookNotFoundException("Livro não encontrado"));
@@ -69,7 +69,7 @@ public class BookCategoriesService {
 				categoriesResponse);
 		
 		return response;
-	}
+	}*/
 	
 	@Transactional
 	public EditBookCategoriesResponseDTO editBookCategories(UUID idBook, EditBookCategoriesRequestDTO request) {

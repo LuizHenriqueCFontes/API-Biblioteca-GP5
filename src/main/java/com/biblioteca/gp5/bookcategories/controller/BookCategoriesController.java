@@ -29,7 +29,7 @@ public class BookCategoriesController {
 		this.bookCategoriesService = bookCategoriesService;
 	}
 	
-	@PostMapping("/{idBook}")
+	/*@PostMapping("/{idBook}")
 	public ResponseEntity<CreateBookCategoriesResponseDTO> addBookCategories(@PathVariable UUID idBook, 
 			@RequestBody @Valid CreateBookCategoriesRequestDTO request) {
 		
@@ -37,7 +37,7 @@ public class BookCategoriesController {
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);		
 		
-	}
+	}*/
 	
 	@PutMapping("/{idBook}")
 	public ResponseEntity<EditBookCategoriesResponseDTO> editBookCategories(@PathVariable UUID idBook, 
