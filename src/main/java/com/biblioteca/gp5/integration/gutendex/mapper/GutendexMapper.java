@@ -12,15 +12,11 @@ import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexBookResponse
 @Mapper(componentModel = "spring")
 public interface GutendexMapper {
 	
-	@Mapping(expression = "java(extractSummaries(gutendexBook))", target = "description")
+	@Mapping(source = "summaries", target = "description")
 	@Mapping(expression = "java(extractCoverUrl(gutendexBook))", target = "coverUrl")
 	@Mapping(expression = "java(extractFileUrl(gutendexBook))", target = "fileUrl")
-	@Mapping(expression = "java(extractName(author))", target = "authors")
+	//@Mapping(expression = "java(extractName(author))", target = "authors")
 	ImportBookResponseDTO toImportBookResponseDTO(GutendexBookResponseDTO gutendexBook);
-	
-	default String extractSummaries(GutendexBookResponseDTO gutendexBook) {
-		return String.join(" ", gutendexBook.summaries());
-	}
 	
 	default String extractName(GutendexAuthorResponseDTO author) {
 		return author.name();

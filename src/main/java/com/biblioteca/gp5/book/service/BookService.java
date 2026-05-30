@@ -31,15 +31,22 @@ public class BookService {
 	public Page<BookResponseDTO> listBook(BookFilterRequestDTO filter, Pageable pageable){
 		
 		boolean hasTitle = filter.title() != null && !filter.title().isBlank();
-		boolean hasCategory = filter.idCategory() != null;
+		boolean hasCategory = filter.idsCategories() != null && !filter.idsCategories().isEmpty();
 		
 		Page<Book> books;
 		
 		if(!hasTitle && !hasCategory) {
 			books = bookRepository.findAll(pageable);
 			
-		} else {
-			books = bookRepository.findByTitleContainingIgnoreCase(title, pageable);
+		} else if(hasTitle && hasCategory){
+			books = bookRepository.findByTitleAndCategories(filter.title(), filter.idsCategories(), pageable);
+			
+			
+		}else if(hasTitle && !hasCategory) {
+			books = bookRepository.findByTitleContainingIgnoreCase(filter.title(), pageable);
+			
+		}else {
+			books = bookRepository.findByCategories(filter.idsCategories(), pageable);
 		}
 		
 		Page<BookResponseDTO> booksResponse = books.map(bookMapper::toBookResponseDTO);

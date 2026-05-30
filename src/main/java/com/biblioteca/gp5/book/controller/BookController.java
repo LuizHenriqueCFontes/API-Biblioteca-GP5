@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,8 +25,10 @@ public class BookController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<Page<BookResponseDTO>> listBook(@RequestParam(required = false) BookFilterRequestDTO filter, 
+	public ResponseEntity<Page<BookResponseDTO>> listBook(@ModelAttribute BookFilterRequestDTO filter, 
 			@PageableDefault(page = 0, size = 20) Pageable pageable){
+		
+		System.out.print(filter);
 		
 		Page<BookResponseDTO> response = bookService.listBook(filter, pageable);
 		
