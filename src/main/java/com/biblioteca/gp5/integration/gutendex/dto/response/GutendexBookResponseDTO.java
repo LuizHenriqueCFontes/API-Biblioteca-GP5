@@ -10,9 +10,7 @@ public record GutendexBookResponseDTO(
 		String title,
 		List<GutendexAuthorResponseDTO> authors,
 		List<String> summaries,
-		
-		@JsonProperty("bookshelves")
-		List<String> bookShelves,
+		List<String> bookshelves,
 		
 		@JsonProperty("media_type")
 		String mediaType,

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.biblioteca.gp5.book.dto.request.BookFilterRequestDTO;
 import com.biblioteca.gp5.book.dto.request.EditBookRequestDTO;
+import com.biblioteca.gp5.book.dto.response.BookDetailsResponseDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
 import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
 import com.biblioteca.gp5.book.mapper.BookMapper;
@@ -52,6 +53,15 @@ public class BookService {
 		Page<BookResponseDTO> booksResponse = books.map(bookMapper::toBookResponseDTO);
 		
 		return booksResponse;
+	}
+	
+	public BookDetailsResponseDTO bookDetails(UUID idBook) {
+		Book book = bookRepository.findById(idBook)
+								.orElseThrow(() -> new BookNotFoundException("Livro não encontrado"));
+		
+		BookDetailsResponseDTO response = bookMapper.toBookDetailsResponseDTO(book);
+		
+		return response;
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.biblioteca.gp5.integration.gutendex.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -21,6 +23,9 @@ public interface GutendexMapper {
 	
 	@Mapping(source = "summaries", target = "description")
 	@Mapping(qualifiedByName = "extractAuthorName", target = "authors")
+	@Mapping(qualifiedByName = "clearBookshelves", target = "bookshelves")
+	@Mapping(expression = "java(extractCoverUrl(gutendexBook))",target = "coverUrl")
+	@Mapping(expression = "java(extractFileUrl(gutendexBook))", target= "fileUrl")
 	ImportBookDetailsResponseDTO toImporBookDetailsResponseDTO(GutendexBookResponseDTO gutendexBook);
 	
 	@Named("extractAuthorName")
@@ -34,6 +39,13 @@ public interface GutendexMapper {
 	
 	default String extractFileUrl(GutendexBookResponseDTO gutendexBook) {
 		return gutendexBook.formats().get(BookFormat.EPUB.getValue());
+	}
+	
+	@Named("clearBookshelves")
+	default List<String> clearBookshelves(List<String> bookshelves) {
+		return bookshelves.stream()
+							.map(bookshelve -> bookshelve.replace("Category: ", ""))
+							.toList();
 	}
 	
 }

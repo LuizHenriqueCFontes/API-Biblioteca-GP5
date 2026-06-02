@@ -51,6 +51,7 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.DELETE, "/api/admin/books/*").hasRole("ADMIN")
 						
 						.requestMatchers(HttpMethod.GET, "/api/books").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/books/*").permitAll()
 
 						.anyRequest().authenticated())
 

@@ -3,6 +3,7 @@ package com.biblioteca.gp5.book.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import com.biblioteca.gp5.book.dto.response.BookDetailsResponseDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
 import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
 import com.biblioteca.gp5.book.enums.BookCover;
@@ -19,12 +20,19 @@ public interface BookMapper {
 	//Target para onde o valor vai
 	//Mapping ensinar como ele deve converter
 	@Mapping(source = "id", target = "gutenbergId")
-	@Mapping(source = "summaries", target = "description")
 	@Mapping(expression = "java(extractCoverUrl(gutendexBook))", target = "coverUrl")
 	@Mapping(expression = "java(extractFileUrl(gutendexBook))", target = "fileUrl")
 	@Mapping(expression = "java(extractSource())", target = "source")
 	//@Mapping(expression = "java(extractName(gutendexAuthor))", target = "authors")
 	Book toEntity(GutendexBookResponseDTO gutendexBook);
+	
+	@Mapping(source = "idBook", target = "id")
+	BookResponseDTO toBookResponseDTO(Book book);
+	
+	EditBookResponseDTO toEditBookResponseDTO(Book book);
+	
+	@Mapping(source = "idBook", target = "id")
+	BookDetailsResponseDTO toBookDetailsResponseDTO(Book book);
 	
 	default String extractName(GutendexAuthorResponseDTO gutendexAuthor) {
 		return gutendexAuthor.name();
@@ -41,10 +49,6 @@ public interface BookMapper {
 	default String extractSource() {
 		return BookSources.GUTENDEX.getValue();
 	}
-	
-	@Mapping(source = "idBook", target = "id")
-	BookResponseDTO toBookResponseDTO(Book book);
-	
-	EditBookResponseDTO toEditBookResponseDTO(Book book);
+
 	
 }
