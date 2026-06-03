@@ -12,12 +12,12 @@ import com.biblioteca.gp5.book.model.Book;
 import com.biblioteca.gp5.book.repository.BookRepository;
 import com.biblioteca.gp5.bookcategories.dto.request.CreateBookCategoriesRequestDTO;
 import com.biblioteca.gp5.bookcategories.dto.request.EditBookCategoriesRequestDTO;
-import com.biblioteca.gp5.bookcategories.dto.response.CategoryResponseDTO;
 import com.biblioteca.gp5.bookcategories.dto.response.CreateBookCategoriesResponseDTO;
 import com.biblioteca.gp5.bookcategories.dto.response.EditBookCategoriesResponseDTO;
 import com.biblioteca.gp5.bookcategories.mapper.BookCategoriesMapper;
 import com.biblioteca.gp5.bookcategories.model.BookCategories;
 import com.biblioteca.gp5.bookcategories.repository.BookCategoriesRepository;
+import com.biblioteca.gp5.category.dto.response.CategoryResponseDTO;
 import com.biblioteca.gp5.category.model.Category;
 import com.biblioteca.gp5.category.repository.CategoryRepository;
 import com.biblioteca.gp5.exception.book.BookNotFoundException;
@@ -94,7 +94,7 @@ public class BookCategoriesService {
 		
 		bookCategoriesRepository.saveAll(newBookCategories);
 		
-		List<CategoryResponseDTO> categoriesResponse = bookCategoriesMapper.toListCategory(listCategories);
+		List<CategoryResponseDTO> categoriesResponse = bookCategoriesMapper.toListCategoryResponseDTO(listCategories);
 		
 		EditBookCategoriesResponseDTO response = new EditBookCategoriesResponseDTO(book.getIdBook(), book.getTitle(), 
 				categoriesResponse);

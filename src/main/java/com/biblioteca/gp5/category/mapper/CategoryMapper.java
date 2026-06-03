@@ -1,7 +1,10 @@
 package com.biblioteca.gp5.category.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 
+import com.biblioteca.gp5.category.dto.response.CategoryResponseDTO;
 import com.biblioteca.gp5.category.dto.response.CreateCategoryResponseDTO;
 import com.biblioteca.gp5.category.dto.response.EditCategoryResponseDTO;
 import com.biblioteca.gp5.category.dto.response.ListCategoriesResponseDTO;
@@ -15,5 +18,8 @@ public interface CategoryMapper {
 	ListCategoriesResponseDTO toListCategoriesResponseDTO(Category category);
 	
 	EditCategoryResponseDTO toEditCategoryResponseDTO(Category category);
+	
+	List<CategoryResponseDTO> toListCategoryResponseDTO(List<Category> category);
+	
 
 }

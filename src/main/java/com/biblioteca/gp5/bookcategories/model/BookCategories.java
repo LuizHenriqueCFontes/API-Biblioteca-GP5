@@ -41,6 +41,8 @@ public class BookCategories {
 	@Column(name = "created_at", nullable = false)
 	private LocalDateTime createdAt;
 	
+	public BookCategories() {}
+	
 	public BookCategories(Book book, Category category) {
 		this.book = book;
 		this.category = category;

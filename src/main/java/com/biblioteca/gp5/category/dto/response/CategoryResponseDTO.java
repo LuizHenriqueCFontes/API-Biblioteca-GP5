@@ -1,4 +1,4 @@
-package com.biblioteca.gp5.bookcategories.dto.response;
+package com.biblioteca.gp5.category.dto.response;
 
 import java.util.UUID;
 
