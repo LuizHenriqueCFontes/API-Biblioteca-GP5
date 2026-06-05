@@ -37,5 +37,7 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
 			"""
 	)
 	Page<Book> findByCategories(@Param("idsCategories") List<UUID> idsCategories, Pageable pageable);
+	
+	boolean existsByGutenbergId(Integer id);
 
 }
