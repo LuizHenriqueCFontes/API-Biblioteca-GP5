@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
 import com.biblioteca.gp5.book.model.Book;
 
 @Repository
@@ -15,5 +14,7 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
 	Page<Book> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 	
 	Page<Book> findAll(Pageable pageable);
+	
+	boolean existsByGutenbergId(Integer gutenbergId);
 
 }

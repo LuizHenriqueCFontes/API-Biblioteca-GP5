@@ -23,11 +23,11 @@ public interface BookMapper {
 	@Mapping(expression = "java(extractCoverUrl(gutendexBook))", target = "coverUrl")
 	@Mapping(expression = "java(extractFileUrl(gutendexBook))", target = "fileUrl")
 	@Mapping(expression = "java(extractSource())", target = "source")
-	@Mapping(expression = "java(extractName(gutendexAuthor))", target = "authors")
+	//@Mapping(expression = "java(extractName(gutendexAuthor))", target = "authors")
 	Book toEntity(GutendexBookResponseDTO gutendexBook);
 	
 	default String extractName(GutendexAuthorResponseDTO gutendexAuthor) {
-		return String.join(", ", gutendexAuthor.name());
+		return gutendexAuthor.name();
 	}
 	
 	default String extractCoverUrl(GutendexBookResponseDTO gutendexBook) {
