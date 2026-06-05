@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.biblioteca.gp5.book.dto.request.EditBookRequestDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
 import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
+import com.biblioteca.gp5.book.dto.response.ImportBookDetailsResponseDTO;
 import com.biblioteca.gp5.book.dto.response.ImportBookResponseDTO;
 import com.biblioteca.gp5.book.dto.response.ImportSearchResponseDTO;
 import com.biblioteca.gp5.book.mapper.BookMapper;
@@ -52,6 +53,14 @@ public class BookManagementService {
 		return response;
 	}
 	
+	public ImportBookDetailsResponseDTO gutendexDetailsBooks(Integer id) {
+		GutendexBookResponseDTO detailsBook = gutendexClient.searchBookById(id);
+		
+		ImportBookDetailsResponseDTO response = gutendexMapper.toImporBookDetailsResponseDTO(detailsBook);
+		
+		return response;
+	}
+	
 	public BookResponseDTO saveBook(Integer id) {
 		
 		if(bookRepository.existsByGutenbergId(id)) {
@@ -90,10 +99,6 @@ public class BookManagementService {
 			book.setSource(request.source());
 		}
 		
-		
-		if(request.active() != null) {
-			book.setActive(request.active());
-		}
 		
 		bookRepository.save(book);
 		

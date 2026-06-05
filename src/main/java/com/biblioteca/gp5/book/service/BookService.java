@@ -6,7 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.biblioteca.gp5.book.dto.request.BookFilterRequestDTO;
 import com.biblioteca.gp5.book.dto.request.EditBookRequestDTO;
+import com.biblioteca.gp5.book.dto.response.BookDetailsResponseDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
 import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
 import com.biblioteca.gp5.book.mapper.BookMapper;
@@ -27,20 +29,39 @@ public class BookService {
 		this.bookMapper = bookMapper;
 	}
 	
-	public Page<BookResponseDTO> listBook(String title, Pageable pageable){
+	public Page<BookResponseDTO> listBook(BookFilterRequestDTO filter, Pageable pageable){
+		
+		boolean hasTitle = filter.title() != null && !filter.title().isBlank();
+		boolean hasCategory = filter.idsCategories() != null && !filter.idsCategories().isEmpty();
 		
 		Page<Book> books;
 		
-		if(title == null || title.isBlank()) {
+		if(!hasTitle && !hasCategory) {
 			books = bookRepository.findAll(pageable);
 			
-		} else {
-			books = bookRepository.findByTitleContainingIgnoreCase(title, pageable);
+		} else if(hasTitle && hasCategory){
+			books = bookRepository.findByTitleAndCategories(filter.title(), filter.idsCategories(), pageable);
+			
+			
+		}else if(hasTitle && !hasCategory) {
+			books = bookRepository.findByTitleContainingIgnoreCase(filter.title(), pageable);
+			
+		}else {
+			books = bookRepository.findByCategories(filter.idsCategories(), pageable);
 		}
 		
 		Page<BookResponseDTO> booksResponse = books.map(bookMapper::toBookResponseDTO);
 		
 		return booksResponse;
+	}
+	
+	public BookDetailsResponseDTO bookDetails(UUID idBook) {
+		Book book = bookRepository.findById(idBook)
+								.orElseThrow(() -> new BookNotFoundException("Livro não encontrado"));
+		
+		BookDetailsResponseDTO response = bookMapper.toBookDetailsResponseDTO(book);
+		
+		return response;
 	}
 
 }

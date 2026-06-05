@@ -4,11 +4,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import com.biblioteca.gp5.bookcategories.model.BookCategories;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -46,5 +49,8 @@ public class Book {
 	
 	@Column(name = "creation_date")
 	private LocalDateTime creationDate = LocalDateTime.now();
+	
+	@OneToMany(mappedBy = "book")
+	List<BookCategories> bookCategories;
 
 }
