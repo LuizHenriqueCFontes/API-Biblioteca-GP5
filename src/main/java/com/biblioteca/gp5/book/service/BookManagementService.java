@@ -14,6 +14,7 @@ import com.biblioteca.gp5.book.dto.response.ImportSearchResponseDTO;
 import com.biblioteca.gp5.book.mapper.BookMapper;
 import com.biblioteca.gp5.book.model.Book;
 import com.biblioteca.gp5.book.repository.BookRepository;
+import com.biblioteca.gp5.exception.book.BookAlreadyRegisteredException;
 import com.biblioteca.gp5.exception.book.BookNotFoundException;
 import com.biblioteca.gp5.integration.gutendex.client.GutendexClient;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexBookResponseDTO;
@@ -61,6 +62,11 @@ public class BookManagementService {
 	}
 	
 	public BookResponseDTO saveBook(Integer id) {
+		
+		if(bookRepository.existsByGutenbergId(id)) {
+			throw new BookAlreadyRegisteredException("Livro ja está cadastrado");
+		}
+		
 		GutendexBookResponseDTO gutendexBook = gutendexClient.searchBookById(id);
 				
 		Book book = bookMapper.toEntity(gutendexBook);
