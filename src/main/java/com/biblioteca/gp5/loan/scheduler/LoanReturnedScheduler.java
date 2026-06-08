@@ -3,22 +3,22 @@ package com.biblioteca.gp5.loan.scheduler;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.biblioteca.gp5.loan.service.LoanReturnedService;
+import com.biblioteca.gp5.loan.service.LoanService;
 
 
 @Component
 public class LoanReturnedScheduler {
 	
-	private final LoanReturnedService loanReturnedService;
+	private final LoanService loanService;
 	
-	public LoanReturnedScheduler(LoanReturnedService loanReturnedService) {
-		this.loanReturnedService = loanReturnedService;
+	public LoanReturnedScheduler(LoanService loanService) {
+		this.loanService = loanService;
 	}
 	
 	
 	@Scheduled(cron = "0 0 * * * *")
 	public void expiresLoan() {
-		loanReturnedService.returnedLoans();
+		loanService.returnedLoanBySystem();
 		
 	}
 

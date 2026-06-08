@@ -1,6 +1,7 @@
 package com.biblioteca.gp5.loan.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -71,5 +72,19 @@ public class LoanService {
 		BookLoanResponseDTO response = loanMapper.toBookLoanResponseDTO(loan);
 		
 		return response;
+	}
+	
+	@Transactional
+	public void returnedLoanBySystem() {
+		
+		List<Loan> expiredLoans = loanRepository.findByStatusAndExpectedReturnDateBefore(Status.ACTIVE, 
+				LocalDateTime.now());
+		
+		expiredLoans.forEach(Loan::returnedLoanBySystem);
+	}
+	
+	@Transactional
+	public void returnedLoanByUser() {
+		
 	}
 }
