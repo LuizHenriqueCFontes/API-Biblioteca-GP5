@@ -10,6 +10,7 @@ import com.biblioteca.gp5.book.model.Book;
 import com.biblioteca.gp5.book.repository.BookRepository;
 import com.biblioteca.gp5.exception.book.BookNotAvailableException;
 import com.biblioteca.gp5.exception.book.BookNotFoundException;
+import com.biblioteca.gp5.exception.loan.LoanNotFoundException;
 import com.biblioteca.gp5.exception.loan.UserHasLoanException;
 import com.biblioteca.gp5.exception.user.UserNotFoundException;
 import com.biblioteca.gp5.loan.dto.request.BookLoanRequestDTO;
@@ -75,7 +76,7 @@ public class LoanService {
 	}
 	
 	@Transactional
-	public void returnedLoanBySystem() {
+	public void returnLoanBySystem() {
 		
 		List<Loan> expiredLoans = loanRepository.findByStatusAndExpectedReturnDateBefore(Status.ACTIVE, 
 				LocalDateTime.now());
@@ -84,7 +85,12 @@ public class LoanService {
 	}
 	
 	@Transactional
-	public void returnedLoanByUser() {
+	public void returnLoanByUser(UUID idLoan, UUID idUsers) {
+		Loan loan = loanRepository.findByIdAndUser(idLoan, idUsers)
+								  .orElseThrow(() -> new LoanNotFoundException("Empréstimo não encontrado"));
 		
+		loan.returnedLoanByUser();
+		
+		loanRepository.save(loan);
 	}
 }

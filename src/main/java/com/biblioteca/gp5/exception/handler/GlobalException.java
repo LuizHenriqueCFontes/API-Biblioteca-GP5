@@ -14,6 +14,7 @@ import com.biblioteca.gp5.exception.auth.PasswordMatches;
 import com.biblioteca.gp5.exception.book.BookNotAvailableException;
 import com.biblioteca.gp5.exception.book.BookNotFoundException;
 import com.biblioteca.gp5.exception.dto.ErrorResponse;
+import com.biblioteca.gp5.exception.loan.LoanNotFoundException;
 import com.biblioteca.gp5.exception.loan.UserHasLoanException;
 import com.biblioteca.gp5.exception.security.TokenCreationException;
 import com.biblioteca.gp5.exception.security.TokenValidationException;
@@ -121,6 +122,14 @@ public class GlobalException {
 	public ResponseEntity<Object> handlerUserHasLoanException(UserHasLoanException ex){
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
 				"Usuário ja possui o emprestimo do livro", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	@ExceptionHandler(LoanNotFoundException.class)
+	public ResponseEntity<Object> handlerLoanNotFoundException(LoanNotFoundException ex) {
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
+				"Empréstimo não encontrado", ex.getMessage());
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}

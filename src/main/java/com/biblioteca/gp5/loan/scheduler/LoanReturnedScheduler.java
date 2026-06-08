@@ -18,7 +18,7 @@ public class LoanReturnedScheduler {
 	
 	@Scheduled(cron = "0 0 * * * *")
 	public void expiresLoan() {
-		loanService.returnedLoanBySystem();
+		loanService.returnLoanBySystem();
 		
 	}
 
