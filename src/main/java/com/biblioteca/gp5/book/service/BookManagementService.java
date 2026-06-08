@@ -1,5 +1,6 @@
 package com.biblioteca.gp5.book.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -7,13 +8,18 @@ import org.springframework.stereotype.Service;
 import com.biblioteca.gp5.book.dto.request.EditBookRequestDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
 import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
+import com.biblioteca.gp5.book.dto.response.ImportBookDetailsResponseDTO;
+import com.biblioteca.gp5.book.dto.response.ImportBookResponseDTO;
+import com.biblioteca.gp5.book.dto.response.ImportSearchResponseDTO;
 import com.biblioteca.gp5.book.mapper.BookMapper;
 import com.biblioteca.gp5.book.model.Book;
 import com.biblioteca.gp5.book.repository.BookRepository;
+import com.biblioteca.gp5.exception.book.BookAlreadyRegisteredException;
 import com.biblioteca.gp5.exception.book.BookNotFoundException;
 import com.biblioteca.gp5.integration.gutendex.client.GutendexClient;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexBookResponseDTO;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexSearchResponseDTO;
+import com.biblioteca.gp5.integration.gutendex.mapper.GutendexMapper;
 
 import jakarta.transaction.Transactional;
 
@@ -23,19 +29,44 @@ public class BookManagementService {
 	private final GutendexClient gutendexClient;
 	private final BookMapper bookMapper;
 	private final BookRepository bookRepository;
+	private final GutendexMapper gutendexMapper;
 	
-	public BookManagementService(GutendexClient gutendexClient, BookMapper bookMapper, BookRepository bookRepository) {
+	public BookManagementService(GutendexClient gutendexClient, BookMapper bookMapper, BookRepository bookRepository, GutendexMapper gutendexMapper) {
 		this.gutendexClient = gutendexClient;
 		this.bookMapper = bookMapper;
 		this.bookRepository = bookRepository;
+		this.gutendexMapper = gutendexMapper;
 	}
 	
-	public GutendexSearchResponseDTO gutendexSearchBooks(String title) {
-		return gutendexClient.searchBooks(title);
+	public ImportSearchResponseDTO gutendexSearchBooks(String title, Integer page) {
+		 GutendexSearchResponseDTO gutendexSearch = gutendexClient.searchBooks(title, page);
+		 
+		 List<ImportBookResponseDTO> results = gutendexSearch.results()
+				 											.stream()
+				 											.limit(20)
+				 											.map(gutendexMapper::toImportBookResponseDTO)
+				 											.toList();
+		 
+		ImportSearchResponseDTO response = new ImportSearchResponseDTO(gutendexSearch.count(), gutendexSearch.next(), 
+				gutendexSearch.previous(), results);
 		
+		return response;
+	}
+	
+	public ImportBookDetailsResponseDTO gutendexDetailsBooks(Integer id) {
+		GutendexBookResponseDTO detailsBook = gutendexClient.searchBookById(id);
+		
+		ImportBookDetailsResponseDTO response = gutendexMapper.toImporBookDetailsResponseDTO(detailsBook);
+		
+		return response;
 	}
 	
 	public BookResponseDTO saveBook(Integer id) {
+		
+		if(bookRepository.existsByGutenbergId(id)) {
+			throw new BookAlreadyRegisteredException("Livro ja está cadastrado");
+		}
+		
 		GutendexBookResponseDTO gutendexBook = gutendexClient.searchBookById(id);
 				
 		Book book = bookMapper.toEntity(gutendexBook);
@@ -68,10 +99,6 @@ public class BookManagementService {
 			book.setSource(request.source());
 		}
 		
-		
-		if(request.active() != null) {
-			book.setActive(request.active());
-		}
 		
 		bookRepository.save(book);
 		

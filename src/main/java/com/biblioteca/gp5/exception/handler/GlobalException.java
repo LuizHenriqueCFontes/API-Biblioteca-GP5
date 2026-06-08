@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.biblioteca.gp5.exception.auth.EmailAlreadyExistsException;
 import com.biblioteca.gp5.exception.auth.PasswordMatches;
+import com.biblioteca.gp5.exception.book.BookAlreadyRegisteredException;
 import com.biblioteca.gp5.exception.book.BookNotAvailableException;
 import com.biblioteca.gp5.exception.book.BookNotFoundException;
+import com.biblioteca.gp5.exception.category.CategoryAlreadCadastredException;
+import com.biblioteca.gp5.exception.category.CategoryNotFoundException;
 import com.biblioteca.gp5.exception.dto.ErrorResponse;
 import com.biblioteca.gp5.exception.loan.LoanNotFoundException;
 import com.biblioteca.gp5.exception.loan.UserHasLoanException;
@@ -108,6 +111,14 @@ public class GlobalException {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 	
+	@ExceptionHandler(BookAlreadyRegisteredException.class)
+	public ResponseEntity<Object> handlerBookAlreadyRegistedException(BookAlreadyRegisteredException ex) {
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
+				"Livro já está cadastrado", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
 	@ExceptionHandler(BookNotAvailableException.class)
 	public ResponseEntity<Object> handlerBookNotAvailableException(BookNotAvailableException ex){
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
@@ -130,6 +141,19 @@ public class GlobalException {
 	public ResponseEntity<Object> handlerLoanNotFoundException(LoanNotFoundException ex) {
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
 				"Empréstimo não encontrado", ex.getMessage());
+	
+	@ExceptionHandler(CategoryAlreadCadastredException.class)
+	public ResponseEntity<Object> handlerCategoryAlreadCadastedException(CategoryAlreadCadastredException ex){
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
+				"Categoria já cadastrada", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	@ExceptionHandler(CategoryNotFoundException.class)
+	public ResponseEntity<Object> handlerCategoryNotFoundException(CategoryNotFoundException ex){
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
+				"Categoria não encontrada", ex.getMessage());
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}

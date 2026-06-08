@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.biblioteca.gp5.book.dto.request.EditBookRequestDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
 import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
+import com.biblioteca.gp5.book.dto.response.ImportBookDetailsResponseDTO;
+import com.biblioteca.gp5.book.dto.response.ImportSearchResponseDTO;
 import com.biblioteca.gp5.book.service.BookManagementService;
-import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexSearchResponseDTO;
 
 import jakarta.validation.Valid;
 
@@ -33,12 +34,21 @@ public class AdminController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<GutendexSearchResponseDTO> searchBooksGutendex(@RequestParam(required = false) String title){
+	public ResponseEntity<ImportSearchResponseDTO> searchBooksGutendex(@RequestParam(required = false) String title, 
+			@RequestParam(required = false) Integer page){
 		
-		GutendexSearchResponseDTO response = bookManagementService.gutendexSearchBooks(title);
+		ImportSearchResponseDTO response = bookManagementService.gutendexSearchBooks(title, page);
 		
 		return ResponseEntity.ok(response);
 	}
+	
+	@GetMapping("/{idBook}")
+	public ResponseEntity<ImportBookDetailsResponseDTO> detailsBook(@PathVariable Integer idBook) {
+		ImportBookDetailsResponseDTO response = bookManagementService.gutendexDetailsBooks(idBook);
+		
+		return ResponseEntity.ok(response);
+	}
+	
 	
 	@PostMapping("/{id}")
 	public ResponseEntity<BookResponseDTO> saveBook(@PathVariable Integer id){
