@@ -1,6 +1,7 @@
 package com.biblioteca.gp5.loan.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import com.biblioteca.gp5.book.model.Book;
 import com.biblioteca.gp5.book.repository.BookRepository;
 import com.biblioteca.gp5.exception.book.BookNotAvailableException;
 import com.biblioteca.gp5.exception.book.BookNotFoundException;
+import com.biblioteca.gp5.exception.loan.LoanNotFoundException;
 import com.biblioteca.gp5.exception.loan.UserHasLoanException;
 import com.biblioteca.gp5.exception.user.UserNotFoundException;
 import com.biblioteca.gp5.loan.dto.request.BookLoanRequestDTO;
@@ -71,5 +73,24 @@ public class LoanService {
 		BookLoanResponseDTO response = loanMapper.toBookLoanResponseDTO(loan);
 		
 		return response;
+	}
+	
+	@Transactional
+	public void returnLoanBySystem() {
+		
+		List<Loan> expiredLoans = loanRepository.findByStatusAndExpectedReturnDateBefore(Status.ACTIVE, 
+				LocalDateTime.now());
+		
+		expiredLoans.forEach(Loan::returnedLoanBySystem);
+	}
+	
+	@Transactional
+	public void returnLoanByUser(UUID idLoan, UUID idUsers) {
+		Loan loan = loanRepository.findByIdAndUser(idLoan, idUsers)
+								  .orElseThrow(() -> new LoanNotFoundException("Empréstimo não encontrado"));
+		
+		loan.returnedLoanByUser();
+		
+		loanRepository.save(loan);
 	}
 }

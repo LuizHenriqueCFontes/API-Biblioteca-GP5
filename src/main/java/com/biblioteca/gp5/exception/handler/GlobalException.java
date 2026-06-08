@@ -17,6 +17,7 @@ import com.biblioteca.gp5.exception.book.BookNotFoundException;
 import com.biblioteca.gp5.exception.category.CategoryAlreadCadastredException;
 import com.biblioteca.gp5.exception.category.CategoryNotFoundException;
 import com.biblioteca.gp5.exception.dto.ErrorResponse;
+import com.biblioteca.gp5.exception.loan.LoanNotFoundException;
 import com.biblioteca.gp5.exception.loan.UserHasLoanException;
 import com.biblioteca.gp5.exception.security.TokenCreationException;
 import com.biblioteca.gp5.exception.security.TokenValidationException;
@@ -136,6 +137,10 @@ public class GlobalException {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 	
+	@ExceptionHandler(LoanNotFoundException.class)
+	public ResponseEntity<Object> handlerLoanNotFoundException(LoanNotFoundException ex) {
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
+				"Empréstimo não encontrado", ex.getMessage());
 	
 	@ExceptionHandler(CategoryAlreadCadastredException.class)
 	public ResponseEntity<Object> handlerCategoryAlreadCadastedException(CategoryAlreadCadastredException ex){

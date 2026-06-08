@@ -70,5 +70,15 @@ public class Loan {
 		this.returnedBy = returnedBy.SYSTEM;
 		this.actualReturnDate = LocalDateTime.now();
 	}
+	
+	public void returnedLoanByUser() {
+		if(this.status != Status.ACTIVE) {
+			return;
+		}
+		
+		this.status = status.RETURNED;
+		this.returnedBy = returnedBy.USER;
+		this.actualReturnDate = LocalDateTime.now();
+	}
 
 }
