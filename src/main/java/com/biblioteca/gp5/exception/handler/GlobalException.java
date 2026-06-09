@@ -15,6 +15,7 @@ import com.biblioteca.gp5.exception.book.BookAlreadyRegisteredException;
 import com.biblioteca.gp5.exception.book.BookNotAvailableException;
 import com.biblioteca.gp5.exception.book.BookNotFoundException;
 import com.biblioteca.gp5.exception.category.CategoryAlreadCadastredException;
+import com.biblioteca.gp5.exception.category.CategoryInUseException;
 import com.biblioteca.gp5.exception.category.CategoryNotFoundException;
 import com.biblioteca.gp5.exception.dto.ErrorResponse;
 import com.biblioteca.gp5.exception.loan.LoanNotFoundException;
@@ -29,7 +30,7 @@ import com.biblioteca.gp5.exception.user.UserNotFoundException;
 public class GlobalException {
 
 	@ExceptionHandler(UsernameNotFoundException.class)
-	public ResponseEntity<Object> handlerUsernameNotFoundException(UsernameNotFoundException ex) {
+	public ResponseEntity<ErrorResponse> handleUsernameNotFoundException(UsernameNotFoundException ex) {
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(),
 				"Usuário não encontrado", ex.getMessage());
 
@@ -37,7 +38,7 @@ public class GlobalException {
 	}
 
 	@ExceptionHandler(BadCredentialsException.class)
-	public ResponseEntity<Object> handlerBadCredentialsException(BadCredentialsException ex) {
+	public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException ex) {
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(),
 				"Usuário ou senha incorreto", ex.getMessage());
 
@@ -45,7 +46,7 @@ public class GlobalException {
 	}
 
 	@ExceptionHandler(UserNotFoundException.class)
-	public ResponseEntity<Object> handlerUsuarioNaoEncontradoException(UserNotFoundException ex) {
+	public ResponseEntity<ErrorResponse> handleUsuarioNaoEncontradoException(UserNotFoundException ex) {
 
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(),
 				"Usuário não encontrado", ex.getMessage());
@@ -54,7 +55,7 @@ public class GlobalException {
 	}
 
 	@ExceptionHandler(InvalidPasswordException.class)
-	public ResponseEntity<Object> handlerInvalidPasswordException(InvalidPasswordException ex) {
+	public ResponseEntity<ErrorResponse> handleInvalidPasswordException(InvalidPasswordException ex) {
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "Senha inválida",
 				ex.getMessage());
 
@@ -62,7 +63,7 @@ public class GlobalException {
 	}
 
 	@ExceptionHandler(InvalidRoleException.class)
-	public ResponseEntity<Object> handlerInvalidRoleException(InvalidRoleException ex) {
+	public ResponseEntity<ErrorResponse> handleInvalidRoleException(InvalidRoleException ex) {
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "Role inválida",
 				ex.getMessage());
 		
@@ -71,7 +72,7 @@ public class GlobalException {
 	
 	
 	@ExceptionHandler(EmailAlreadyExistsException.class)
-	public ResponseEntity<Object> handlerEmailAlreadyExistsException(EmailAlreadyExistsException ex) {
+	public ResponseEntity<ErrorResponse> handleEmailAlreadyExistsException(EmailAlreadyExistsException ex) {
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(),
 				"O email já está cadastrado", ex.getMessage());
 
@@ -79,7 +80,7 @@ public class GlobalException {
 	}
 	
 	@ExceptionHandler(PasswordMatches.class)
-	public ResponseEntity<Object> handlerPasswordMatches(PasswordMatches ex){
+	public ResponseEntity<ErrorResponse> handlePasswordMatches(PasswordMatches ex){
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "As senhas não estão iguais", ex.getMessage());
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
@@ -87,7 +88,7 @@ public class GlobalException {
 
 
 	@ExceptionHandler(TokenCreationException.class)
-	public ResponseEntity<Object> handlerTokenCreationException(TokenCreationException ex) {
+	public ResponseEntity<Object> handleTokenCreationException(TokenCreationException ex) {
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(),
 				"Falha ao criar token", ex.getMessage());
 
@@ -95,7 +96,7 @@ public class GlobalException {
 	}
 
 	@ExceptionHandler(TokenValidationException.class)
-	public ResponseEntity<Object> handlerTokenValidationException(TokenValidationException ex) {
+	public ResponseEntity<ErrorResponse> handleTokenValidationException(TokenValidationException ex) {
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(),
 				"Falha ao validar token", ex.getMessage());
 
@@ -104,7 +105,7 @@ public class GlobalException {
 	
 	
 	@ExceptionHandler(BookNotFoundException.class)
-	public ResponseEntity<Object> handlerBookNotFoundException(BookNotFoundException ex){
+	public ResponseEntity<ErrorResponse> handleBookNotFoundException(BookNotFoundException ex){
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
 				"Livro não encontrado", ex.getMessage());
 		
@@ -112,7 +113,7 @@ public class GlobalException {
 	}
 	
 	@ExceptionHandler(BookAlreadyRegisteredException.class)
-	public ResponseEntity<Object> handlerBookAlreadyRegistedException(BookAlreadyRegisteredException ex) {
+	public ResponseEntity<ErrorResponse> handleBookAlreadyRegistedException(BookAlreadyRegisteredException ex) {
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
 				"Livro já está cadastrado", ex.getMessage());
 		
@@ -120,7 +121,7 @@ public class GlobalException {
 	}
 	
 	@ExceptionHandler(BookNotAvailableException.class)
-	public ResponseEntity<Object> handlerBookNotAvailableException(BookNotAvailableException ex){
+	public ResponseEntity<ErrorResponse> handleBookNotAvailableException(BookNotAvailableException ex){
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
 				"Livro não disponível", ex.getMessage());
 		
@@ -130,7 +131,7 @@ public class GlobalException {
 	
 	
 	@ExceptionHandler(UserHasLoanException.class)
-	public ResponseEntity<Object> handlerUserHasLoanException(UserHasLoanException ex){
+	public ResponseEntity<ErrorResponse> handleUserHasLoanException(UserHasLoanException ex){
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
 				"Usuário ja possui o emprestimo do livro", ex.getMessage());
 		
@@ -138,12 +139,16 @@ public class GlobalException {
 	}
 	
 	@ExceptionHandler(LoanNotFoundException.class)
-	public ResponseEntity<Object> handlerLoanNotFoundException(LoanNotFoundException ex) {
+	public ResponseEntity<ErrorResponse> handleLoanNotFoundException(LoanNotFoundException ex) {
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
 				"Empréstimo não encontrado", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
 	
 	@ExceptionHandler(CategoryAlreadCadastredException.class)
-	public ResponseEntity<Object> handlerCategoryAlreadCadastedException(CategoryAlreadCadastredException ex){
+	public ResponseEntity<ErrorResponse> handleCategoryAlreadCadastedException(CategoryAlreadCadastredException ex){
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
 				"Categoria já cadastrada", ex.getMessage());
 		
@@ -151,11 +156,20 @@ public class GlobalException {
 	}
 	
 	@ExceptionHandler(CategoryNotFoundException.class)
-	public ResponseEntity<Object> handlerCategoryNotFoundException(CategoryNotFoundException ex){
+	public ResponseEntity<ErrorResponse> handleCategoryNotFoundException(CategoryNotFoundException ex){
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
 				"Categoria não encontrada", ex.getMessage());
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	@ExceptionHandler(CategoryInUseException.class)
+	public ResponseEntity<ErrorResponse> handlerCategoryInUseException(CategoryInUseException ex) {
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
+				"Categoria em uso", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+		
 	}
 
 }
