@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.biblioteca.gp5.book.model.Book;
@@ -92,5 +94,13 @@ public class LoanService {
 		loan.returnedLoanByUser();
 		
 		loanRepository.save(loan);
+	}
+	
+	public Page<BookLoanResponseDTO> listLoans(UUID idUser, Pageable pageable) {
+		Page<Loan> listLoans = loanRepository.findByUserAndStatus(idUser, Status.ACTIVE, pageable);
+		
+		Page<BookLoanResponseDTO> response = listLoans.map(loanMapper::toBookLoanResponseDTO);
+		
+		return response;
 	}
 }

@@ -141,6 +141,9 @@ public class GlobalException {
 	public ResponseEntity<Object> handlerLoanNotFoundException(LoanNotFoundException ex) {
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
 				"Empréstimo não encontrado", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
 	
 	@ExceptionHandler(CategoryAlreadCadastredException.class)
 	public ResponseEntity<Object> handlerCategoryAlreadCadastedException(CategoryAlreadCadastredException ex){

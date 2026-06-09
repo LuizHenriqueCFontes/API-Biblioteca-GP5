@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -31,5 +33,14 @@ public interface LoanRepository extends JpaRepository<Loan, UUID>{
 	""")
 	Optional<Loan> findByIdAndUser(@Param("idLoan") UUID idLoan, 
 								  @Param ("idUsers") UUID idUsers);
+	
+	@Query("""
+		SELECT l
+		FROM Loan l
+		WHERE l.user.idUsers = :userId
+			AND l.status = :status
+	"""
+	)
+	Page<Loan> findByUserAndStatus(@Param("userId") UUID userId, @Param("status") Status status, Pageable pageable);
 
 }
