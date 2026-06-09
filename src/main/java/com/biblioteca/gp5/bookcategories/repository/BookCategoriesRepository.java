@@ -24,4 +24,6 @@ public interface BookCategoriesRepository extends JpaRepository<BookCategories, 
 			"""
 	)
 	void deleteAllByIdBook(@Param("idBook") UUID idBook);
+	
+	boolean existsByCategoryIdCategory(UUID idCategory);
 }
