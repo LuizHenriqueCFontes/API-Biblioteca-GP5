@@ -1,6 +1,8 @@
 package com.biblioteca.gp5.loan.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +19,7 @@ import com.biblioteca.gp5.exception.loan.UserHasLoanException;
 import com.biblioteca.gp5.exception.user.UserNotFoundException;
 import com.biblioteca.gp5.loan.dto.request.BookLoanRequestDTO;
 import com.biblioteca.gp5.loan.dto.response.BookLoanResponseDTO;
+import com.biblioteca.gp5.loan.dto.response.LoanSummaryResponseDTO;
 import com.biblioteca.gp5.loan.mapper.LoanMapper;
 import com.biblioteca.gp5.loan.model.Loan;
 import com.biblioteca.gp5.loan.model.enums.Status;
@@ -96,11 +99,31 @@ public class LoanService {
 		loanRepository.save(loan);
 	}
 	
-	public Page<BookLoanResponseDTO> listLoans(UUID idUser, Pageable pageable) {
-		Page<Loan> listLoans = loanRepository.findByUserAndStatus(idUser, Status.ACTIVE, pageable);
+	public Page<BookLoanResponseDTO> listLoans(UUID idUser, Status status, Pageable pageable) {
+		Page<Loan> listLoans = loanRepository.findByUserAndStatus(idUser, status, pageable);
 		
 		Page<BookLoanResponseDTO> response = listLoans.map(loanMapper::toBookLoanResponseDTO);
 		
 		return response;
+	}
+	
+	public LoanSummaryResponseDTO loanSummary(UUID idUser) {
+		Integer activeLoans = loanRepository.countActiveLoans(idUser);
+		
+		Integer totalLoans = loanRepository.countByUserIdUsers(idUser);
+		
+		LocalDate nextDueDate = loanRepository.findNextDueDate(idUser)
+													.orElse(null);
+		
+		long nextDueDateDays = 0;
+		
+		if(nextDueDate != null) {
+			nextDueDateDays = ChronoUnit.DAYS.between(LocalDate.now(), nextDueDate);
+		}
+		
+		LoanSummaryResponseDTO response = new LoanSummaryResponseDTO(activeLoans, totalLoans, nextDueDateDays);
+		
+		return response;
+		
 	}
 }

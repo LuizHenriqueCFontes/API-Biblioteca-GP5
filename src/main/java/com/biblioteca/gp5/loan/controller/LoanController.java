@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.biblioteca.gp5.loan.dto.request.BookLoanRequestDTO;
 import com.biblioteca.gp5.loan.dto.response.BookLoanResponseDTO;
+import com.biblioteca.gp5.loan.dto.response.LoanSummaryResponseDTO;
+import com.biblioteca.gp5.loan.model.enums.Status;
 import com.biblioteca.gp5.loan.service.LoanService;
 import com.biblioteca.gp5.user.model.User;
 
@@ -52,8 +55,16 @@ public class LoanController {
 
 	@GetMapping
 	public ResponseEntity<Page<BookLoanResponseDTO>> listLoans(@AuthenticationPrincipal User user, 
-														 @PageableDefault(page = 0, size = 20) Pageable pageable) {
-		Page<BookLoanResponseDTO> response = loanService.listLoans(user.getIdUsers(), pageable);
+														 @PageableDefault(page = 0, size = 20) Pageable pageable,
+														 @RequestParam Status status) {
+		Page<BookLoanResponseDTO> response = loanService.listLoans(user.getIdUsers(), status, pageable);
+		
+		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/summary")
+	public ResponseEntity<LoanSummaryResponseDTO> loanSummary(@AuthenticationPrincipal User user) {
+		LoanSummaryResponseDTO response = loanService.loanSummary(user.getIdUsers());
 		
 		return ResponseEntity.ok(response);
 	}

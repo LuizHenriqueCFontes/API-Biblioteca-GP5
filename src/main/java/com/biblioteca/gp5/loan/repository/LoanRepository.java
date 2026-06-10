@@ -1,5 +1,6 @@
 package com.biblioteca.gp5.loan.repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,7 @@ public interface LoanRepository extends JpaRepository<Loan, UUID>{
 	
 	boolean existsByUserAndBookAndStatus(User user, Book book, Status status);
 	
-	List<Loan> findByStatusAndExpectedReturnDateBefore(Status status, LocalDateTime dadte);
+	List<Loan> findByStatusAndExpectedReturnDateBefore(Status status, LocalDateTime date);
 	
 	@Query("""
 		SELECT l
@@ -42,5 +43,27 @@ public interface LoanRepository extends JpaRepository<Loan, UUID>{
 	"""
 	)
 	Page<Loan> findByUserAndStatus(@Param("userId") UUID userId, @Param("status") Status status, Pageable pageable);
-
+	
+	Integer countByUserIdUsers(UUID idUser);
+	
+	@Query("""
+		SELECT COUNT(l)
+		FROM Loan l
+		WHERE l.user.idUsers = :idUser
+			AND l.status = 'ACTIVE' 
+	"""
+	)
+	Integer countActiveLoans(@Param("idUser") UUID idUser);
+	
+	@Query("""
+		SELECT MIN(l.expectedReturnDate)
+		FROM Loan l
+		WHERE l.user.idUsers = :idUser
+			AND l.status = 'ACTIVE'
+	"""
+	)
+	Optional<LocalDate> findNextDueDate(@Param("idUser") UUID idUser);
+	
+	
+	
 }
