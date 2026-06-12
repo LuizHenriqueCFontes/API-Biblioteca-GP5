@@ -10,6 +10,9 @@ import com.biblioteca.gp5.loan.model.Loan;
 public interface LoanMapper {
 	
 	@Mapping(source = "book.title", target = "title")
+	@Mapping(source = "book.coverUrl", target = "coverUrl")
+	@Mapping(source = "book.authors", target = "authors")
+	@Mapping(source = "book.fileUrl", target = "fileUrl")
 	@Mapping(source = "book.idBook", target = "bookId")
 	public BookLoanResponseDTO toBookLoanResponseDTO(Loan loan);
 
