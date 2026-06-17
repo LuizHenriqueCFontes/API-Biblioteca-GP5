@@ -14,6 +14,6 @@ public interface LoanMapper {
 	@Mapping(source = "book.authors", target = "authors")
 	@Mapping(source = "book.fileUrl", target = "fileUrl")
 	@Mapping(source = "book.idBook", target = "bookId")
-	public BookLoanResponseDTO toBookLoanResponseDTO(Loan loan);
+	public BookLoanResponseDTO toBookLoanResponseDTO(Loan loan, boolean hasReading);
 
 }
