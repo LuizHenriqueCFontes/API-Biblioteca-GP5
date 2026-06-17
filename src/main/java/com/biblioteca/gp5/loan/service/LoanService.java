@@ -105,7 +105,20 @@ public class LoanService {
 	public Page<BookLoanResponseDTO> listLoans(UUID idUser, Status status, Pageable pageable) {
 		Page<Loan> listLoans = loanRepository.findByUserAndStatus(idUser, status, pageable);
 		
-		Page<BookLoanResponseDTO> response = listLoans.map(loanMapper::toBookLoanResponseDTO);
+		Page<BookLoanResponseDTO> response;
+		
+		if(status == Status.ACTIVE) {
+			response = listLoans.map(loan -> {
+				
+				boolean hasReading = readingRepository.existsByUserAndBook(idUser, loan.getBook().getIdBook());
+				
+				return loanMapper.toBookLoanResponseDTO(loan, hasReading);
+			});
+			
+		} else {
+			response = listLoans.map(loan -> loanMapper.toBookLoanResponseDTO(loan, false));
+			
+		}
 		
 		return response;
 	}

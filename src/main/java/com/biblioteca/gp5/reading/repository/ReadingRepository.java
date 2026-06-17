@@ -11,10 +11,14 @@ import com.biblioteca.gp5.reading.model.Reading;
 public interface ReadingRepository extends JpaRepository<Reading, UUID> {
 	
 	@Query("""
-			SELECT r
+			SELECT 
+				CASE
+					WHEN COUNT(r) > 0 THEN true ELSE false
+				END	
 			FROM Reading r
+			
 			WHERE r.user.idUsers = :idUser
-			  AND r.book.idbook = :idBook
+			  AND r.book.idBook = :idBook
 			
 	"""
 	)
