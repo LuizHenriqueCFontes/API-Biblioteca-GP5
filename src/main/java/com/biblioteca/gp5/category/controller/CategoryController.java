@@ -1,12 +1,11 @@
 package com.biblioteca.gp5.category.controller;
 
+import java.util.List;
 import java.util.UUID;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.biblioteca.gp5.category.dto.request.CreateCategoryRequestDTO;
+import com.biblioteca.gp5.category.dto.request.DeleteCategoriesRequestDTO;
 import com.biblioteca.gp5.category.dto.request.EditCategoryRequestDTO;
+import com.biblioteca.gp5.category.dto.response.CategoryResponseDTO;
 import com.biblioteca.gp5.category.dto.response.CreateCategoryResponseDTO;
 import com.biblioteca.gp5.category.dto.response.EditCategoryResponseDTO;
-import com.biblioteca.gp5.category.dto.response.ListCategoriesResponseDTO;
 import com.biblioteca.gp5.category.service.CategoryService;
 
 import jakarta.validation.Valid;
@@ -44,10 +44,9 @@ public class CategoryController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<Page<ListCategoriesResponseDTO>> listCategories(@RequestParam(required = false) String name, 
-			@PageableDefault(page = 0, size = 20) Pageable pageable){
+	public ResponseEntity<List<CategoryResponseDTO>> listCategories(@RequestParam(required = false) String name){
 		
-		Page<ListCategoriesResponseDTO> response = categoryService.listCategories(name, pageable);
+		List<CategoryResponseDTO> response = categoryService.listCategories(name);
 		
 		return ResponseEntity.ok(response);
 	}
@@ -58,6 +57,13 @@ public class CategoryController {
 		
 		return ResponseEntity.ok(response);
 		
+	}
+	
+	@DeleteMapping
+	public ResponseEntity<Void> deleteCategories(@RequestBody @Valid DeleteCategoriesRequestDTO request) {
+		categoryService.deleteCategories(request);
+		
+		return ResponseEntity.noContent().build();
 	}
 
 }
