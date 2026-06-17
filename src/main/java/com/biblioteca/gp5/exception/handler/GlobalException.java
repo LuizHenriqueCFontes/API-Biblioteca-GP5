@@ -146,7 +146,6 @@ public class GlobalException {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 	
-	
 	@ExceptionHandler(CategoryAlreadCadastredException.class)
 	public ResponseEntity<ErrorResponse> handleCategoryAlreadCadastedException(CategoryAlreadCadastredException ex){
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
