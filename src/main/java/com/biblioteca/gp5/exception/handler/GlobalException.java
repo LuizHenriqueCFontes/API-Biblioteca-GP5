@@ -20,6 +20,7 @@ import com.biblioteca.gp5.exception.category.CategoryNotFoundException;
 import com.biblioteca.gp5.exception.dto.ErrorResponse;
 import com.biblioteca.gp5.exception.loan.LoanNotFoundException;
 import com.biblioteca.gp5.exception.loan.UserHasLoanException;
+import com.biblioteca.gp5.exception.reading.ReadingAlreadyStartedException;
 import com.biblioteca.gp5.exception.security.TokenCreationException;
 import com.biblioteca.gp5.exception.security.TokenValidationException;
 import com.biblioteca.gp5.exception.user.InvalidPasswordException;
@@ -146,6 +147,7 @@ public class GlobalException {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 	
+	
 	@ExceptionHandler(CategoryAlreadCadastredException.class)
 	public ResponseEntity<ErrorResponse> handleCategoryAlreadCadastedException(CategoryAlreadCadastredException ex){
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
@@ -169,6 +171,14 @@ public class GlobalException {
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 		
+	}
+	
+	@ExceptionHandler(ReadingAlreadyStartedException.class)
+	public ResponseEntity<ErrorResponse> handlerReadingAlreadyStartedException(ReadingAlreadyStartedException ex) {
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
+					"Leitura iniciada", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);	
 	}
 
 }

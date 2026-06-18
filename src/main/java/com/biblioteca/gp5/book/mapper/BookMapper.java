@@ -28,6 +28,7 @@ public interface BookMapper {
 	@Mapping(expression = "java(extractCoverUrl(gutendexBook))", target = "coverUrl")
 	@Mapping(expression = "java(extractFileUrl(gutendexBook))", target = "fileUrl")
 	@Mapping(expression = "java(extractSource())", target = "source")
+	@Mapping(source = "summaries", target = "description")
 	//@Mapping(expression = "java(extractName(gutendexAuthor))", target = "authors")
 	Book toEntity(GutendexBookResponseDTO gutendexBook);
 	

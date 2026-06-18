@@ -16,7 +16,6 @@ public interface ReadingRepository extends JpaRepository<Reading, UUID> {
 					WHEN COUNT(r) > 0 THEN true ELSE false
 				END	
 			FROM Reading r
-			
 			WHERE r.user.idUsers = :idUser
 			  AND r.book.idBook = :idBook
 			
