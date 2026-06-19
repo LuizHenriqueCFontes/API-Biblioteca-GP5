@@ -23,6 +23,7 @@ import com.biblioteca.gp5.exception.loan.UserHasLoanException;
 import com.biblioteca.gp5.exception.reading.ReadingAlreadyStartedException;
 import com.biblioteca.gp5.exception.security.TokenCreationException;
 import com.biblioteca.gp5.exception.security.TokenValidationException;
+import com.biblioteca.gp5.exception.storage.FailedCreateDirectoryException;
 import com.biblioteca.gp5.exception.user.InvalidPasswordException;
 import com.biblioteca.gp5.exception.user.InvalidRoleException;
 import com.biblioteca.gp5.exception.user.UserNotFoundException;
@@ -179,6 +180,15 @@ public class GlobalException {
 					"Leitura iniciada", ex.getMessage());
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);	
+	}
+	
+	
+	@ExceptionHandler(FailedCreateDirectoryException.class)
+	public ResponseEntity<ErrorResponse> handlerFailedCreatedDirectoryException(FailedCreateDirectoryException ex){
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
+				"Falha ao criar diretorios", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 
 }
