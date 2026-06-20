@@ -3,6 +3,7 @@ package com.biblioteca.gp5.exception.handler;
 import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,6 +25,7 @@ import com.biblioteca.gp5.exception.reading.ReadingAlreadyStartedException;
 import com.biblioteca.gp5.exception.security.TokenCreationException;
 import com.biblioteca.gp5.exception.security.TokenValidationException;
 import com.biblioteca.gp5.exception.storage.FailedCreateDirectoryException;
+import com.biblioteca.gp5.exception.storage.FailedSaveFileException;
 import com.biblioteca.gp5.exception.user.InvalidPasswordException;
 import com.biblioteca.gp5.exception.user.InvalidRoleException;
 import com.biblioteca.gp5.exception.user.UserNotFoundException;
@@ -187,6 +189,14 @@ public class GlobalException {
 	public ResponseEntity<ErrorResponse> handlerFailedCreatedDirectoryException(FailedCreateDirectoryException ex){
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
 				"Falha ao criar diretorios", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	@ExceptionHandler(FailedSaveFileException.class)
+	public ResponseEntity<ErrorResponse> handlerFailedSaveFileException(FailedSaveFileException ex) {
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(),
+						"Falha ao salvar arquivo", ex.getMessage());
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}

@@ -1,8 +1,8 @@
 package com.biblioteca.gp5.integration.gutendex.client;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
-import com.biblioteca.gp5.integration.gutendex.config.RestClientConfiguration;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexBookResponseDTO;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexSearchResponseDTO;
 
@@ -11,7 +11,7 @@ public class GutendexClient {
 	
 	private final RestClient restClient;
 	
-	public GutendexClient(RestClient restClient) {
+	public GutendexClient(@Qualifier("restClientGutendex") RestClient restClient) {
 		this.restClient = restClient;
 	}
 	
