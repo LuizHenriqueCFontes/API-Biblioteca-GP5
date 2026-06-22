@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 import com.biblioteca.gp5.book.dto.response.BookDetailsResponseDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
@@ -33,12 +34,16 @@ public interface BookMapper {
 	Book toEntity(GutendexBookResponseDTO gutendexBook);
 	
 	@Mapping(source = "idBook", target = "id")
+	@Mapping(qualifiedByName = "toFileUrl", target = "coverUrl")
+	@Mapping(qualifiedByName = "toFileUrl", target = "fileUrl")
 	BookResponseDTO toBookResponseDTO(Book book);
 	
 	EditBookResponseDTO toEditBookResponseDTO(Book book);
 	
 	@Mapping(source = "idBook", target = "id")
 	@Mapping(source = "bookCategories", target = "categories")
+	@Mapping(qualifiedByName = "toFileUrl", target = "coverUrl")
+	@Mapping(qualifiedByName = "toFileUrl", target = "fileUrl")
 	BookDetailsResponseDTO toBookDetailsResponseDTO(Book book);
 	
 	default List<Category> mapCategories(List<BookCategories> bookCategories) {
@@ -61,6 +66,16 @@ public interface BookMapper {
 	
 	default String extractSource() {
 		return BookSources.GUTENDEX.getValue();
+	}
+	
+	@Named("toFileUrl")
+	default String toFileUrl(String path) {
+		
+		if(path == null || path.isBlank()) {
+			return null;
+		}
+		
+		return "/files/" + path;
 	}
 
 	
