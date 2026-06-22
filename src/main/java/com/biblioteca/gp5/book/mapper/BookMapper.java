@@ -5,6 +5,7 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.biblioteca.gp5.book.dto.response.BookDetailsResponseDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
@@ -19,8 +20,12 @@ import com.biblioteca.gp5.category.model.Category;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexAuthorResponseDTO;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexBookResponseDTO;
 
+
 @Mapper(componentModel = "spring", uses = CategoryMapper.class)
 public interface BookMapper {
+	
+	@Value("${app.files.base-url}")
+	protected String filesBaseUrl;
 	
 	//Source de onde o valor vem
 	//Target para onde o valor vai
@@ -75,7 +80,7 @@ public interface BookMapper {
 			return null;
 		}
 		
-		return "/files/" + path;
+		return "http://localhost:8080/files/" + path;
 	}
 
 	
