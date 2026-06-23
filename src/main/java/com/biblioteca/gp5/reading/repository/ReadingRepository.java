@@ -1,5 +1,6 @@
 package com.biblioteca.gp5.reading.repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,5 +23,14 @@ public interface ReadingRepository extends JpaRepository<Reading, UUID> {
 	"""
 	)
 	boolean existsByUserAndBook(@Param("idUser") UUID idUser, @Param("idBook") UUID idBook);
+	
+	@Query("""
+			SELECT r
+			FROM Reading r
+			WHERE r.user.idUsers = :idUser
+				AND r.book.idBook = :idBook			
+	"""
+	)
+	Optional<Reading> findByUserAndBook(@Param("idUser") UUID idUser, @Param("idBook") UUID idBook);
 
 }

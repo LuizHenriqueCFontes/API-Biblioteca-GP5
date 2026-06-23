@@ -22,6 +22,7 @@ import com.biblioteca.gp5.exception.dto.ErrorResponse;
 import com.biblioteca.gp5.exception.loan.LoanNotFoundException;
 import com.biblioteca.gp5.exception.loan.UserHasLoanException;
 import com.biblioteca.gp5.exception.reading.ReadingAlreadyStartedException;
+import com.biblioteca.gp5.exception.reading.ReadingNotFoundException;
 import com.biblioteca.gp5.exception.security.TokenCreationException;
 import com.biblioteca.gp5.exception.security.TokenValidationException;
 import com.biblioteca.gp5.exception.storage.FailedCreateDirectoryException;
@@ -182,6 +183,14 @@ public class GlobalException {
 					"Leitura iniciada", ex.getMessage());
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);	
+	}
+	
+	@ExceptionHandler(ReadingNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handlerReadingNotFoundException(ReadingNotFoundException ex) {
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
+						"Leitura não encontrada", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 	
 	

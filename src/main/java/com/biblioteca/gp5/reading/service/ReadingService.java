@@ -11,15 +11,20 @@ import com.biblioteca.gp5.book.repository.BookRepository;
 import com.biblioteca.gp5.exception.book.BookNotFoundException;
 import com.biblioteca.gp5.exception.loan.LoanNotFoundException;
 import com.biblioteca.gp5.exception.reading.ReadingAlreadyStartedException;
+import com.biblioteca.gp5.exception.reading.ReadingNotFoundException;
 import com.biblioteca.gp5.exception.user.UserNotFoundException;
 import com.biblioteca.gp5.loan.model.enums.Status;
 import com.biblioteca.gp5.loan.repository.LoanRepository;
-import com.biblioteca.gp5.reading.dto.ReadingResponseDTO;
+import com.biblioteca.gp5.reading.dto.request.UpdateReadingRequestDTO;
+import com.biblioteca.gp5.reading.dto.response.ReadingResponseDTO;
+import com.biblioteca.gp5.reading.dto.response.UpdateReadingResponseDTO;
 import com.biblioteca.gp5.reading.mapper.ReadingMapper;
 import com.biblioteca.gp5.reading.model.Reading;
 import com.biblioteca.gp5.reading.repository.ReadingRepository;
 import com.biblioteca.gp5.user.model.User;
 import com.biblioteca.gp5.user.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ReadingService {
@@ -72,6 +77,38 @@ public class ReadingService {
 		ReadingResponseDTO response = readingMapper.toReadingResponseDTO(reading);
 		
 		return response;
+	}
+	
+	@Transactional
+	public UpdateReadingResponseDTO updateReading(UUID idUser, UUID idBook, UpdateReadingRequestDTO request) {
+		Reading reading = readingRepository.findByUserAndBook(idUser, idBook)
+											.orElseThrow(() -> new ReadingNotFoundException("Leitura não encontrada"));
+		
+		if(request.epubCfi() != null && !request.epubCfi().isBlank()) {
+			reading.setEpubCfi(request.epubCfi());
+		}
+		
+		if(request.percentage() != null) {
+			reading.setPercentage(request.percentage());
+		}
+		
+		reading.setLastReading(LocalDateTime.now());
+		
+		readingRepository.save(reading);
+		
+		UpdateReadingResponseDTO response = readingMapper.toReadingUpdateResponseDTO(reading);
+		
+		return response;
+	}
+	
+	public ReadingResponseDTO getReadingProgress(UUID idUser, UUID idBook) {
+		
+		Reading reading = readingRepository.findByUserAndBook(idUser, idBook)
+										   .orElseThrow(() -> new ReadingNotFoundException("Leitura não encontrada"));
+		
+		ReadingResponseDTO response = readingMapper.toReadingResponseDTO(reading);
+		
+		return response;							
 	}
 
 }
