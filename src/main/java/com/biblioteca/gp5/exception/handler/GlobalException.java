@@ -3,6 +3,7 @@ package com.biblioteca.gp5.exception.handler;
 import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,8 +21,12 @@ import com.biblioteca.gp5.exception.category.CategoryNotFoundException;
 import com.biblioteca.gp5.exception.dto.ErrorResponse;
 import com.biblioteca.gp5.exception.loan.LoanNotFoundException;
 import com.biblioteca.gp5.exception.loan.UserHasLoanException;
+import com.biblioteca.gp5.exception.reading.ReadingAlreadyStartedException;
+import com.biblioteca.gp5.exception.reading.ReadingNotFoundException;
 import com.biblioteca.gp5.exception.security.TokenCreationException;
 import com.biblioteca.gp5.exception.security.TokenValidationException;
+import com.biblioteca.gp5.exception.storage.FailedCreateDirectoryException;
+import com.biblioteca.gp5.exception.storage.FailedSaveFileException;
 import com.biblioteca.gp5.exception.user.InvalidPasswordException;
 import com.biblioteca.gp5.exception.user.InvalidRoleException;
 import com.biblioteca.gp5.exception.user.UserNotFoundException;
@@ -146,6 +151,7 @@ public class GlobalException {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 	
+	
 	@ExceptionHandler(CategoryAlreadCadastredException.class)
 	public ResponseEntity<ErrorResponse> handleCategoryAlreadCadastedException(CategoryAlreadCadastredException ex){
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
@@ -169,6 +175,39 @@ public class GlobalException {
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 		
+	}
+	
+	@ExceptionHandler(ReadingAlreadyStartedException.class)
+	public ResponseEntity<ErrorResponse> handlerReadingAlreadyStartedException(ReadingAlreadyStartedException ex) {
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
+					"Leitura iniciada", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);	
+	}
+	
+	@ExceptionHandler(ReadingNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handlerReadingNotFoundException(ReadingNotFoundException ex) {
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
+						"Leitura não encontrada", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	
+	@ExceptionHandler(FailedCreateDirectoryException.class)
+	public ResponseEntity<ErrorResponse> handlerFailedCreatedDirectoryException(FailedCreateDirectoryException ex){
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), 
+				"Falha ao criar diretorios", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	@ExceptionHandler(FailedSaveFileException.class)
+	public ResponseEntity<ErrorResponse> handlerFailedSaveFileException(FailedSaveFileException ex) {
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(),
+						"Falha ao salvar arquivo", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 
 }

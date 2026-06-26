@@ -2,7 +2,7 @@ CREATE TABLE reading(
 	id_reading BINARY(16) UNIQUE NOT NULL,
     book_id BINARY(16) NOT NULL,
     user_id BINARY(16) NOT NULL,
-    current_page INT DEFAULT 0,
+    epub_cfi VARCHAR(500),
 	percentage DECIMAL(5, 2) DEFAULT 0.00,
     last_reading TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     

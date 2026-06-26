@@ -11,15 +11,19 @@ import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
 import com.biblioteca.gp5.book.dto.response.ImportBookDetailsResponseDTO;
 import com.biblioteca.gp5.book.dto.response.ImportBookResponseDTO;
 import com.biblioteca.gp5.book.dto.response.ImportSearchResponseDTO;
+import com.biblioteca.gp5.book.enums.BookCover;
+import com.biblioteca.gp5.book.enums.BookFormat;
 import com.biblioteca.gp5.book.mapper.BookMapper;
 import com.biblioteca.gp5.book.model.Book;
 import com.biblioteca.gp5.book.repository.BookRepository;
 import com.biblioteca.gp5.exception.book.BookAlreadyRegisteredException;
 import com.biblioteca.gp5.exception.book.BookNotFoundException;
 import com.biblioteca.gp5.integration.gutendex.client.GutendexClient;
+import com.biblioteca.gp5.integration.gutendex.download.FileDownloadService;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexBookResponseDTO;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexSearchResponseDTO;
 import com.biblioteca.gp5.integration.gutendex.mapper.GutendexMapper;
+import com.biblioteca.gp5.storage.StorageService;
 
 import jakarta.transaction.Transactional;
 
@@ -30,12 +34,17 @@ public class BookManagementService {
 	private final BookMapper bookMapper;
 	private final BookRepository bookRepository;
 	private final GutendexMapper gutendexMapper;
+	private final FileDownloadService fileDownload;
+	private final StorageService storageService;
 	
-	public BookManagementService(GutendexClient gutendexClient, BookMapper bookMapper, BookRepository bookRepository, GutendexMapper gutendexMapper) {
+	public BookManagementService(GutendexClient gutendexClient, BookMapper bookMapper, BookRepository bookRepository, 
+			GutendexMapper gutendexMapper, FileDownloadService fileDownload, StorageService storageService) {
 		this.gutendexClient = gutendexClient;
 		this.bookMapper = bookMapper;
 		this.bookRepository = bookRepository;
 		this.gutendexMapper = gutendexMapper;
+		this.fileDownload = fileDownload;
+		this.storageService = storageService;
 	}
 	
 	public ImportSearchResponseDTO gutendexSearchBooks(String title, Integer page) {
@@ -68,8 +77,20 @@ public class BookManagementService {
 		}
 		
 		GutendexBookResponseDTO gutendexBook = gutendexClient.searchBookById(id);
+		
+		String coverUrl = gutendexBook.formats().get(BookCover.IMAGE.getValue());
+		String epubUrl = gutendexBook.formats().get(BookFormat.EPUB.getValue());
+		
+		byte[] coverBytes = fileDownload.download(coverUrl);
+		byte[] epubBytes = fileDownload.download(epubUrl);
+		
+		String coverDirectory = storageService.saveCover(coverBytes);
+		String epubDirectory = storageService.saveEpub(epubBytes);
 				
 		Book book = bookMapper.toEntity(gutendexBook);
+		
+		book.setCoverUrl(coverDirectory);
+		book.setFileUrl(epubDirectory);
 		
 		bookRepository.save(book);
 		

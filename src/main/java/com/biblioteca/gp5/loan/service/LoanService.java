@@ -24,6 +24,7 @@ import com.biblioteca.gp5.loan.mapper.LoanMapper;
 import com.biblioteca.gp5.loan.model.Loan;
 import com.biblioteca.gp5.loan.model.enums.Status;
 import com.biblioteca.gp5.loan.repository.LoanRepository;
+import com.biblioteca.gp5.reading.repository.ReadingRepository;
 import com.biblioteca.gp5.user.model.User;
 import com.biblioteca.gp5.user.repository.UserRepository;
 
@@ -37,14 +38,16 @@ public class LoanService {
 	private final BookRepository bookRepository;
 	private final LoanPolicy loanPolicy;
 	private final LoanMapper loanMapper;
+	private final ReadingRepository readingRepository;
 	
 	public LoanService(LoanRepository loanRepository, UserRepository userRepository, BookRepository bookRepository, 
-			LoanPolicy loanPolicy, LoanMapper loanMapper) {
+			LoanPolicy loanPolicy, LoanMapper loanMapper, ReadingRepository readingRepository) {
 		this.loanRepository = loanRepository;
 		this.userRepository = userRepository;
 		this.bookRepository = bookRepository;
 		this.loanPolicy = loanPolicy;
 		this.loanMapper = loanMapper;
+		this.readingRepository = readingRepository;
 	}
 	
 	@Transactional
@@ -75,7 +78,7 @@ public class LoanService {
 		
 		loanRepository.save(loan);
 		
-		BookLoanResponseDTO response = loanMapper.toBookLoanResponseDTO(loan);
+		BookLoanResponseDTO response = loanMapper.toBookLoanResponseDTO(loan, false);
 		
 		return response;
 	}
@@ -102,7 +105,20 @@ public class LoanService {
 	public Page<BookLoanResponseDTO> listLoans(UUID idUser, Status status, Pageable pageable) {
 		Page<Loan> listLoans = loanRepository.findByUserAndStatus(idUser, status, pageable);
 		
-		Page<BookLoanResponseDTO> response = listLoans.map(loanMapper::toBookLoanResponseDTO);
+		Page<BookLoanResponseDTO> response;
+		
+		if(status == Status.ACTIVE) {
+			response = listLoans.map(loan -> {
+				
+				boolean hasReading = readingRepository.existsByUserAndBook(idUser, loan.getBook().getIdBook());
+				
+				return loanMapper.toBookLoanResponseDTO(loan, hasReading);
+			});
+			
+		} else {
+			response = listLoans.map(loan -> loanMapper.toBookLoanResponseDTO(loan, false));
+			
+		}
 		
 		return response;
 	}

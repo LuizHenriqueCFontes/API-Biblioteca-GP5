@@ -17,9 +17,13 @@ import com.biblioteca.gp5.category.mapper.CategoryMapper;
 import com.biblioteca.gp5.category.model.Category;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexAuthorResponseDTO;
 import com.biblioteca.gp5.integration.gutendex.dto.response.GutendexBookResponseDTO;
+import com.biblioteca.gp5.shared.mapper.FileUrlMapper;
 
-@Mapper(componentModel = "spring", uses = CategoryMapper.class)
-public interface BookMapper {
+
+@Mapper(componentModel = "spring", 
+uses = { CategoryMapper.class, FileUrlMapper.class }
+)
+public abstract class BookMapper {
 	
 	//Source de onde o valor vem
 	//Target para onde o valor vai
@@ -28,37 +32,42 @@ public interface BookMapper {
 	@Mapping(expression = "java(extractCoverUrl(gutendexBook))", target = "coverUrl")
 	@Mapping(expression = "java(extractFileUrl(gutendexBook))", target = "fileUrl")
 	@Mapping(expression = "java(extractSource())", target = "source")
+	@Mapping(source = "summaries", target = "description")
 	//@Mapping(expression = "java(extractName(gutendexAuthor))", target = "authors")
-	Book toEntity(GutendexBookResponseDTO gutendexBook);
+	public abstract Book toEntity(GutendexBookResponseDTO gutendexBook);
 	
 	@Mapping(source = "idBook", target = "id")
-	BookResponseDTO toBookResponseDTO(Book book);
+	@Mapping(qualifiedByName = "toFileUrl", target = "coverUrl")
+	@Mapping(qualifiedByName = "toFileUrl", target = "fileUrl")
+	public abstract BookResponseDTO toBookResponseDTO(Book book);
 	
-	EditBookResponseDTO toEditBookResponseDTO(Book book);
+	public abstract EditBookResponseDTO toEditBookResponseDTO(Book book);
 	
 	@Mapping(source = "idBook", target = "id")
 	@Mapping(source = "bookCategories", target = "categories")
-	BookDetailsResponseDTO toBookDetailsResponseDTO(Book book);
+	@Mapping(qualifiedByName = "toFileUrl", target = "coverUrl")
+	@Mapping(qualifiedByName = "toFileUrl", target = "fileUrl")
+	public abstract BookDetailsResponseDTO toBookDetailsResponseDTO(Book book);
 	
-	default List<Category> mapCategories(List<BookCategories> bookCategories) {
+	protected List<Category> mapCategories(List<BookCategories> bookCategories) {
 		return bookCategories.stream()
 							.map(BookCategories::getCategory)
 							.toList();
 	}
 	
-	default String extractName(GutendexAuthorResponseDTO gutendexAuthor) {
+	protected String extractName(GutendexAuthorResponseDTO gutendexAuthor) {
 		return gutendexAuthor.name();
 	}
 	
-	default String extractCoverUrl(GutendexBookResponseDTO gutendexBook) {
+	protected String extractCoverUrl(GutendexBookResponseDTO gutendexBook) {
 		return gutendexBook.formats().get(BookCover.IMAGE.getValue());
 	}
 	
-	default String extractFileUrl(GutendexBookResponseDTO gutendexBook) {
+	protected String extractFileUrl(GutendexBookResponseDTO gutendexBook) {
 		return gutendexBook.formats().get(BookFormat.EPUB.getValue());
 	}
 	
-	default String extractSource() {
+	protected String extractSource() {
 		return BookSources.GUTENDEX.getValue();
 	}
 
