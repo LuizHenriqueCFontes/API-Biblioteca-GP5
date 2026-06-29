@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.biblioteca.gp5.bookcategories.repository.BookCategoriesRepository;
 import com.biblioteca.gp5.category.dto.request.CreateCategoryRequestDTO;
-import com.biblioteca.gp5.category.dto.request.DeleteCategoriesRequestDTO;
 import com.biblioteca.gp5.category.dto.request.EditCategoryRequestDTO;
 import com.biblioteca.gp5.category.dto.response.CategoryResponseDTO;
 import com.biblioteca.gp5.category.dto.response.ListCategoryResponseDTO;
@@ -101,24 +100,17 @@ public class CategoryService {
 	}
 	
 	@Transactional
-	public void deleteCategories(DeleteCategoriesRequestDTO request) {
-		List<Category> categories = categoryRepository.findAllById(request.idCategories());
+	public void deleteCategories(UUID idCategory) {
+		Category category = categoryRepository.findById(idCategory)
+											  .orElseThrow(() -> new CategoryNotFoundException("Categoria não encontrada"));
 		
-		if(categories.size() != request.idCategories().size()) {
-			throw new CategoryNotFoundException("Uma ou mais categorias não encontradas");
+		boolean existsRelation = bookCategoriesRepository.existsByCategoryIdCategory(category.getIdCategory());
+		
+		if(existsRelation) {
+			throw new CategoryInUseException("Categoria em uso");
 		}
 		
-		for(Category category : categories) {
-			
-			boolean existsRelation = bookCategoriesRepository.existsByCategoryIdCategory(category.getIdCategory());
-			
-			if(existsRelation) {
-				throw new CategoryInUseException("Categoria em uso");
-			}
-		}
-		
-		categoryRepository.deleteAll(categories);
-														
+		categoryRepository.delete(category);												
 	}
 	
 	

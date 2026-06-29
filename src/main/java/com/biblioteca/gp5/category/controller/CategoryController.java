@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.biblioteca.gp5.category.dto.request.CreateCategoryRequestDTO;
-import com.biblioteca.gp5.category.dto.request.DeleteCategoriesRequestDTO;
 import com.biblioteca.gp5.category.dto.request.EditCategoryRequestDTO;
 import com.biblioteca.gp5.category.dto.response.CategoryResponseDTO;
 import com.biblioteca.gp5.category.dto.response.ListCategoryResponseDTO;
@@ -68,9 +67,9 @@ public class CategoryController {
 		
 	}
 	
-	@DeleteMapping
-	public ResponseEntity<Void> deleteCategories(@RequestBody @Valid DeleteCategoriesRequestDTO request) {
-		categoryService.deleteCategories(request);
+	@DeleteMapping("/{idCategory}")
+	public ResponseEntity<Void> deleteCategories(@PathVariable UUID idCategory) {
+		categoryService.deleteCategories(idCategory);
 		
 		return ResponseEntity.noContent().build();
 	}
