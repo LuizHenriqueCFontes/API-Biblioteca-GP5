@@ -68,10 +68,8 @@ public class CategoryService {
 		return response;
 	}
 	
-	public List<ListCategoryResponseDTO> listCategories() {
-		List<Category> category = categoryRepository.findAll();
-		
-		List<ListCategoryResponseDTO> response = categoryMapper.toListCategoryResponseDTO(category);
+	public List<CategoryResponseDTO> listCategories(String name) {
+		List<CategoryResponseDTO> response = categoryRepository.findCategories(name);
 		
 		return response;
 	}

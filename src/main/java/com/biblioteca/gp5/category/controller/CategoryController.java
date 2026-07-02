@@ -53,8 +53,8 @@ public class CategoryController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<ListCategoryResponseDTO>> listCategories() {
-		List<ListCategoryResponseDTO> response = categoryService.listCategories();
+	public ResponseEntity<List<CategoryResponseDTO>> listCategories(@RequestParam(name = "name", required = false) String name) {
+		List<CategoryResponseDTO> response = categoryService.listCategories(name);
 		
 		return ResponseEntity.ok(response);
 	}

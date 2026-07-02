@@ -34,5 +34,22 @@ public interface CategoryRepository extends JpaRepository<Category, UUID> {
 		GROUP BY c.idCategory, c.name
 	""")
 	Page<CategoryResponseDTO> search(@Param("name") String name, Pageable pageable);
+	
+	
+	@Query("""
+		SELECT new com.biblioteca.gp5.category.dto.response.CategoryResponseDTO(
+			c.idCategory,
+			c.name,
+			COUNT(bc)				
+		)
+		FROM Category c
+		LEFT JOIN c.bookCategories bc
+		WHERE(
+			:name IS NULL
+			OR LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%'))			
+		)
+		GROUP BY c.idCategory, c.name
+	""")
+	List<CategoryResponseDTO> findCategories(@Param("name") String name);
 
 }
