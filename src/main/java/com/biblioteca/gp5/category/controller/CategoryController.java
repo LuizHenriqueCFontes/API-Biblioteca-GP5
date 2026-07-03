@@ -45,7 +45,7 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/summary")
-	public ResponseEntity<Page<CategoryResponseDTO>> searchCategories(@RequestParam(required = false) String name, Pageable pageable){
+	public ResponseEntity<Page<CategoryResponseDTO>> searchCategories(@RequestParam(name = "name", required = false) String name, Pageable pageable){
 		
 		Page<CategoryResponseDTO> response = categoryService.searchCategories(name, pageable);
 		
