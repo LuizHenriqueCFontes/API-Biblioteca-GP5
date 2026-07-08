@@ -2,6 +2,8 @@ package com.biblioteca.gp5.user.mapper;
 
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
 import com.biblioteca.gp5.user.dto.response.UserListResponseDTO;
 import com.biblioteca.gp5.user.model.User;
 
@@ -11,6 +13,7 @@ import com.biblioteca.gp5.user.model.User;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 	
+	@Mapping(source = "idUsers", target = "idUser")
 	UserListResponseDTO toUserListResponseDTO(User users);
 
 }
