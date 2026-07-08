@@ -116,11 +116,6 @@ public class BookManagementService {
 			book.setDescription(request.description());
 		}
 		
-		if(request.source() != null && !request.source().isBlank()) {
-			book.setSource(request.source());
-		}
-		
-		
 		bookRepository.save(book);
 		
 		EditBookResponseDTO response = bookMapper.toEditBookResponseDTO(book);
