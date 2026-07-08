@@ -14,9 +14,11 @@ import com.biblioteca.gp5.book.model.Book;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, UUID> {
-	Page<Book> findByTitleContainingIgnoreCase(String title, Pageable pageable);
+	Page<Book> findByTitleContainingIgnoreCaseAndActiveTrue(String title, Pageable pageable);
 	
 	Page<Book> findAll(Pageable pageable);
+	
+	Page<Book> findByActiveTrue(Pageable pageable);
 	
 	@Query("""
 		SELECT b
@@ -24,9 +26,10 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
 		JOIN b.bookCategories bc
 		WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%'))
 		AND bc.category.idCategory IN :idsCategories
+			AND b.active = TRUE
 			"""
 	)
-	Page<Book> findByTitleAndCategories(@Param("title") String title, @Param("idsCategories") List<UUID> 
+	Page<Book> findByTitleAndCategoriesAndActive(@Param("title") String title, @Param("idsCategories") List<UUID> 
 	idsCategories, Pageable pageable);
 	
 	@Query("""
@@ -34,9 +37,10 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
 		FROM Book b
 		JOIN b.bookCategories bc
 		WHERE bc.category.idCategory IN :idsCategories
+			AND b.active = TRUE
 			"""
 	)
-	Page<Book> findByCategories(@Param("idsCategories") List<UUID> idsCategories, Pageable pageable);
+	Page<Book> findByCategoriesAndActive(@Param("idsCategories") List<UUID> idsCategories, Pageable pageable);
 	
 	boolean existsByGutenbergId(Integer id);
 
