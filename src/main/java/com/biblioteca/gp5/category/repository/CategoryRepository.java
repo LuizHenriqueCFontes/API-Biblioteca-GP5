@@ -27,10 +27,11 @@ public interface CategoryRepository extends JpaRepository<Category, UUID> {
 		)
 		FROM Category c
 		LEFT JOIN c.bookCategories bc
+			ON bc.book.active = TRUE				
 		WHERE(
 			:name IS NULL
 			OR LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%'))			
-		)
+		)		
 		GROUP BY c.idCategory, c.name
 	""")
 	Page<CategoryResponseDTO> search(@Param("name") String name, Pageable pageable);
@@ -44,6 +45,7 @@ public interface CategoryRepository extends JpaRepository<Category, UUID> {
 		)
 		FROM Category c
 		LEFT JOIN c.bookCategories bc
+			ON bc.book.active = TRUE			
 		WHERE(
 			:name IS NULL
 			OR LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%'))			

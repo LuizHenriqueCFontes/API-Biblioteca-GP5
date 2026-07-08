@@ -7,16 +7,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.biblioteca.gp5.book.dto.request.BookFilterRequestDTO;
-import com.biblioteca.gp5.book.dto.request.EditBookRequestDTO;
 import com.biblioteca.gp5.book.dto.response.BookDetailsResponseDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
-import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
 import com.biblioteca.gp5.book.mapper.BookMapper;
 import com.biblioteca.gp5.book.model.Book;
 import com.biblioteca.gp5.book.repository.BookRepository;
 import com.biblioteca.gp5.exception.book.BookNotFoundException;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class BookService {
@@ -37,17 +34,17 @@ public class BookService {
 		Page<Book> books;
 		
 		if(!hasTitle && !hasCategory) {
-			books = bookRepository.findAll(pageable);
+			books = bookRepository.findByActiveTrue(pageable);
 			
 		} else if(hasTitle && hasCategory){
-			books = bookRepository.findByTitleAndCategories(filter.title(), filter.idsCategories(), pageable);
+			books = bookRepository.findByTitleAndCategoriesAndActive(filter.title(), filter.idsCategories(), pageable);
 			
 			
 		}else if(hasTitle && !hasCategory) {
-			books = bookRepository.findByTitleContainingIgnoreCase(filter.title(), pageable);
+			books = bookRepository.findByTitleContainingIgnoreCaseAndActiveTrue(filter.title(), pageable);
 			
 		}else {
-			books = bookRepository.findByCategories(filter.idsCategories(), pageable);
+			books = bookRepository.findByCategoriesAndActive(filter.idsCategories(), pageable);
 		}
 		
 		Page<BookResponseDTO> booksResponse = books.map(bookMapper::toBookResponseDTO);
