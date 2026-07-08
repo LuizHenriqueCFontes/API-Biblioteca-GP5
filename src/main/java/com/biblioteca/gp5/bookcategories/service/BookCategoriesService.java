@@ -18,6 +18,7 @@ import com.biblioteca.gp5.bookcategories.mapper.BookCategoriesMapper;
 import com.biblioteca.gp5.bookcategories.model.BookCategories;
 import com.biblioteca.gp5.bookcategories.repository.BookCategoriesRepository;
 import com.biblioteca.gp5.category.dto.response.CategoryResponseDTO;
+import com.biblioteca.gp5.category.dto.response.ListCategoryResponseDTO;
 import com.biblioteca.gp5.category.model.Category;
 import com.biblioteca.gp5.category.repository.CategoryRepository;
 import com.biblioteca.gp5.exception.book.BookNotFoundException;
@@ -94,7 +95,7 @@ public class BookCategoriesService {
 		
 		bookCategoriesRepository.saveAll(newBookCategories);
 		
-		List<CategoryResponseDTO> categoriesResponse = bookCategoriesMapper.toListCategoryResponseDTO(listCategories);
+		List<ListCategoryResponseDTO> categoriesResponse = bookCategoriesMapper.toListCategoryResponseDTO(listCategories);
 		
 		EditBookCategoriesResponseDTO response = new EditBookCategoriesResponseDTO(book.getIdBook(), book.getTitle(), 
 				categoriesResponse);

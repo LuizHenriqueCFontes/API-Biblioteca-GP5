@@ -4,14 +4,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.biblioteca.gp5.bookcategories.repository.BookCategoriesRepository;
 import com.biblioteca.gp5.category.dto.request.CreateCategoryRequestDTO;
-import com.biblioteca.gp5.category.dto.request.DeleteCategoriesRequestDTO;
 import com.biblioteca.gp5.category.dto.request.EditCategoryRequestDTO;
 import com.biblioteca.gp5.category.dto.response.CategoryResponseDTO;
-import com.biblioteca.gp5.category.dto.response.CreateCategoryResponseDTO;
+import com.biblioteca.gp5.category.dto.response.ListCategoryResponseDTO;
 import com.biblioteca.gp5.category.dto.response.EditCategoryResponseDTO;
 import com.biblioteca.gp5.category.mapper.CategoryMapper;
 import com.biblioteca.gp5.category.model.Category;
@@ -36,7 +37,7 @@ public class CategoryService {
 		this.bookCategoriesRepository = bookCategoriesRepository;
 	}
 	
-	public CreateCategoryResponseDTO createCategory(CreateCategoryRequestDTO request) {
+	public ListCategoryResponseDTO createCategory(CreateCategoryRequestDTO request) {
 	
 		String normalizedName = request.name()
 										.trim()
@@ -52,21 +53,23 @@ public class CategoryService {
 		
 		categoryRepository.save(category);
 		
-		CreateCategoryResponseDTO response = categoryMapper.toCreateCategoryResponseDTO(category);
+		ListCategoryResponseDTO response = categoryMapper.toCreateCategoryResponseDTO(category);
 		
 		return response;
 	}
 	
-	public List<CategoryResponseDTO> listCategories(String name){
-		List<Category> category;
-		
-		if(name == null || name.isBlank()) {
-				category = categoryRepository.findAll();
-		}else {
-			category = categoryRepository.findByNameContainingIgnoreCase(name);
+	public Page<CategoryResponseDTO> searchCategories(String name, Pageable pageable){
+		if(name != null && name.isBlank()) {
+			name = null;
 		}
 		
-		List<CategoryResponseDTO> response = categoryMapper.toListCategoryResponseDTO(category);
+		Page<CategoryResponseDTO> response = categoryRepository.search(name, pageable);
+		
+		return response;
+	}
+	
+	public List<CategoryResponseDTO> listCategories(String name) {
+		List<CategoryResponseDTO> response = categoryRepository.findCategories(name);
 		
 		return response;
 	}
@@ -95,24 +98,17 @@ public class CategoryService {
 	}
 	
 	@Transactional
-	public void deleteCategories(DeleteCategoriesRequestDTO request) {
-		List<Category> categories = categoryRepository.findAllById(request.idCategories());
+	public void deleteCategories(UUID idCategory) {
+		Category category = categoryRepository.findById(idCategory)
+											  .orElseThrow(() -> new CategoryNotFoundException("Categoria não encontrada"));
 		
-		if(categories.size() != request.idCategories().size()) {
-			throw new CategoryNotFoundException("Uma ou mais categorias não encontradas");
+		boolean existsRelation = bookCategoriesRepository.existsByCategoryIdCategory(category.getIdCategory());
+		
+		if(existsRelation) {
+			throw new CategoryInUseException("Categoria em uso");
 		}
 		
-		for(Category category : categories) {
-			
-			boolean existsRelation = bookCategoriesRepository.existsByCategoryIdCategory(category.getIdCategory());
-			
-			if(existsRelation) {
-				throw new CategoryInUseException("Categoria em uso");
-			}
-		}
-		
-		categoryRepository.deleteAll(categories);
-														
+		categoryRepository.delete(category);												
 	}
 	
 	
