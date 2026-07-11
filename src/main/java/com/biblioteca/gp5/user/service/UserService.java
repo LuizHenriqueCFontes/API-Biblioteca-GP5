@@ -2,19 +2,15 @@ package com.biblioteca.gp5.user.service;
 
 import java.util.UUID;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.biblioteca.gp5.exception.user.InvalidPasswordException;
-import com.biblioteca.gp5.exception.user.InvalidRoleException;
 import com.biblioteca.gp5.exception.user.UserNotFoundException;
 import com.biblioteca.gp5.user.dto.request.UpdatePasswordRequestDTO;
-import com.biblioteca.gp5.user.dto.request.UpdateRoleRequestDTO;
 import com.biblioteca.gp5.user.dto.request.UpdateUserRequestDTO;
-import com.biblioteca.gp5.user.dto.response.UserListResponseDTO;
+import com.biblioteca.gp5.user.dto.response.UserResponseDTO;
 import com.biblioteca.gp5.user.dto.response.UpdateUserResponseDTO;
 import com.biblioteca.gp5.user.mapper.UserMapper;
 import com.biblioteca.gp5.user.model.User;
@@ -85,6 +81,15 @@ public class UserService {
 		user.setPassword(passwordEncoded);
 		
 		userRepository.save(user);
+	}
+	
+	public UserResponseDTO getUserData(UUID idUser) {
+		User user = userRepository.findById(idUser)
+								  .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
+		
+		UserResponseDTO response = userMapper.toUserResponseDTO(user); 
+		
+		return response;
 	}
 	
 	
