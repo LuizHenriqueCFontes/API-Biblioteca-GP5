@@ -53,8 +53,9 @@ public class CategoryController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<CategoryResponseDTO>> listCategories(@RequestParam(name = "name", required = false) String name) {
-		List<CategoryResponseDTO> response = categoryService.listCategories(name);
+	public ResponseEntity<List<CategoryResponseDTO>> listCategories(@RequestParam(name = "name", required = false) String name,
+																	@RequestParam(name = "limit", required = false) Integer limit) {
+		List<CategoryResponseDTO> response = categoryService.listCategories(name, limit);
 		
 		return ResponseEntity.ok(response);
 	}

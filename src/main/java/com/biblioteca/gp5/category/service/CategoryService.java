@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -68,8 +69,17 @@ public class CategoryService {
 		return response;
 	}
 	
-	public List<CategoryResponseDTO> listCategories(String name) {
-		List<CategoryResponseDTO> response = categoryRepository.findCategories(name);
+	public List<CategoryResponseDTO> listCategories(String name, Integer limit) {
+		Limit resultLimit;
+		
+		if(limit != null) {
+			resultLimit = Limit.of(limit);
+			
+		}else {
+			resultLimit = Limit.unlimited();
+		}
+		
+		List<CategoryResponseDTO> response = categoryRepository.findCategories(name, resultLimit);
 		
 		return response;
 	}
