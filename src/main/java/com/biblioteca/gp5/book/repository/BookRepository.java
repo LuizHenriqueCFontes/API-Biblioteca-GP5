@@ -47,5 +47,7 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
 	boolean existsByGutenbergIdAndActiveFalse(Integer id);
 	
 	Book findByGutenbergId(Integer id);
+	
+	List<Book> findTop5ByOrderByCreationDateDesc();
 
 }

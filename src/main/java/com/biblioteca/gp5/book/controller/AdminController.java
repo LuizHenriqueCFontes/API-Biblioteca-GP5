@@ -1,5 +1,6 @@
 package com.biblioteca.gp5.book.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.biblioteca.gp5.book.dto.request.EditBookRequestDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
+import com.biblioteca.gp5.book.dto.response.BooksRecentlyCreatedResponseDTO;
 import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
 import com.biblioteca.gp5.book.dto.response.ImportBookDetailsResponseDTO;
 import com.biblioteca.gp5.book.dto.response.ImportSearchResponseDTO;
@@ -49,6 +51,12 @@ public class AdminController {
 		return ResponseEntity.ok(response);
 	}
 	
+	@GetMapping("/recent")
+	public ResponseEntity<List<BooksRecentlyCreatedResponseDTO>> listRecently() {
+		List<BooksRecentlyCreatedResponseDTO> response = bookManagementService.listRecently();
+		
+		return ResponseEntity.ok(response);
+	}
 	
 	@PostMapping("/{id}")
 	public ResponseEntity<BookResponseDTO> saveBook(@PathVariable Integer id){

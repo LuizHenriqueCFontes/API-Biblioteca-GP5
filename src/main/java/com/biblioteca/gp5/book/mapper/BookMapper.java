@@ -7,6 +7,7 @@ import org.mapstruct.Mapping;
 
 import com.biblioteca.gp5.book.dto.response.BookDetailsResponseDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
+import com.biblioteca.gp5.book.dto.response.BooksRecentlyCreatedResponseDTO;
 import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
 import com.biblioteca.gp5.book.enums.BookCover;
 import com.biblioteca.gp5.book.enums.BookFormat;
@@ -48,6 +49,10 @@ public abstract class BookMapper {
 	@Mapping(qualifiedByName = "toFileUrl", target = "coverUrl")
 	@Mapping(qualifiedByName = "toFileUrl", target = "fileUrl")
 	public abstract BookDetailsResponseDTO toBookDetailsResponseDTO(Book book);
+	
+	public abstract BooksRecentlyCreatedResponseDTO toBooksRecentlyCreatedResponseDTO(Book book);
+	
+	public abstract List<BooksRecentlyCreatedResponseDTO> toBooksRecentlyCreatedResponseDTO(List<Book> books);
 	
 	protected List<Category> mapCategories(List<BookCategories> bookCategories) {
 		return bookCategories.stream()
