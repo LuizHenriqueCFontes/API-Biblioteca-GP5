@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.biblioteca.gp5.exception.auth.EmailAlreadyExistsException;
 import com.biblioteca.gp5.exception.auth.PasswordMatches;
 import com.biblioteca.gp5.exception.book.BookAlreadyRegisteredException;
@@ -95,18 +96,26 @@ public class GlobalException {
 
 	@ExceptionHandler(TokenCreationException.class)
 	public ResponseEntity<Object> handleTokenCreationException(TokenCreationException ex) {
-		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(),
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.UNAUTHORIZED.value(),
 				"Falha ao criar token", ex.getMessage());
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+	}
+	
+	@ExceptionHandler(TokenExpiredException.class)
+	public ResponseEntity<ErrorResponse> handleTokenExpiredException(TokenExpiredException ex) {
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.UNAUTHORIZED.value(), 
+				"Token expirado", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
 	}
 
 	@ExceptionHandler(TokenValidationException.class)
 	public ResponseEntity<ErrorResponse> handleTokenValidationException(TokenValidationException ex) {
-		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(),
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.UNAUTHORIZED.value(),
 				"Falha ao validar token", ex.getMessage());
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
 	}
 	
 	
