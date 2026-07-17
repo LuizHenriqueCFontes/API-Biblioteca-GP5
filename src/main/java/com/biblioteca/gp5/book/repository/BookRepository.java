@@ -42,6 +42,10 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
 	)
 	Page<Book> findByCategoriesAndActive(@Param("idsCategories") List<UUID> idsCategories, Pageable pageable);
 	
-	boolean existsByGutenbergId(Integer id);
+	boolean existsByGutenbergIdAndActiveTrue(Integer id);
+	
+	boolean existsByGutenbergIdAndActiveFalse(Integer id);
+	
+	Book findByGutenbergId(Integer id);
 
 }

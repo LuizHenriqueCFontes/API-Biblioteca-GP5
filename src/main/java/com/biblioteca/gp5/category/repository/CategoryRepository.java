@@ -3,6 +3,7 @@ package com.biblioteca.gp5.category.repository;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -52,6 +53,6 @@ public interface CategoryRepository extends JpaRepository<Category, UUID> {
 		)
 		GROUP BY c.idCategory, c.name
 	""")
-	List<CategoryResponseDTO> findCategories(@Param("name") String name);
+	List<CategoryResponseDTO> findCategories(@Param("name") String name, Limit limit);
 
 }

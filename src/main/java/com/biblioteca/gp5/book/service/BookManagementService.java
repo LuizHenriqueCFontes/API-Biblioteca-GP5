@@ -72,8 +72,20 @@ public class BookManagementService {
 	
 	public BookResponseDTO saveBook(Integer id) {
 		
-		if(bookRepository.existsByGutenbergId(id)) {
+		if(bookRepository.existsByGutenbergIdAndActiveTrue(id)) {
 			throw new BookAlreadyRegisteredException("Livro ja está cadastrado");
+		}
+		
+		if(bookRepository.existsByGutenbergIdAndActiveFalse(id)) {
+			Book book = bookRepository.findByGutenbergId(id);
+			
+			book.setActive(true);
+			
+			bookRepository.save(book);
+			
+			BookResponseDTO response = bookMapper.toBookResponseDTO(book);
+			
+			return response;
 		}
 		
 		GutendexBookResponseDTO gutendexBook = gutendexClient.searchBookById(id);
