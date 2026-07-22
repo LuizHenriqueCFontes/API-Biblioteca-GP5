@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.biblioteca.gp5.book.dto.request.EditBookRequestDTO;
 import com.biblioteca.gp5.book.dto.response.BookResponseDTO;
+import com.biblioteca.gp5.book.dto.response.BooksRecentlyCreatedResponseDTO;
 import com.biblioteca.gp5.book.dto.response.EditBookResponseDTO;
 import com.biblioteca.gp5.book.dto.response.ImportBookDetailsResponseDTO;
 import com.biblioteca.gp5.book.dto.response.ImportBookResponseDTO;
@@ -66,6 +67,14 @@ public class BookManagementService {
 		GutendexBookResponseDTO detailsBook = gutendexClient.searchBookById(id);
 		
 		ImportBookDetailsResponseDTO response = gutendexMapper.toImporBookDetailsResponseDTO(detailsBook);
+		
+		return response;
+	}
+	
+	public List<BooksRecentlyCreatedResponseDTO> listRecently() {
+		List<Book> books = bookRepository.findTop5ByOrderByCreationDateDesc();
+		
+		List<BooksRecentlyCreatedResponseDTO> response = bookMapper.toBooksRecentlyCreatedResponseDTO(books);
 		
 		return response;
 	}
