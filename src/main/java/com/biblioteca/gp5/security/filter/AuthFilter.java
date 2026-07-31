@@ -51,11 +51,14 @@ public class AuthFilter extends OncePerRequestFilter {
 			User user = userRepository.findById(UuidSubject)
 										.orElseThrow(() -> new UserNotFoundException("Usuáro não encontrado"));
 			
-			if(tokenService.validateToken(token)) {
+			if(tokenService.verifyTokenExpired(token)) {
 				
-				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-			
-				SecurityContextHolder.getContext().setAuthentication(authToken);
+				if(tokenService.validateToken(token)) {
+					
+					UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+					
+					SecurityContextHolder.getContext().setAuthentication(authToken);
+				}
 			}
 			
 		}

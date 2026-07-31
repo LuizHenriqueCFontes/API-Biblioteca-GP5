@@ -26,6 +26,7 @@ import com.biblioteca.gp5.exception.loan.UserHasLoanException;
 import com.biblioteca.gp5.exception.reading.ReadingAlreadyStartedException;
 import com.biblioteca.gp5.exception.reading.ReadingNotFoundException;
 import com.biblioteca.gp5.exception.security.TokenCreationException;
+import com.biblioteca.gp5.exception.security.TokenExpiredAuthenticationException;
 import com.biblioteca.gp5.exception.security.TokenValidationException;
 import com.biblioteca.gp5.exception.storage.FailedCreateDirectoryException;
 import com.biblioteca.gp5.exception.storage.FailedSaveFileException;
@@ -115,6 +116,14 @@ public class GlobalException {
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.UNAUTHORIZED.value(),
 				"Falha ao validar token", ex.getMessage());
 
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+	}
+	
+	@ExceptionHandler(TokenExpiredAuthenticationException.class)
+	public ResponseEntity<ErrorResponse> handleTokenExpiredAuthenticationException(TokenExpiredAuthenticationException ex) {
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.UNAUTHORIZED.value(),
+												"Token expirado", ex.getMessage());
+		
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
 	}
 	
