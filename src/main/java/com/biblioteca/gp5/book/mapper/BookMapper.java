@@ -50,6 +50,7 @@ public abstract class BookMapper {
 	@Mapping(qualifiedByName = "toFileUrl", target = "fileUrl")
 	public abstract BookDetailsResponseDTO toBookDetailsResponseDTO(Book book);
 	
+	@Mapping(qualifiedByName = "toFileUrl", target = "coverUrl")
 	public abstract BooksRecentlyCreatedResponseDTO toBooksRecentlyCreatedResponseDTO(Book book);
 	
 	public abstract List<BooksRecentlyCreatedResponseDTO> toBooksRecentlyCreatedResponseDTO(List<Book> books);

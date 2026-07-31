@@ -48,7 +48,7 @@ public class AuthService {
 
 		String token = tokenService.generateToken(user);
 
-		AuthResponseDTO response = new AuthResponseDTO(token, user.getUsername());
+		AuthResponseDTO response = new AuthResponseDTO(token, user.getUsername(), user.getRole());
 
 		return response;
 	}
@@ -91,7 +91,7 @@ public class AuthService {
 		String token = tokenService.generateToken(user);
 
 		// Cria e retorna o DTO de resposta com o token e o username
-		AuthResponseDTO response = new AuthResponseDTO(token, data.username());
+		AuthResponseDTO response = new AuthResponseDTO(token, user.getUsername(), user.getRole());
 
 		return response;
 
