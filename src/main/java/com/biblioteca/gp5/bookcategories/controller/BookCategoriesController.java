@@ -2,18 +2,14 @@ package com.biblioteca.gp5.bookcategories.controller;
 
 import java.util.UUID;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.biblioteca.gp5.bookcategories.dto.request.CreateBookCategoriesRequestDTO;
 import com.biblioteca.gp5.bookcategories.dto.request.EditBookCategoriesRequestDTO;
-import com.biblioteca.gp5.bookcategories.dto.response.CreateBookCategoriesResponseDTO;
 import com.biblioteca.gp5.bookcategories.dto.response.EditBookCategoriesResponseDTO;
 import com.biblioteca.gp5.bookcategories.service.BookCategoriesService;
 
@@ -28,16 +24,6 @@ public class BookCategoriesController {
 	public BookCategoriesController(BookCategoriesService bookCategoriesService) {
 		this.bookCategoriesService = bookCategoriesService;
 	}
-	
-	/*@PostMapping("/{idBook}")
-	public ResponseEntity<CreateBookCategoriesResponseDTO> addBookCategories(@PathVariable UUID idBook, 
-			@RequestBody @Valid CreateBookCategoriesRequestDTO request) {
-		
-		CreateBookCategoriesResponseDTO response = bookCategoriesService.addCategories(idBook, request);
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);		
-		
-	}*/
 	
 	@PutMapping("/{idBook}")
 	public ResponseEntity<EditBookCategoriesResponseDTO> editBookCategories(@PathVariable UUID idBook, 
