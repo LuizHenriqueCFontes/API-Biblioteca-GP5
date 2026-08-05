@@ -40,20 +40,16 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/auth/register/validate").permitAll()
 					
-						.requestMatchers(HttpMethod.PATCH, "/api/users/me").hasAnyRole("USER", "ALUNO", "ADMIN")
-						.requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PATCH, "/api/users/me").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.PATCH, "/api/users/*/role").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.PATCH, "/api/users/me/password").hasAnyRole("USER", "ALUNO", "ADMIN")
+						.requestMatchers(HttpMethod.PATCH, "/api/users/me/password").hasAnyRole("USER", "ADMIN")
 						
-						
-						.requestMatchers(HttpMethod.GET, "/api/admin/books").permitAll()
-						.requestMatchers(HttpMethod.GET, "/api/admin/books/*").permitAll()
-						.requestMatchers(HttpMethod.POST, "/api/admin/books/*").permitAll()
-						.requestMatchers(HttpMethod.PATCH, "/api/admin/books/*").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.DELETE, "/api/admin/books/*").hasRole("ADMIN")
+						.requestMatchers("/api/admin/**").hasRole("ADMIN")
 						
 						.requestMatchers(HttpMethod.GET, "/api/books").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/books/*").permitAll()
+						
+						.requestMatchers(HttpMethod.PUT, "/api/book-categories/*").hasRole("ADMIN")
 						
 						
 						.requestMatchers(HttpMethod.GET, "/api/category").permitAll()

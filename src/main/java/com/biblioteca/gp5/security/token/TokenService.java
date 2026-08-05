@@ -11,7 +11,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.biblioteca.gp5.exception.security.TokenCreationException;
+import com.biblioteca.gp5.exception.security.TokenExpiredAuthenticationException;
 import com.biblioteca.gp5.exception.security.TokenValidationException;
 import com.biblioteca.gp5.user.model.UserRole;
 import com.biblioteca.gp5.user.model.User;
@@ -56,12 +58,27 @@ public class TokenService {
 			
 			return true;
 			
-			//Casp o metodo falhe, eu lanço uma exception
+			//Caso o metodo falhe, eu lanço uma exception
 		}catch(JWTVerificationException ex){
 			throw new TokenValidationException("Falha ao validar o token", ex);
 			
 		}
 		
+	}
+	
+	public boolean verifyTokenExpired(String token) {
+		try {
+			JWT.require(algorithm)
+				.withIssuer("api-biblioteca-gp5")
+				.build()
+				.verify(token);
+			
+			return true;
+			
+		}catch(TokenExpiredException ex) {
+			throw new TokenExpiredAuthenticationException("Token expirado", ex);
+			
+		}
 	}
 	
 	public String extractSubject(String token) {
