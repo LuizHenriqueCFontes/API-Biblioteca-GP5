@@ -19,7 +19,7 @@ public class RestClientConfiguration {
 		
 		return RestClient.builder()
 						.baseUrl(properties.getBaseUrl())
-						.defaultHeader(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0 Safari/537.36")
+						.defaultHeader(HttpHeaders.USER_AGENT,  "BibliotecaGP5/1.0 (Spring Boot)")
 						.requestFactory(factory)
 						.build();
 	}
