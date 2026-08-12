@@ -53,7 +53,7 @@ public class SecurityConfig {
 						
 						
 						.requestMatchers(HttpMethod.GET, "/api/category").permitAll()
-						.requestMatchers(HttpMethod.GET, "api/category/summary").hasRole("USER")
+						.requestMatchers(HttpMethod.GET, "/api/category/summary").permitAll()
 
 						.anyRequest().authenticated())
 

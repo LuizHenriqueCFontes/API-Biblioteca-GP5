@@ -8,7 +8,7 @@ public record RegisterDTO(
 		String username,
 		
 		@NotBlank
-		@Email
+		@Email(message = "Email inválido")
 		String email,
 		
 		@NotBlank

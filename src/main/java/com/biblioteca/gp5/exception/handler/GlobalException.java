@@ -232,8 +232,13 @@ public class GlobalException {
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorResponse> handleValid(MethodArgumentNotValidException ex) {
+		
+		String message = ex.getBindingResult().getFieldErrors().getFirst().getDefaultMessage();
+		
+		
 		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(),
-				"Falha ao validar os dados", ex.getMessage());		
+				"Falha ao validar os dados", message);
+		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
 

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 public record LoginDTO(
 		
 		@NotBlank
-		@Email
+		@Email(message = "Email inválido")
 		String email, 
 		
 		@NotBlank
