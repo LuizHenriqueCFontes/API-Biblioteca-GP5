@@ -91,6 +91,79 @@ Toda a entrada de dados passa por uma camada rigorosa de validação com **Bean 
   
 ---
 
-## 💻 Front-End (Próximos Passos)
-O ecossistema cliente da aplicação está sendo construído de forma desacoplada utilizando **React** com **TypeScript**, que consumirá esta API efetuando o armazenamento do token JWT de forma segura e aplicando layouts responsivos baseados nos protótipos de interface.
+## 🌍 Infraestrutura & Hospedagem
 
+### Banco de Dados
+O banco de dados **MySQL** está hospedado na **Aiven** (plataforma de dados na nuvem). A Aiven oferece alta disponibilidade, backups automáticos e gerenciamento total de infraestrutura, garantindo que os dados da biblioteca estejam seguros e acessíveis.
+
+### Servidor da Aplicação
+A aplicação está hospedada na plataforma **Render**, que fornece:
+- Deploy contínuo direto do repositório GitHub
+- Escalabilidade automática
+- SSL/HTTPS incluído
+- Ambiente gerenciado sem preocupação com infraestrutura
+
+### Armazenamento de Arquivos
+Para **imagens de capas** e **arquivos EPUB**, o sistema utiliza armazenamento local no próprio disco do servidor Render. Esta abordagem foi adotada como solução temporária devido às limitações de custos para contratar um serviço de object storage externo (como AWS S3 ou Azure Blob Storage). 
+
+> **📌 Nota Futura:** A arquitetura foi projetada para permitir migração futura para um serviço de cloud storage profissional, mantendo compatibilidade com o código existente.
+
+---
+
+## 💻 Integração com Front-End
+
+O front-end está disponível em: https://github.com/LuizHenriqueCFontes/biblioteca-gp5
+
+### Instruções para Configurar o Front-End
+
+Para consumir esta API a partir da aplicação cliente, siga os passos abaixo:
+
+#### 1. **Variáveis de Ambiente**
+Crie um arquivo `.env` na raiz do projeto front-end com as seguintes variáveis:
+
+```bash
+VITE_API_URL=https://seu-servidor-render.onrender.com/api
+VITE_AUTH_ENDPOINTS=/auth
+VITE_BOOKS_ENDPOINTS=/admin/books
+VITE_USERS_ENDPOINTS=/users
+```
+
+#### 2. **Armazenamento Seguro do JWT**
+- O token JWT retornado pela rota `/api/auth/login` deve ser armazenado no `localStorage` ou `sessionStorage` (com análise de risco de segurança)
+- Adicionar o token em toda requisição através do header `Authorization: Bearer <token>`
+
+#### 3. **Endpoints Principais para Consumo**
+
+| Contexto | Método | Endpoint | Descrição |
+| :--- | :--- | :--- | :--- |
+| **Login** | `POST` | `/api/auth/login` | Autenticação e obtenção do token JWT |
+| **Registro** | `POST` | `/api/auth/register` | Cadastro de novo usuário |
+| **Catálogo** | `GET` | `/api/admin/books` | Listagem de livros disponíveis |
+| **Detalhes** | `GET` | `/api/admin/books/{id}` | Informações específicas de um livro |
+| **Perfil** | `GET` | `/api/users/me` | Dados do usuário autenticado |
+
+#### 4. **Tratamento de Respostas**
+A API retorna respostas estruturadas em JSON com a seguinte formato padrão:
+
+**Sucesso (200-201):**
+```json
+{
+  "id": 1,
+  "title": "O Cortiço",
+  "authors": "Aluísio Azevedo",
+  "status": "ACTIVE",
+  "createdAt": "2024-01-15T10:30:00Z"
+}
+```
+
+**Erro (4xx-5xx):**
+```json
+{
+  "timestamp": "2024-01-15T10:30:00Z",
+  "status": 404,
+  "message": "Livro não encontrado"
+}
+```
+
+#### 5. **Configuração de CORS**
+A API está configurada para aceitar requisições de origens específicas. Certifique-se de que a URL do front-end está cadastrada nas configurações CORS do back-end.
