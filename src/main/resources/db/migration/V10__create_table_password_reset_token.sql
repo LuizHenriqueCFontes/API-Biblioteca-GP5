@@ -8,6 +8,4 @@ CREATE TABLE password_reset_tokens(
 	
 	CONSTRAINT fk_password_reset_token_user
 		FOREIGN KEY (user_id) REFERENCES users (id_users)
-
-
 );
