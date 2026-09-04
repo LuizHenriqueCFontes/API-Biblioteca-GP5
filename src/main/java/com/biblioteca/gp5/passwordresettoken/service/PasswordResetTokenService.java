@@ -36,6 +36,8 @@ public class PasswordResetTokenService {
 		
 		PasswordResetToken passwordResetToken = new PasswordResetToken(token, user.get(), LocalDateTime.now().plusMinutes(15));
 		
+		passwordResetTokenRepository.save(passwordResetToken);
+		
 	}
 
 }
