@@ -31,5 +31,11 @@ public class PasswordResetToken {
 	private User user;
 	
 	private LocalDateTime expiresAt;
+	
+	public PasswordResetToken(String tokenHash, User user, LocalDateTime expiresAt) {
+		this.tokenHash = tokenHash;
+		this.user = user;
+		this.expiresAt = expiresAt;
+	}
 
 }
