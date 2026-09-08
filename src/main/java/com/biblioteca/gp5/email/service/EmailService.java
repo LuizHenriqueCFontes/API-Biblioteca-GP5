@@ -1,5 +1,8 @@
 package com.biblioteca.gp5.email.service;
 
+import java.io.UnsupportedEncodingException;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailPreparationException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -12,6 +15,9 @@ import jakarta.mail.internet.MimeMessage;
 public class EmailService {
 	
 	private final JavaMailSender mailSender;
+	
+	@Value("${spring.mail.username}")
+	private String email;
 	
 	public EmailService(JavaMailSender mailSender) {
 		this.mailSender = mailSender;
@@ -27,10 +33,11 @@ public class EmailService {
 			messageHelper.setTo(to);
 			messageHelper.setSubject(subject);
 			messageHelper.setText(text, true);
+			messageHelper.setFrom(email, "Biblioteca GP5");;
 			
 			mailSender.send(message);
 			
-		} catch (MessagingException e) {
+		} catch (MessagingException | UnsupportedEncodingException e) {
 			throw new MailPreparationException("Erro ao preparar email", e);
 			
 		}
