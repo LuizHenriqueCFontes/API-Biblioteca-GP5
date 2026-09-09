@@ -15,6 +15,8 @@ import com.biblioteca.gp5.passwordresettoken.util.TokenGenerator;
 import com.biblioteca.gp5.user.model.User;
 import com.biblioteca.gp5.user.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class PasswordResetTokenService {
 	
@@ -50,12 +52,14 @@ public class PasswordResetTokenService {
 		
 		context.setVariable("resetUrl", resetUrl);
 		
-		
 		String html = templateEngine.process("password-reset", context);
 		
 		emailService.sendEmail(request.email(), "Redefinir senha", html);
-		
-		
+	}
+	
+	@Transactional
+	public void deleteExpiredTokens() {
+		passwordResetTokenRepository.deleteExpiredTokens(LocalDateTime.now());
 	}
 
 }
