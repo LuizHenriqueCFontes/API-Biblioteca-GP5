@@ -1,6 +1,7 @@
 package com.biblioteca.gp5.passwordresettoken.repository;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,6 @@ public interface PasswordResetTokenRepository extends JpaRepository<PasswordRese
 			WHERE p.expiresAt < :now
 	""")
 	void deleteExpiredTokens(@Param("now") LocalDateTime now);
+	
+	Optional<PasswordResetToken> findByTokenHash(String tokenHash);
 }

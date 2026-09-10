@@ -5,9 +5,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HexFormat;
 
+import com.biblioteca.gp5.passwordresettoken.model.PasswordResetToken;
+import com.biblioteca.gp5.passwordresettoken.repository.PasswordResetTokenRepository;
+
 public final class TokenHash {
 	
-	private TokenHash() {}
+	private final PasswordResetTokenRepository passwordResetTokenRepository;
+	
+	private TokenHash(PasswordResetTokenRepository passwordResetTokenRepository) {
+		this.passwordResetTokenRepository = passwordResetTokenRepository;
+	}
 	
 	public static String hash(String token) {
 		try {
@@ -26,13 +33,13 @@ public final class TokenHash {
 		}
 	}
 	
-	public static boolean matches(String token, String storedHash) {
+	public boolean matches(String token) {
 		
 		String tokenHash = hash(token);
 		
-		boolean tokenIsValid = tokenHash.equals(storedHash);
 		
-		return tokenIsValid;
+		
+		
 	}
 
 }
