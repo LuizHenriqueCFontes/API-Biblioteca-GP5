@@ -55,7 +55,8 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.GET, "/api/category").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/category/summary").permitAll()
 						
-						.requestMatchers(HttpMethod.POST, "/api/reset-password").permitAll()
+						.requestMatchers(HttpMethod.POST, "/api/reset-password/email").permitAll()
+						.requestMatchers(HttpMethod.POST, "/api/reset-password/password").permitAll()
 
 						.anyRequest().authenticated())
 

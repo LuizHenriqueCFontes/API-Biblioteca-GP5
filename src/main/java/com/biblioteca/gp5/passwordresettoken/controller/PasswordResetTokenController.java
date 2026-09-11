@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.biblioteca.gp5.passwordresettoken.dto.ForgotPasswordRequestDTO;
+import com.biblioteca.gp5.passwordresettoken.dto.ResetPasswordRequestDTO;
 import com.biblioteca.gp5.passwordresettoken.service.PasswordResetTokenService;
 
 import jakarta.validation.Valid;
@@ -21,12 +22,19 @@ public class PasswordResetTokenController {
 		this.passwordResetTokenService = passwordResetTokenService;
 	}
 	
-	@PostMapping
+	@PostMapping("/email")
 	public ResponseEntity<Void> requestPasswordReset(@RequestBody @Valid ForgotPasswordRequestDTO request) {
 		passwordResetTokenService.requestPasswordReset(request);
 		
 		return ResponseEntity.noContent().build();
 		
+	}
+	
+	@PostMapping("/password")
+	public ResponseEntity<Void> resetPassword(@RequestBody @Valid ResetPasswordRequestDTO request) {
+		passwordResetTokenService.resetPassword(request);
+		
+		return ResponseEntity.noContent().build();
 	}
 
 }

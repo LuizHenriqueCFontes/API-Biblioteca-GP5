@@ -65,7 +65,7 @@ public class UserService {
 		User user = userRepository.findById(id)
 									.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 		
-		passwordValidator.validate(request);
+		passwordValidator.validate(request.newPassword(), request.confirmNewPassword());
 		
 		if(!passwordEncoder.matches(request.oldPassword(), user.getPassword())) {
 			throw new InvalidPasswordException("Senha inválida");	

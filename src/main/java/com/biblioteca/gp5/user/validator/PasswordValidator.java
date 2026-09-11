@@ -9,18 +9,18 @@ import com.biblioteca.gp5.user.dto.request.UpdatePasswordRequestDTO;
 public class PasswordValidator {
 	
 	//Metodo para verificacao de senha
-	public void validate(UpdatePasswordRequestDTO data) {
+	public void validate(String newPassword, String confirmNewPassword) {
 		
 		//Irei verificar se a senha veio vazia
-		if(data.newPassword() == null || data.newPassword().isBlank()) {
+		if(confirmNewPassword == null || confirmNewPassword.isBlank()) {
 			throw new InvalidPasswordException("Senha inválida");
 		}
 		
-		if(data.newPassword().length() < 8) {
+		if(confirmNewPassword.length() < 8) {
 			throw new InvalidPasswordException("A senha deve ter no minímo 8 caracteres");
 		}
 		
-		if(!data.newPassword().equals(data.confirmNewPassword())) {
+		if(newPassword.equals(confirmNewPassword)) {
 			throw new InvalidPasswordException("As senhas informadas não são iguais");
 		}
 	}
