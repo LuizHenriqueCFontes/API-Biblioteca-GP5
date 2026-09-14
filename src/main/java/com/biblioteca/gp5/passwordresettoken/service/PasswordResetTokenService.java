@@ -3,6 +3,7 @@
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -29,15 +30,17 @@ public class PasswordResetTokenService {
 	private final SpringTemplateEngine templateEngine;
 	private final TokenHash tokenHash;
 	private final PasswordValidator passwordValidator;
-	
+	private final PasswordEncoder passwordEncoder;
+
 	public PasswordResetTokenService(PasswordResetTokenRepository passwordResetTokenRepository, EmailService emailService, UserRepository userRepository,
-			SpringTemplateEngine templateEngine, TokenHash tokenHash, PasswordValidator passwordValidator) {
+			SpringTemplateEngine templateEngine, TokenHash tokenHash, PasswordValidator passwordValidator, PasswordEncoder  passwordEncoder) {
 		this.passwordResetTokenRepository = passwordResetTokenRepository;
 		this.emailService = emailService;
 		this.userRepository = userRepository;
 		this.templateEngine = templateEngine;
 		this.tokenHash = tokenHash;
 		this.passwordValidator = passwordValidator;
+		this.passwordEncoder = passwordEncoder;
 	}
 	
 	public void requestPasswordReset(ForgotPasswordRequestDTO request) {
@@ -66,6 +69,7 @@ public class PasswordResetTokenService {
 		emailService.sendEmail(request.email(), "Redefinir senha", html);
 	}
 	
+	@Transactional
 	public void resetPassword(ResetPasswordRequestDTO request) {
 		
 		PasswordResetToken passwordResetToken = tokenHash.findToken(request.token());
@@ -74,7 +78,13 @@ public class PasswordResetTokenService {
 		
 		passwordValidator.validate(request.password(), request.confirmPassword());
 		
-		user.setPassword(request.password());
+		String encryptedPassword = passwordEncoder.encode(request.password());
+		
+		user.setPassword(encryptedPassword);
+		
+		userRepository.save(user);
+		
+		passwordResetTokenRepository.delete(passwordResetToken);
 	}
 	
 	@Transactional

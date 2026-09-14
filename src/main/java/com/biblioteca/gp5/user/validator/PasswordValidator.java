@@ -20,7 +20,7 @@ public class PasswordValidator {
 			throw new InvalidPasswordException("A senha deve ter no minímo 8 caracteres");
 		}
 		
-		if(newPassword.equals(confirmNewPassword)) {
+		if(!newPassword.equals(confirmNewPassword)) {
 			throw new InvalidPasswordException("As senhas informadas não são iguais");
 		}
 	}
