@@ -58,7 +58,7 @@ public class PasswordResetTokenService {
 		
 		passwordResetTokenRepository.save(passwordResetToken);
 		
-		String resetUrl = "http://localhost:5153/reset/password?token=" + token;
+		String resetUrl = "http://localhost:5153/password-reset/password?token=" + token;
 		
 		Context context = new Context();
 		

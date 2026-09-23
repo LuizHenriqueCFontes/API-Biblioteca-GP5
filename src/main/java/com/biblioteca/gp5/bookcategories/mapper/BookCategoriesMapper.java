@@ -8,7 +8,7 @@ import com.biblioteca.gp5.category.dto.response.ListCategoryResponseDTO;
 import com.biblioteca.gp5.category.model.Category;
 
 @Mapper(componentModel = "spring")
-public interface BookCategoriesMapper {
+public interface BookCategoriesMapper{
 	
 	List<ListCategoryResponseDTO> toListCategoryResponseDTO(List<Category> category);
 
