@@ -3,6 +3,7 @@
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
@@ -31,6 +32,9 @@ public class PasswordResetTokenService {
 	private final TokenHash tokenHash;
 	private final PasswordValidator passwordValidator;
 	private final PasswordEncoder passwordEncoder;
+	
+	@Value("${app.reset.url}")
+	private String url;
 
 	public PasswordResetTokenService(PasswordResetTokenRepository passwordResetTokenRepository, EmailService emailService, UserRepository userRepository,
 			SpringTemplateEngine templateEngine, TokenHash tokenHash, PasswordValidator passwordValidator, PasswordEncoder  passwordEncoder) {
@@ -58,7 +62,7 @@ public class PasswordResetTokenService {
 		
 		passwordResetTokenRepository.save(passwordResetToken);
 		
-		String resetUrl = "http://localhost:5153/password-reset/password?token=" + token;
+		String resetUrl = url + token;
 		
 		Context context = new Context();
 		
