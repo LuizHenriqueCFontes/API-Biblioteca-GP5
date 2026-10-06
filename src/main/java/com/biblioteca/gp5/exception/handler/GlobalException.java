@@ -23,6 +23,8 @@ import com.biblioteca.gp5.exception.category.CategoryNotFoundException;
 import com.biblioteca.gp5.exception.dto.ErrorResponse;
 import com.biblioteca.gp5.exception.loan.LoanNotFoundException;
 import com.biblioteca.gp5.exception.loan.UserHasLoanException;
+import com.biblioteca.gp5.exception.passwordresettoken.PasswordResetTokenException;
+import com.biblioteca.gp5.exception.passwordresettoken.PasswordResetTokenExpiredException;
 import com.biblioteca.gp5.exception.reading.ReadingAlreadyStartedException;
 import com.biblioteca.gp5.exception.reading.ReadingNotFoundException;
 import com.biblioteca.gp5.exception.security.TokenCreationException;
@@ -240,6 +242,23 @@ public class GlobalException {
 				"Falha ao validar os dados", message);
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+	}
+	
+	
+	@ExceptionHandler(PasswordResetTokenException.class)
+	public ResponseEntity<ErrorResponse> handlePasswordResetTokenException(PasswordResetTokenException ex) {
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(),
+				"Falhao ao validar token", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+	}
+	
+	@ExceptionHandler(PasswordResetTokenExpiredException.class)
+	public ResponseEntity<ErrorResponse> handlePasswordResetTokenExpiredException(PasswordResetTokenExpiredException ex) {
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.GONE.value(), 
+				"Token expirado", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.GONE).body(error);
 	}
 
 }

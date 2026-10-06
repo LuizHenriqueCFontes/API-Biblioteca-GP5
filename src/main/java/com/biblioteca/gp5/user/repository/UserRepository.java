@@ -14,6 +14,7 @@ import com.biblioteca.gp5.user.model.User;
 public interface UserRepository extends JpaRepository<User, UUID> {
 	Optional<User> findByEmail(String email); //Esse metodo sera uma query para buscar o usuario pelo email
 	
+	
 	boolean existsByEmail(String email); //Esse metodo sera uma query para verificar se tem um email cadastrado no sistema
 	
 	/* 
