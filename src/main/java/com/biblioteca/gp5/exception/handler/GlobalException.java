@@ -21,6 +21,7 @@ import com.biblioteca.gp5.exception.category.CategoryAlreadCadastredException;
 import com.biblioteca.gp5.exception.category.CategoryInUseException;
 import com.biblioteca.gp5.exception.category.CategoryNotFoundException;
 import com.biblioteca.gp5.exception.dto.ErrorResponse;
+import com.biblioteca.gp5.exception.email.MailSendException;
 import com.biblioteca.gp5.exception.loan.LoanNotFoundException;
 import com.biblioteca.gp5.exception.loan.UserHasLoanException;
 import com.biblioteca.gp5.exception.passwordresettoken.PasswordResetTokenException;
@@ -259,6 +260,15 @@ public class GlobalException {
 				"Token expirado", ex.getMessage());
 		
 		return ResponseEntity.status(HttpStatus.GONE).body(error);
+	}
+	
+	
+	@ExceptionHandler(MailSendException.class)
+	public ResponseEntity<ErrorResponse> handleMailSendException(MailSendException ex) {
+		ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(),
+				"Erro ao enviar e-mail", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 	}
 
 }

@@ -1,48 +1,37 @@
 package com.biblioteca.gp5.email.service;
 
-import java.io.UnsupportedEncodingException;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.MailPreparationException;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+import com.biblioteca.gp5.exception.email.MailSendException;
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.emails.model.CreateEmailOptions;
 
 @Service
 public class EmailService {
 	
-	private final JavaMailSender mailSender;
+	private final Resend resend;
 	
-	@Value("${spring.mail.username}")
-	private String email;
-	
-	public EmailService(JavaMailSender mailSender) {
-		this.mailSender = mailSender;
+	public EmailService(Resend resend) {
+		this.resend = resend;
 	}
 	
 	public void sendEmail(String to, String subject, String text) {
 		
 		try {
-			MimeMessage message = mailSender.createMimeMessage();
+			CreateEmailOptions params = CreateEmailOptions.builder()
+					.from("Biblioteca GP5 <onboarding@resend.dev>")
+					.to(to)
+					.subject(subject)
+					.html(text)
+					.build();
 			
-			MimeMessageHelper messageHelper = new MimeMessageHelper(message, "UTF-8");
+			resend.emails().send(params);
 			
-			messageHelper.setTo(to);
-			messageHelper.setSubject(subject);
-			messageHelper.setText(text, true);
-			messageHelper.setFrom(email, "Biblioteca GP5");;
+		} catch (ResendException e) {
+			throw new MailSendException("Erro ao enviar e-mail", e);
 			
-			mailSender.send(message);
-			
-		} catch (MessagingException | UnsupportedEncodingException e) {
-			throw new MailPreparationException("Erro ao preparar email", e);
-			
-		}
-		
-		
+		}	
 	}
 
 }
