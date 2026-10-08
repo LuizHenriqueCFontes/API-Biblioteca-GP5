@@ -30,7 +30,7 @@ O sistema adota o modelo **Role-Based Access Control (RBAC)** integrado ao ecoss
 
 ### Perfis de Acesso Disponíveis:
 - `ADMIN`: Controle total do acervo de livros e gerenciamento de permissões e listagem de usuários.
-- `ALUNO` / `USER`: Perfis de clientes do sistema com permissão para gerenciar a própria conta.
+- `USER`: Perfis de clientes do sistema com permissão para gerenciar a própria conta.
 
 ### Matriz de Permissões das Rotas
 
@@ -123,9 +123,6 @@ Crie um arquivo `.env` na raiz do projeto front-end com as seguintes variáveis:
 
 ```bash
 VITE_API_URL=https://seu-servidor-render.onrender.com/api
-VITE_AUTH_ENDPOINTS=/auth
-VITE_BOOKS_ENDPOINTS=/admin/books
-VITE_USERS_ENDPOINTS=/users
 ```
 
 #### 2. **Armazenamento Seguro do JWT**
@@ -167,3 +164,7 @@ A API retorna respostas estruturadas em JSON com a seguinte formato padrão:
 
 #### 5. **Configuração de CORS**
 A API está configurada para aceitar requisições de origens específicas. Certifique-se de que a URL do front-end está cadastrada nas configurações CORS do back-end.
+
+-- 
+## Orientador
+Professor Hudson Neves
