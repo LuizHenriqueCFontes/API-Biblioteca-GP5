@@ -103,7 +103,7 @@ A aplicação está hospedada na plataforma **Render**, que fornece:
 - SSL/HTTPS incluído
 - Ambiente gerenciado sem preocupação com infraestrutura
 
-Link do sistema: https://vercel.com/biblioteca-gp5/biblioteca-gp5
+Link do sistema: https://biblioteca-gp5.vercel.app
 
 ### Armazenamento de Arquivos
 Para **imagens de capas** e **arquivos EPUB**, o sistema utiliza armazenamento local no próprio disco do servidor Render. Esta abordagem foi adotada como solução temporária devido às limitações de custos para contratar um serviço de object storage externo (como AWS S3 ou Azure Blob Storage). 
