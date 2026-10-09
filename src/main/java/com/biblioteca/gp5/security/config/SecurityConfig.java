@@ -17,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import com.biblioteca.gp5.exception.security.CustomAccessDeniedHandler;
 import com.biblioteca.gp5.security.filter.AuthFilter;
 
 @Configuration
@@ -30,10 +31,12 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
+	SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource, 
+			CustomAccessDeniedHandler customAccessDeniedHandler) throws Exception {
 		http.cors(cors -> cors.configurationSource(corsConfigurationSource))
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.exceptionHandling(exception -> exception.accessDeniedHandler(customAccessDeniedHandler))
 				.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
 						.requestMatchers(HttpMethod.GET, "/files/**").permitAll()
 						
