@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.biblioteca.gp5.category.dto.request.CreateCategoryRequestDTO;
 import com.biblioteca.gp5.category.dto.request.EditCategoryRequestDTO;
+import com.biblioteca.gp5.category.dto.response.CategoryDetailsResponseDTO;
 import com.biblioteca.gp5.category.dto.response.CategoryResponseDTO;
 import com.biblioteca.gp5.category.dto.response.ListCategoryResponseDTO;
 import com.biblioteca.gp5.category.dto.response.EditCategoryResponseDTO;
@@ -56,6 +57,13 @@ public class CategoryController {
 	public ResponseEntity<List<CategoryResponseDTO>> listCategories(@RequestParam(name = "name", required = false) String name,
 																	@RequestParam(name = "limit", required = false) Integer limit) {
 		List<CategoryResponseDTO> response = categoryService.listCategories(name, limit);
+		
+		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/{idCategory}")
+	public ResponseEntity<CategoryDetailsResponseDTO> categoryDetails(@PathVariable UUID idCategory) {
+		CategoryDetailsResponseDTO response = categoryService.categoryDetails(idCategory);
 		
 		return ResponseEntity.ok(response);
 	}

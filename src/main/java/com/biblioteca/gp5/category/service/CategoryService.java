@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.biblioteca.gp5.bookcategories.repository.BookCategoriesRepository;
 import com.biblioteca.gp5.category.dto.request.CreateCategoryRequestDTO;
 import com.biblioteca.gp5.category.dto.request.EditCategoryRequestDTO;
+import com.biblioteca.gp5.category.dto.response.CategoryDetailsResponseDTO;
 import com.biblioteca.gp5.category.dto.response.CategoryResponseDTO;
 import com.biblioteca.gp5.category.dto.response.ListCategoryResponseDTO;
 import com.biblioteca.gp5.category.dto.response.EditCategoryResponseDTO;
@@ -80,6 +81,15 @@ public class CategoryService {
 		}
 		
 		List<CategoryResponseDTO> response = categoryRepository.findCategories(name, resultLimit);
+		
+		return response;
+	}
+	
+	public CategoryDetailsResponseDTO categoryDetails(UUID idCategory) {
+		Category category = categoryRepository.findById(idCategory)
+									.orElseThrow(() -> new CategoryNotFoundException("Categoria não encontrada"));
+		
+		CategoryDetailsResponseDTO response = categoryMapper.toCategoryDetailsResponseDTO(category);
 		
 		return response;
 	}
